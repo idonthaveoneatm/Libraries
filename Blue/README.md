@@ -1,5 +1,5 @@
 # Documentation: Index
-[Basics](), [Items]()
+[Basics](https://github.com/idonthaveoneatm/Libraries/tree/normal/Blue#basics), [Items](https://github.com/idonthaveoneatm/Libraries/tree/normal/Blue#items)
 ## Basics
 Starting Library:
 ```lua
