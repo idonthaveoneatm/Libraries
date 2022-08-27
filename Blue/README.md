@@ -1,5 +1,6 @@
 # Documentation: Index
 [Basics](https://github.com/idonthaveoneatm/Libraries/tree/normal/Blue#basics), [Items](https://github.com/idonthaveoneatm/Libraries/tree/normal/Blue#items)
+An example can be found [here](https://github.com/idonthaveoneatm/Libraries/blob/normal/Blue/Example.lua).
 ## Basics
 Starting Library:
 ```lua
