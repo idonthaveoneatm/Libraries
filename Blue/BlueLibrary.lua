@@ -1091,3 +1091,4 @@ function a:StartLibrary(props)
 	return b
 	
 end
+return a
