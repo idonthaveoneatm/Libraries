@@ -856,14 +856,14 @@ function a:StartLibrary(props)
 			local db = false local percentage = 0
 			local min = tonumber(props.Minimum)
 			local max = tonumber(props.Maximum)
-			local a = tonumber(props.Step)
+			local pstep = tonumber(props.Step)
 			local step
 			
 			local function checkstep()
 				if props.Step == 0 then
 					step = 1/(props.Minimum + props.Maximum)
 				else
-					step = 1/a
+					step = 1/pstep
 				end
 				return step
 			end
