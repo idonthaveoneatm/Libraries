@@ -1,3 +1,7 @@
+if game.CoreGui:FindFirstChild("BlueThing") then
+    game.CoreGui:FindFirstChild("BlueThing"):Destroy()
+end
+
 local a = {}
 local TweenFunctions = {
 	Tween = function(properties)
@@ -39,7 +43,7 @@ function a:StartLibrary(props)
 		Name = "griffin"
 	}
 		local BlueThing = Instance.new("ScreenGui")
-	BlueThing.Name = "BlueThing2"
+	BlueThing.Name = "BlueThing"
 	BlueThing.Parent = game.CoreGui
 	BlueThing.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		local Main = Instance.new("Frame")
