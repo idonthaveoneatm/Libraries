@@ -17,7 +17,7 @@ function newWindow()
 			AnchorPoint = Vector2.new(0,0),
 			BackgroundColor3 = Color3.fromRGB(40,42,64),
 			Position = UDim2.new(0.5,-250,0.5,-190),
-			Size = UDim2.fromOffset(500,380),
+			Size = UDim2.fromOffset(600,380),
 			ZIndex = 1,
 			ClipsDescendants = true
 		},{
@@ -175,7 +175,7 @@ function newWindow()
 				AnchorPoint = Vector2.new(0,0.5),
 				BackgroundTransparency = 1,
 				Position = UDim2.fromOffset(180,210),
-				Size = UDim2.fromOffset(310,320),
+				Size = UDim2.new(1,-190,0,320),
 				ClipsDescendants = true
 			},{
 				u.create("UIPageLayout",{
@@ -330,8 +330,9 @@ function newWindow()
 					Position = UDim2.new(0.5,0,0,40),
 					Size = UDim2.new(1,0,0,120),
 					ClipsDescendants = true,
+					BorderSizePixel = 0,
 					ScrollBarImageColor3 = Color3.fromRGB(255,255,255),
-					ScrollBarThickness = 2,
+					ScrollBarThickness = 0,
 					CanvasSize = UDim2.fromScale(0,0),
 					AutomaticCanvasSize = Enum.AutomaticSize.Y
 				},{
@@ -482,19 +483,19 @@ function newWindow()
 				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
 				u.create("Frame",{
 					Name = "background",
-					AnchorPoint = Vector2.new(0.5,0.5),
+					AnchorPoint = Vector2.new(1,0.5),
 					BackgroundColor3 = Color3.fromRGB(71,81,133),
 					BackgroundTransparency = 0.25,
-					Position = UDim2.new(0,277,0.5,0),
+					Position = UDim2.new(1,-10,0.5,0),
 					Size = UDim2.fromOffset(50,20),
 				},{
 					u.create("UICorner",{CornerRadius = UDim.new(0,3)}),
 				}),
 				u.create("TextBox",{
 					Name = "keyListener",
-					AnchorPoint = Vector2.new(0.5,0.5),
+					AnchorPoint = Vector2.new(1,0.5),
 					BackgroundTransparency = 1,
-					Position = UDim2.new(0,277,0.5,0),
+					Position = UDim2.new(1,-15,0.5,0),
 					Size = UDim2.new(0,40,0,12),
 					Font = Enum.Font.Gotham,
 					PlaceholderColor3 = Color3.fromRGB(225,227,239),
@@ -634,9 +635,9 @@ function newWindow()
 				}),
 				u.create("CanvasGroup",{
 					Name = "sliderContainer",
-					AnchorPoint = Vector2.new(0.5,0.5),
+					AnchorPoint = Vector2.new(1,0.5),
 					BackgroundColor3 = Color3.fromRGB(71,81,133),
-					Position = UDim2.new(0,202,0.5,0),
+					Position = UDim2.new(1,-10,0.5,0),
 					Size = UDim2.fromOffset(200,20)
 				},{
 					u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
