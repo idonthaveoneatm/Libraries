@@ -1160,13 +1160,13 @@ function library:CreateWindow(prop)
 				if a < 150 and newInput.background.input.Text ~= "" then
 					u.tween({
 						o = newInput.background,
-						a = {Size = UDim2.new(0,a, 0,20)},
+						a = {Size = UDim2.new(0,a, 0,24)},
 						t = 0.045, d = "InOut", s = "Sine"
 					}):Play()
 				elseif a > 150 or newInput.background.input.Text == "" then
 					u.tween({
 						o = newInput.background,
-						a = {Size = UDim2.new(0,150, 0,20)},
+						a = {Size = UDim2.new(0,150, 0,24)},
 						t = 0.045, d = "InOut", s = "Sine"
 					}):Play()
 				end
