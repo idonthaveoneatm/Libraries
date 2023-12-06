@@ -1,0 +1,1398 @@
+local library = {}
+
+local u = loadstring(game:HttpGet("https://raw.githubusercontent.com/idonthaveoneatm/lua/normal/utilities.lua"))()
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+
+function newWindow()
+	local libUI = u.create("ScreenGui",{
+		Name = "tmpLibrary",
+		Parent = game.Players.LocalPlayer.PlayerGui,
+		IgnoreGuiInset = true,
+		ResetOnSpawn = false
+	},{
+		u.create("Frame",{
+			Name = "body",
+			AnchorPoint = Vector2.new(0,0),
+			BackgroundColor3 = Color3.fromRGB(40,42,64),
+			Position = UDim2.new(0.5,-250,0.5,-190),
+			Size = UDim2.fromOffset(500,380),
+			ZIndex = 1,
+			ClipsDescendants = true
+		},{
+			u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+			u.create("ScrollingFrame",{
+				Name = "listOfTabs",
+				AnchorPoint = Vector2.new(0.5,0),
+				BackgroundTransparency = 1,
+				Position = UDim2.fromOffset(85,45),
+				Size = UDim2.fromOffset(170,325),
+				ClipsDescendants = true,
+				ScrollBarThickness = 0,
+				CanvasSize = UDim2.fromScale(0,0),
+				AutomaticCanvasSize = Enum.AutomaticSize.Y
+			},{
+				u.create("UIListLayout",{
+					Padding = UDim.new(0,0),
+					FillDirection = Enum.FillDirection.Vertical,
+					HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					VerticalAlignment = Enum.VerticalAlignment.Top
+				}),
+				u.create("UIPadding",{
+					PaddingLeft = UDim.new(0,10),
+					PaddingTop = UDim.new(0,5)
+				}),
+				u.create("Frame",{
+					Name = "addedTabs",
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1,0,0,45)
+				},{
+					u.create("UIListLayout",{
+						Padding = UDim.new(0,5),
+						FillDirection = Enum.FillDirection.Vertical,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						VerticalAlignment = Enum.VerticalAlignment.Top
+					})
+				})
+				--u.create("",{}),
+			}),
+			u.create("Frame",{
+				Name = "topBar",
+				AnchorPoint = Vector2.new(0.5,0),
+				BackgroundTransparency = 1,
+				Position = UDim2.new(0.5,0,0,5),
+				Size = UDim2.new(1,0,0,40)
+			},{
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(424,26),
+					Font = Enum.Font.GothamBold,
+					Text = "griffindoescooking",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextScaled = true,
+					TextSize = 26,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,20)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 26,
+						MinTextSize = 1
+					})
+				}),
+				u.create("Frame",{
+					Name = "divider",
+					AnchorPoint = Vector2.new(1,0.5),
+					BackgroundColor3 = Color3.fromRGB(96,107,169),
+					Position = UDim2.new(1,-76,0.5,0),
+					Size = UDim2.new(0,1,1,-10)
+				}),
+				u.create("Frame",{
+					Name = "taskManage",
+					AnchorPoint = Vector2.new(1,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.new(1,-5,0.5,0),
+					Size = UDim2.new(0,70,1,0)
+				},{
+					u.create("Frame",{
+						Name = "items",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.fromScale(1,1)
+					},{
+						u.create("UIListLayout",{
+							Padding = UDim.new(0,0),
+							FillDirection = Enum.FillDirection.Horizontal,
+							HorizontalAlignment = Enum.HorizontalAlignment.Center,
+							SortOrder = Enum.SortOrder.LayoutOrder,
+							VerticalAlignment = Enum.VerticalAlignment.Center
+						}),
+						u.create("Frame",{
+							Name = "minMax",
+							AnchorPoint = Vector2.new(0,0),
+							BackgroundTransparency = 1,
+							Size = UDim2.fromOffset(30,30)
+						},{
+							u.create("TextButton",{
+								Name = "toggle",
+								AnchorPoint = Vector2.new(0.5,0.5),
+								BackgroundTransparency = 1,
+								Position = UDim2.fromScale(0.5,0.5),
+								Size = UDim2.fromOffset(26,26),
+								Text = ""
+							},{
+								u.create("ImageLabel",{
+									Name = "minimizeIcon",
+									AnchorPoint = Vector2.new(0.5,0.5),
+									BackgroundTransparency = 1,
+									Position = UDim2.fromScale(0.5,0.5),
+									Size = UDim2.fromScale(1,1),
+									Image = "rbxassetid://15556637715", -- Minimize, asset_bruprAwRUfrUpR
+									ImageColor3 = Color3.fromRGB(221,223,223),
+									ImageTransparency = 0
+								}),
+								u.create("ImageLabel",{
+									Name = "maximizeIcon",
+									AnchorPoint = Vector2.new(0.5,0.5),
+									BackgroundTransparency = 1,
+									Position = UDim2.fromScale(0.5,0.5),
+									Size = UDim2.fromScale(1,1),
+									Image = "rbxassetid://15556636376", -- Maximize, asset_bruprAwRUfrUpR
+									ImageColor3 = Color3.fromRGB(221,223,223),
+									ImageTransparency = 1
+								})
+							})
+						}),
+						u.create("TextButton",{
+							Name = "close",
+							AnchorPoint = Vector2.new(0,0),
+							BackgroundTransparency = 1,
+							Size = UDim2.fromOffset(30,30),
+							Text = ""
+						},{
+							u.create("ImageLabel",{
+								Name = "closeIcon",
+								AnchorPoint = Vector2.new(0.5,0.5),
+								Position = UDim2.fromScale(0.5,0.5),
+								BackgroundTransparency = 1,
+								Rotation = 45,
+								Size = UDim2.fromScale(1,1),
+								Image = "rbxassetid://15556635005", -- Add, asset_bruprAwRUfrUpR
+								ImageColor3 = Color3.fromRGB(190,100,105)
+							})
+						})
+					}),	
+				}),
+			}),
+			u.create("Frame",{
+				Name = "tabWindows",
+				AnchorPoint = Vector2.new(0,0.5),
+				BackgroundTransparency = 1,
+				Position = UDim2.fromOffset(180,210),
+				Size = UDim2.fromOffset(310,320),
+				ClipsDescendants = true
+			},{
+				u.create("UIPageLayout",{
+					Animated = true,
+					EasingDirection = Enum.EasingDirection.In,
+					EasingStyle = Enum.EasingStyle.Sine,
+					Padding = UDim.new(0,10),
+					TweenTime = 0.2,
+					FillDirection = Enum.FillDirection.Vertical,
+					HorizontalAlignment = Enum.HorizontalAlignment.Left,
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					VerticalAlignment = Enum.VerticalAlignment.Top,
+					GamepadInputEnabled = false,
+					ScrollWheelInputEnabled = false,
+					TouchInputEnabled = false
+				})
+			})
+		}),
+		u.create("Folder",{
+			Name = "elements"
+		},{
+			u.create("TextButton",{
+				Name = "newTab",
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1,0,0,40),
+				Visible = false,
+				Text = ""
+			},{
+				u.create("Frame",{
+					Name = "decoration",	
+					BackgroundTransparency = 1,
+					Size = UDim2.fromScale(1,1)
+				},{
+					u.create("Frame",{
+						Name = "a",
+						AnchorPoint = Vector2.new(0,0.5),
+						BackgroundColor3 = Color3.fromRGB(71,81,133),
+						Position = UDim2.fromScale(0,0.5),
+						Size = UDim2.fromScale(0.5,1),
+					},{u.create("UICorner",{CornerRadius = UDim.new(1,0)})}),
+					u.create("Frame",{
+						Name = "b",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundColor3 = Color3.fromRGB(71,81,133),
+						BorderSizePixel = 0,
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.fromScale(0.5,1),
+					}),
+					u.create("Frame",{
+						Name = "c",
+						AnchorPoint = Vector2.new(0,0.5),
+						BackgroundColor3 = Color3.fromRGB(71,81,133),
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.fromScale(0.5,1),
+					},{u.create("UICorner",{CornerRadius = UDim.new(0,8)})}),
+				}),
+				u.create("ImageLabel",{
+					Name = "icon",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.new(0,8,0.5,0),
+					Size = UDim2.fromOffset(24,24),
+					Image = "rbxassetid://15555209580", -- Earth, asset_GTnaMuXFwBdQRa
+					ImageColor3 = Color3.fromRGB(225,227,239),
+					ImageTransparency = 0.35
+				}),
+				u.create("TextLabel",{
+					Name = "name",
+					AnchorPoint = Vector2.new(1,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(1,0.5),
+					Size = UDim2.fromOffset(126,14),
+					Font = Enum.Font.GothamMedium,
+					Text = "Tab Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextScaled = true,
+					TextSize = 14,
+					TextTransparency = 0.35,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,4)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				})
+			}),
+			u.create("ScrollingFrame",{
+				Name = "tabWindow",
+				BackgroundTransparency = 1,
+				Visible = false,
+				Size = UDim2.fromScale(1,1),
+				ScrollBarThickness = 0,
+				CanvasSize = UDim2.fromScale(0,0),
+				AutomaticCanvasSize = Enum.AutomaticSize.Y
+			},{
+				u.create("UIListLayout",{
+					Padding = UDim.new(0,5),
+					FillDirection = Enum.FillDirection.Vertical,
+					HorizontalAlignment = Enum.HorizontalAlignment.Center,
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					VerticalAlignment = Enum.VerticalAlignment.Top
+				})	
+			}),
+			u.create("Frame",{
+				Name = "newButton",
+				Visible = false,
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40)
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("TextButton",{
+					Name = "button",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0.5,0.5),
+					Size = UDim2.fromScale(1,1),
+					Text = ""
+				}),
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(252,14),
+					Font = Enum.Font.Gotham,
+					Text = "Button Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 14,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				})
+			}),
+			u.create("Frame",{
+				Name = "newDropdown",
+				Visible = false,
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40),
+				ClipsDescendants = true
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("ScrollingFrame",{
+					Name = "items",
+					AnchorPoint = Vector2.new(0.5,0),
+					BackgroundTransparency = 1,
+					Position = UDim2.new(0.5,0,0,40),
+					Size = UDim2.new(1,0,0,120),
+					ClipsDescendants = true,
+					ScrollBarImageColor3 = Color3.fromRGB(255,255,255),
+					ScrollBarThickness = 2,
+					CanvasSize = UDim2.fromScale(0,0),
+					AutomaticCanvasSize = Enum.AutomaticSize.Y
+				},{
+					u.create("UIListLayout",{
+						FillDirection = Enum.FillDirection.Vertical,
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						VerticalAlignment = Enum.VerticalAlignment.Top
+					})
+				}),
+				u.create("TextButton",{
+					Name = "button",
+					AnchorPoint = Vector2.new(0.5,0),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0.5,0),
+					Size = UDim2.new(1,0,0,40),
+					Text = ""
+				},{
+					u.create("TextLabel",{
+						Name = "title",
+						AnchorPoint = Vector2.new(0,0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0,0.5),
+						Size = UDim2.fromOffset(255,14),
+						Font = Enum.Font.Gotham,
+						Text = "Dropdown Name: ",
+						TextColor3 = Color3.fromRGB(225,227,239),
+						TextScaled = true,
+						TextSize = 14,
+						TextXAlignment = Enum.TextXAlignment.Left,
+					},{
+						u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+						u.create("UITextSizeConstraint",{
+							MaxTextSize = 14,
+							MinTextSize = 1
+						})
+					})
+				}),
+				u.create("ImageLabel",{
+					Name = "icon",
+					AnchorPoint = Vector2.new(1,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.new(1,-8,0,20),
+					Size = UDim2.fromOffset(24,24),
+					Image = "rbxassetid://15555233897", -- CalendarAgenda, asset_GTnaMuXFwBdQRa
+					ImageColor3 = Color3.fromRGB(225,227,239)
+				})
+			}),
+			u.create("Frame",{
+				Name = "newItem",
+				Visible = false,
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1,0,0,30)
+			},{
+				u.create("Frame",{
+					Name = "decoration",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundColor3 = Color3.fromRGB(71,81,133),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0.5,0.5),
+					Size = UDim2.new(1,-4,1,-4)
+				},{u.create("UICorner",{CornerRadius = UDim.new(0,4)})}),
+				u.create("TextButton",{
+					Name = "button",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0.5,0.5),
+					Size = UDim2.new(1,0,0,30),
+					Font = Enum.Font.Gotham,
+					Text = "Item Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextScaled=  true,
+					TextSize = 12,
+					TextTransparency = 0.35,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 12,
+						MinTextSize = 1
+					}),
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,15)})
+				}),
+			}),
+			u.create("Frame",{
+				Name = "newInput",
+				Visible = false,
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40)
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("Frame",{
+					Name = "background",
+					AnchorPoint = Vector2.new(1,0.5),
+					BackgroundColor3 = Color3.fromRGB(71,81,133),
+					BackgroundTransparency = 0.25,
+					Position = UDim2.new(1,-8,0.5,0),
+					Size = UDim2.fromOffset(150,20),
+				},{
+					u.create("UICorner",{CornerRadius = UDim.new(0,3)}),
+					u.create("TextBox",{
+						Name = "input",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.new(1,-10,0,12),
+						Font = Enum.Font.Gotham,
+						PlaceholderColor3 = Color3.fromRGB(225,227,239),
+						PlaceholderText = "Input Here",
+						Text = "",
+						TextColor3 = Color3.fromRGB(221,223,223),
+						TextScaled = true,
+						TextSize = 12
+					},{
+						u.create("UITextSizeConstraint",{
+							MaxTextSize = 12,
+							MinTextSize = 1
+						})
+					})
+				}),
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(145,14),
+					Font = Enum.Font.Gotham,
+					Text = "Textbox Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 14,
+					TextScaled = true,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				})
+			}),
+			u.create("Frame",{
+				Name = "newKeybind",
+				Visible = false,
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40)
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("Frame",{
+					Name = "background",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundColor3 = Color3.fromRGB(71,81,133),
+					BackgroundTransparency = 0.25,
+					Position = UDim2.new(0,277,0.5,0),
+					Size = UDim2.fromOffset(50,20),
+				},{
+					u.create("UICorner",{CornerRadius = UDim.new(0,3)}),
+				}),
+				u.create("TextBox",{
+					Name = "keyListener",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.new(0,277,0.5,0),
+					Size = UDim2.new(0,40,0,12),
+					Font = Enum.Font.Gotham,
+					PlaceholderColor3 = Color3.fromRGB(225,227,239),
+					PlaceholderText = ". . .",
+					Text = "",
+					TextColor3 = Color3.fromRGB(221,223,223),
+					TextScaled = true,
+					TextSize = 12
+				},{
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 12,
+						MinTextSize = 1
+					})
+				}),
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(250,14),
+					Font = Enum.Font.Gotham,
+					Text = "Textbox Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 14,
+					TextScaled = true,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				})
+			}),
+			u.create("Frame",{
+				Name = "newParagraph",
+				Visible = false,
+				AnchorPoint = Vector2.new(0.5,0),
+				BackgroundColor3 = Color3.fromRGB(71,81,133),
+				Size = UDim2.new(1,0,0,40),
+				ClipsDescendants = true
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("UIListLayout",{
+					FillDirection = Enum.FillDirection.Vertical,
+					HorizontalAlignment = Enum.HorizontalAlignment.Left,
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					VerticalAlignment = Enum.VerticalAlignment.Top
+				}),
+				u.create("UIPadding",{
+					PaddingBottom = UDim.new(0,5),
+					PaddingLeft = UDim.new(0,10),
+					PaddingRight = UDim.new(0,10),
+					PaddingTop = UDim.new(0,5)
+				}),
+				u.create("TextLabel",{
+					Name = "title",
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1,0,0,16),
+					Font = Enum.Font.Gotham,
+					Text = "Paragraph Title",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextScaled = true,
+					TextSize = 16,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 16,
+						MinTextSize = 1
+					})
+				}),
+				u.create("TextLabel",{
+					Name = "body",
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1,0,10,0),
+					Font = Enum.Font.Gotham,
+					Text = "Body Text",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 12,
+					TextWrapped = true,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					TextYAlignment = Enum.TextYAlignment.Top
+				},{
+					u.create("UIPadding",{
+						PaddingLeft = UDim.new(0,5),
+						PaddingRight = UDim.new(0,5),
+						PaddingTop = UDim.new(0,3)
+					})
+				})
+			}),
+			u.create("Frame",{
+				Name = "newSection",
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1,0,0,25),
+				Visible = false
+			},{
+				u.create("UIPadding",{
+					PaddingLeft = UDim.new(0,5),
+					PaddingTop = UDim.new(0,4)
+				}),
+				u.create("TextLabel",{
+					Name = "name",
+					BackgroundTransparency = 1,
+					Size = UDim2.new(1,0,0,17),
+					Font = Enum.Font.Gotham,
+					Text = "Section Name",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 17,
+					TextXAlignment = Enum.TextXAlignment.Left
+				})
+			}),
+			u.create("Frame",{
+				Name = "newSlider",
+				Visible = false,
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40),
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(102,14),
+					Font = Enum.Font.Gotham,
+					Text = "Slider",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextSize = 14,
+					TextScaled = true,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				}),
+				u.create("CanvasGroup",{
+					Name = "sliderContainer",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundColor3 = Color3.fromRGB(71,81,133),
+					Position = UDim2.new(0,202,0.5,0),
+					Size = UDim2.fromOffset(200,20)
+				},{
+					u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+					u.create("Frame",{
+						Name = "slider",
+						AnchorPoint = Vector2.new(0,0.5),
+						BackgroundColor3 = Color3.fromRGB(225,227,239),
+						BorderSizePixel = 0,
+						Position = UDim2.fromScale(0,0.5),
+						Size = UDim2.fromScale(0,1),
+						ClipsDescendants = true
+					},{
+						u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+						u.create("TextLabel",{
+							Name = "value",
+							AnchorPoint = Vector2.new(0,0.5),
+							BackgroundTransparency = 1,
+							Position = UDim2.fromScale(0,0.5),
+							Size = UDim2.fromOffset(200,20),
+							Font = Enum.Font.GothamMedium,
+							Text = "heyyy",
+							TextColor3 = Color3.fromRGB(71,81,133),
+							TextSize = 12,
+							ZIndex = 2
+						})
+					}),
+					u.create("TextButton",{
+						Name = "button",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.fromScale(1,1),
+						ZIndex = 2,
+						Text = ""
+					}),
+					u.create("TextLabel",{
+						Name = "value",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0.5,0.5),
+						Size = UDim2.fromScale(1,1),
+						Font = Enum.Font.GothamMedium,
+						Text = "heyyy",
+						TextColor3 = Color3.fromRGB(221, 223, 223),
+						TextSize = 12
+					})
+				})
+			}),
+			u.create("Frame",{
+				Name = "newToggle",
+				Visible = false,
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = Color3.fromRGB(96,107,169),
+				Size = UDim2.new(1,0,0,40),
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("Frame",{
+					Name = "switch",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundColor3 = Color3.fromRGB(190,100,105),
+					Position = UDim2.fromScale(0.915,0.5),
+					Size= UDim2.fromOffset(36,14),
+				},{
+					u.create("UICorner",{CornerRadius=UDim.new(1,0)}),
+					u.create("UIPadding",{
+						PaddingLeft = UDim.new(0,10),
+						PaddingRight = UDim.new(0,10)
+					}),
+					u.create("Frame",{
+						Name = "circle",
+						AnchorPoint = Vector2.new(0.5,0.5),
+						BackgroundColor3 = Color3.fromRGB(255,255,255),
+						Position = UDim2.fromScale(0,0.5),
+						Size = UDim2.fromOffset(22,22)
+					},{
+						u.create("UICorner",{CornerRadius = UDim.new(1,0)})
+					}),
+				}),
+				u.create("TextButton",{
+					Name = "button",
+					AnchorPoint = Vector2.new(0.5,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0.5,0.5),
+					Size = UDim2.fromScale(1,1),
+					Text = ""
+				}),
+				u.create("TextLabel",{
+					Name = "title",
+					AnchorPoint = Vector2.new(0,0.5),
+					BackgroundTransparency = 1,
+					Position = UDim2.fromScale(0,0.5),
+					Size = UDim2.fromOffset(252,14),
+					Font = Enum.Font.Gotham,
+					Text = "Toggle",
+					TextColor3 = Color3.fromRGB(225,227,239),
+					TextScaled = true,
+					TextSize = 14,
+					TextXAlignment = Enum.TextXAlignment.Left
+				},{
+					u.create("UIPadding",{PaddingLeft = UDim.new(0,10)}),
+					u.create("UITextSizeConstraint",{
+						MaxTextSize = 14,
+						MinTextSize = 1
+					})
+				})
+			}),
+			u.create("TextLabel",{
+				Name = "newTextLabel",
+				Visible = false,
+				BackgroundColor3 = Color3.fromRGB(71,81,133),
+				Size = UDim2.new(1,0,0,40),
+				Font = Enum.Font.Gotham,
+				Text = "Text",
+				TextColor3 = Color3.fromRGB(225,227,239),
+				TextScaled = true,
+				TextSize = 14,
+				TextXAlignment = Enum.TextXAlignment.Left
+			},{
+				u.create("UICorner",{CornerRadius = UDim.new(0,4)}),
+				u.create("UIPadding",{
+					PaddingLeft = UDim.new(0,10),
+					PaddingRight = UDim.new(0,10)
+				}),
+				u.create("UITextSizeConstraint",{
+					MaxTextSize = 14,
+					MinTextSize = 1
+				})
+			}),
+		})
+	})
+	return libUI
+end
+
+function clearSelected(listOfTabs)
+	for _,obj in ipairs(listOfTabs.addedTabs:GetChildren()) do
+		if obj:IsA("TextButton") then
+			u.gtween({
+				o = {
+					obj:FindFirstChild("a",true),
+					obj:FindFirstChild("b",true),
+					obj:FindFirstChild("c",true)
+				},
+				a = {BackgroundColor3 = Color3.fromRGB(71, 81, 133)},
+				t = 0.1,s = "Sine",d = "In"
+			})
+			u.tween({
+				o = obj.name,
+				a = {
+					TextColor3 = Color3.fromRGB(225, 227, 239),TextTransparency = 0.35
+				},
+				t = 0.1,s = "Sine",d = "In"
+			}):Play()
+			u.tween({
+				o = obj.icon,
+				a = {
+					ImageColor3 = Color3.fromRGB(225, 227, 239),ImageTransparency = 0.35	
+				},
+				t = 0.1,s = "Sine",d = "In"
+			}):Play()
+		end
+	end
+end
+
+function library:CreateWindow(prop)
+	local tmp = newWindow()
+	local body = tmp.body
+	local elements = tmp.elements
+	local listOfTabs = tmp.body.listOfTabs
+	local addedTabs = listOfTabs.addedTabs
+	local topBar = tmp.body.topBar
+	local tabWindows = tmp.body.tabWindows
+	local title = topBar.title
+	local taskManage = topBar.taskManage
+	local items = taskManage.items
+	local toggle = items.minMax.toggle
+	local close = items.close
+
+	local isMax = false
+	
+	title.Text = prop.Title or "griffindoescooking"
+
+	u.drag(body,15)
+
+	toggle.MouseButton1Click:Connect(function()
+		isMax = not isMax
+		if isMax then
+			u.tween({
+				o = body,
+				a = {Size = UDim2.new(0,math.round(title.TextBounds.X+106),0,50)},
+				d = "In",s = "Sine",t = 0.3
+			}):Play()
+			u.tween({
+				o = toggle.minimizeIcon,
+				a = {ImageTransparency = 1},
+				d = "Out",s = "Sine",t = 0.15
+			}):Play() task.wait(0.15)
+			u.tween({
+				o = toggle.maximizeIcon,
+				a = {ImageTransparency = 0},
+				d = "In",s = "Sine",t = 0.15
+			}):Play()
+		else
+			u.tween({
+				o = body,
+				a = {Size = UDim2.new(0,500,0,380)},
+				d = "Out",s = "Sine",t = 0.3
+			}):Play()
+			u.tween({
+				o = toggle.maximizeIcon,
+				a = {ImageTransparency = 1},
+				d = "Out",s = "Sine",t = 0.15
+			}):Play() task.wait(0.15)
+			u.tween({
+				o = toggle.minimizeIcon,
+				a = {ImageTransparency = 0},
+				d = "In",s = "Sine",t = 0.15
+			}):Play()
+		end
+	end)
+	close.MouseButton1Click:Connect(function()
+		u.tween({
+			o = body,
+			a = {Size = UDim2.new(0,math.round(title.TextBounds.X+106),0,50)},
+			d = "In",s = "Sine",t = 0.3
+		}):Play() task.wait(0.3)
+		tmp:Destroy()
+	end)
+	
+	
+	library.tab = {}
+	function library.tab:CreateTab(prop)
+		
+		local newTab = tmp.elements.newTab:Clone()
+		newTab.Parent = addedTabs
+		newTab.Visible = true
+		newTab.Name = prop.Name or "Tab"
+		newTab.name.Text = prop.Name or "Tab"
+		newTab.icon.Image = prop.Icon or "rbxassetid://15555209580"
+		
+		local newTabWindow = tmp.elements.tabWindow:Clone()
+		newTabWindow.Parent = tabWindows
+		newTabWindow.Visible = true
+		newTabWindow.Name = prop.Name or "Tab"
+		
+		
+		
+		newTab.MouseButton1Click:Connect(function()
+			clearSelected(listOfTabs)
+			
+			u.gtween({
+				o = {
+					newTab:FindFirstChild("a",true),
+					newTab:FindFirstChild("b",true),
+					newTab:FindFirstChild("c",true)
+				},
+				a = {BackgroundColor3 = Color3.fromRGB(96, 107, 169)},
+				t = 0.1,s = "Sine",d = "In"
+			})
+			u.tween({
+				o = newTab.name,
+				a = {
+					TextColor3 = Color3.fromRGB(255, 255, 255),TextTransparency = 0
+				},
+				t = 0.1,s = "Sine",d = "In"
+			}):Play()
+			u.tween({
+				o = newTab.icon,
+				a = {
+					ImageColor3 = Color3.fromRGB(255, 255, 255),ImageTransparency = 0
+				},
+				t = 0.1,s = "Sine",d = "In"
+			}):Play()
+			
+			tabWindows.UIPageLayout:JumpTo(newTabWindow)
+		end)
+		
+		library.tab.objects = {}
+		function library.tab.objects:CreateButton(prop)
+			local newButton = tmp.elements.newButton:Clone()
+			newButton.Parent = newTabWindow
+			newButton.Visible = true
+			newButton.Name = prop.Name or "Button"
+			newButton.title.Text = prop.Name or "Button"
+			
+			newButton.button.MouseButton1Down:Connect(function()
+				u.tween({
+					o = newButton,
+					a = {BackgroundTransparency = 0.3},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+				u.tween({
+					o = newButton.title,
+					a = {TextTransparency = 0.3},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+			end)
+			newButton.button.MouseButton1Up:Connect(function()
+				u.tween({
+					o = newButton,
+					a = {BackgroundTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+				u.tween({
+					o = newButton.title,
+					a = {TextTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+			end)
+			newButton.button.MouseLeave:Connect(function()
+				u.tween({
+					o = newButton,
+					a = {BackgroundTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+				u.tween({
+					o = newButton.title,
+					a = {TextTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+			end)
+			newButton.button.MouseButton1Click:Connect(function()
+				prop.Callback()
+			end)
+			
+		end
+		function library.tab.objects:CreateDropdown(prop)
+			local newDropdown = tmp.elements.newDropdown:Clone()
+			newDropdown.Parent = newTabWindow
+			newDropdown.Visible = true
+			newDropdown.Name = prop.Name or "Dropdown"
+			newDropdown.button.title.Text = prop.Name..": " or "Dropdown: "
+			
+			local DDopen = false
+			local DDyValue = 0
+			local multiselect = prop.Multiselect
+			local MStable = {}
+			
+			local originalDd = newDropdown.button.title.Text
+			newDropdown.button.MouseButton1Down:Connect(function()
+				u.tween({
+					o = newDropdown,
+					a = {BackgroundTransparency = 0.3},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+			end)
+			newDropdown.button.MouseLeave:Connect(function()
+				u.tween({
+					o = newDropdown,
+					a = {BackgroundTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+			end)
+			newDropdown.button.MouseButton1Click:Connect(function()
+				u.tween({
+					o = newDropdown,
+					a = {BackgroundTransparency = 0},
+					d = "Out",s = "Sine",t = 0.05
+				}):Play()
+
+				DDopen = not DDopen
+
+				for _,v in ipairs(newDropdown.items:GetChildren()) do
+					if v:IsA("Frame") then
+						DDyValue = DDyValue +30
+					end
+				end
+				
+				if DDopen then
+					if DDyValue < 120 then
+						u.tween({
+							o = newDropdown,
+							a = {Size = UDim2.new(1,0,0,DDyValue+40)},
+							d = "Out",t = 0.25,s = "Sine"
+						}):Play()
+					else
+						u.tween({
+							o = newDropdown,
+							a = {Size = UDim2.new(1,0,0,160)},
+							d = "Out",t = 0.25,s = "Sine"
+						}):Play()
+					end
+				else
+					u.tween({
+						o = newDropdown,
+						a = {Size = UDim2.new(1,0,0,40)},
+						d = "In",t = 0.25,s = "Sine"
+					}):Play()
+				end
+				DDyValue = 0
+			end)
+			
+			for _,item in ipairs(prop.Items) do
+				local newItem = tmp.elements.newItem:Clone()
+				newItem.Parent = newDropdown.items
+				newItem.Visible = true
+				newItem.Name = item
+				newItem.button.Text = item
+				
+				newItem.button.MouseButton1Down:Connect(function()
+					if multiselect and table.find(MStable, newItem.Name) then
+						u.tween({
+							o = newItem.button,
+							a = {TextColor3 = Color3.fromRGB(190, 100, 105)},
+							d = "In",s = "Sine",t = 0.05
+						}):Play()
+					elseif multiselect and not table.find(MStable, newItem.Name) then
+						u.tween({
+							o = newItem.button,
+							a = {TextColor3 = Color3.fromRGB(85, 220, 135)},
+							d = "In",s = "Sine",t = 0.05
+						}):Play()
+					end
+					u.tween({
+						o = newItem.button,
+						a = {TextTransparency = 0},
+						d = "In",s = "Sine",t = 0.05
+					}):Play()
+				end)
+				newItem.button.MouseEnter:Connect(function()
+					u.tween({
+						o = newItem.decoration,
+						a = {BackgroundTransparency = 0.5},
+						d = "In",s = "Sine",t = 0.05
+					}):Play()
+				end)
+				newItem.button.MouseLeave:Connect(function()
+					if multiselect and table.find(MStable, newItem.Name) then
+						u.tween({
+							o = newItem.button,
+							a = {TextColor3 = Color3.fromRGB(85, 220, 135)},
+							d = "In",s = "Sine",t = 0.05
+						}):Play()
+					elseif multiselect and not table.find(MStable, newItem.Name) then
+						u.tween({
+							o = newItem.button,
+							a = {TextColor3 = Color3.fromRGB(225, 227, 239)},
+							d = "In",s = "Sine",t = 0.05
+						}):Play()
+					end
+					u.tween({
+						o = newItem.button,
+						a = {TextTransparency = 0.35},
+						d = "Out",s = "Sine",t = 0.05
+					}):Play()
+					u.tween({
+						o = newItem.decoration,
+						a = {BackgroundTransparency = 1},
+						d = "Out",s = "Sine",t = 0.05
+					}):Play()
+				end)
+
+				newItem.button.MouseButton1Click:Connect(function()
+					u.tween({
+						o = newItem.button,
+						a = {TextTransparency = 0.35},
+						d = "Out",s = "Sine",t = 0.05
+					}):Play()
+					u.tween({
+						o = newItem.decoration,
+						a = {BackgroundTransparency = 1},
+						d = "Out",s = "Sine",t = 0.05
+					}):Play()
+
+					if multiselect then
+						if table.find(MStable,newItem.Name) then
+							table.remove(MStable,table.find(MStable,newItem.Name))
+							u.tween({
+								o = newItem.button,
+								a = {TextColor3 = Color3.fromRGB(225, 227, 239)},
+								d = "In",s = "Sine",t = 0.05
+							}):Play()
+						else
+							table.insert(MStable,newItem.Name)
+							u.tween({
+								o = newItem.button,
+								a = {TextColor3 = Color3.fromRGB(85, 220, 135)},
+								d = "In",s = "Sine",t = 0.05
+							}):Play()
+						end
+						newDropdown.button.title.Text = originalDd
+						for _,selected in ipairs(MStable) do
+							if newDropdown.button.title.Text == originalDd then
+								newDropdown.button.title.Text = originalDd.." "..selected
+							else
+								newDropdown.button.title.Text = newDropdown.button.title.Text..", "..selected
+							end
+
+							prop.Callback(MStable)
+
+						end
+					else
+						newDropdown.button.title.Text = originalDd.." "..newItem.Name
+						u.tween({
+							o = newDropdown,
+							a = {Size = UDim2.new(1,0,0,40)},
+							d = "In",t = 0.25,s = "Sine"
+						}):Play()
+						DDyValue = 0
+						DDopen = false
+
+						prop.Callback(newItem.Name)
+					end
+
+				end)
+				
+				
+			end
+			
+			
+		end
+		function library.tab.objects:CreateInput(prop)
+			local newInput = tmp.elements.newInput:Clone()
+			newInput.Parent = newTabWindow
+			newInput.Visible = true
+			newInput.Name = prop.Name or "Input"
+			newInput.title.Text = prop.Name or "Input"
+
+			newInput.background.input.Changed:Connect(function()
+				local a = math.round(newInput.background.input.TextBounds.X) +20
+				if a < 150 and newInput.background.input.Text ~= "" then
+					u.tween({
+						o = newInput.background,
+						a = {Size = UDim2.new(0,a, 0,20)},
+						t = 0.045, d = "InOut", s = "Sine"
+					}):Play()
+				elseif a > 150 or newInput.background.input.Text == "" then
+					u.tween({
+						o = newInput.background,
+						a = {Size = UDim2.new(0,150, 0,20)},
+						t = 0.045, d = "InOut", s = "Sine"
+					}):Play()
+				end
+			end)
+			newInput.background.input.Focused:Connect(function()
+				u.tween({
+					o = newInput.background,
+					a = {BackgroundTransparency = 0},
+					t = 0.045, d = "InOut", s = "Sine"
+				}):Play()
+			end)
+			newInput.background.input.FocusLost:Connect(function()
+				u.tween({
+					o = newInput.background,
+					a = {BackgroundTransparency = 0.25},
+					t = 0.045, d = "InOut", s = "Sine"
+				}):Play()
+
+				prop.Callback(newInput.background.input.Text)
+			end)
+		end
+		function library.tab.objects:CreateKeybind(prop)
+			local newKeybind = tmp.elements.newKeybind:Clone()
+			newKeybind.Parent = newTabWindow
+			newKeybind.Visible = true
+			newKeybind.Name = prop.Name or "Keybind"
+			newKeybind.title.Text = prop.Name or "Keybind"
+			
+			local bind
+			local listening = false
+
+			newKeybind.keyListener.Focused:Connect(function()
+				listening = true
+				newKeybind.keyListener.PlaceholderText = ""
+			end)
+			newKeybind.keyListener.FocusLost:Connect(function()
+				listening = false
+				newKeybind.keyListener.PlaceholderText = ". . ."
+			end)
+
+			UserInputService.InputBegan:Connect(function(input)
+				if listening then
+					if input.KeyCode ~= Enum.KeyCode.Unknown then
+						bind = string.split(tostring(input.KeyCode), ".")
+						newKeybind.keyListener.Text = tostring(bind[3])
+						newKeybind.keyListener:ReleaseFocus()
+					end
+				elseif (bind ~= nil) and (input.KeyCode == Enum.KeyCode[bind[3]]) then
+
+					prop.Callback()
+
+				end
+			end)
+		end
+		function library.tab.objects:CreateParagraph(prop)
+			local newParagraph = tmp.elements.newParagraph:Clone()
+			newParagraph.Parent = newTabWindow
+			newParagraph.Visible = true
+			newParagraph.Name = prop.Title or "Title"
+			newParagraph.title.Text = prop.Title or "Title"
+			newParagraph.body.Text = prop.Body or "Body"
+
+			local bodyY = newParagraph.body.TextBounds.Y
+			newParagraph.Size = UDim2.new(1,0,0, 21 + bodyY+8)
+			
+		end
+		function library.tab.objects:CreateSection(prop)
+			local newSection = tmp.elements.newSection:Clone()
+			newSection.Parent = newTabWindow
+			newSection.Visible = true
+			newSection.Name = prop
+			newSection.name.Text = prop or "Section"
+		end
+		function library.tab.objects:CreateSlider(prop)
+			local newSlider = tmp.elements.newSlider:Clone()
+			newSlider.Parent = newTabWindow
+			newSlider.Visible = true
+			newSlider.Name = prop.Name or "Slider"
+			newSlider.title.Text = prop.Name or "Slider"
+			
+			
+			local sliderContainer = newSlider.sliderContainer
+			local slider = sliderContainer.slider
+			local value = sliderContainer.value
+
+			local db = false 
+			local percentage = 0
+			local min = tonumber(prop.Minimum) or 0
+			local max = tonumber(prop.Maximum) or 100
+			local step = tonumber(prop.Step or 1)/(min+max)
+
+			local function snap(number,factor)
+				if factor == 0 then
+					return number
+				else
+					return math.floor(number/factor)*factor
+				end
+			end
+
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if db then
+						db = false
+						u.tween({
+							o = slider,
+							a = {Size = UDim2.new(slider.Size.X.Scale, 0, 1, 0)},
+							t = 0.025,d = "In",s = "Sine"
+						}):Play() wait(0.025)
+
+						prop.Callback(value.Text)
+
+					end
+				end
+			end)
+			sliderContainer.button.MouseButton1Down:Connect(function()
+				db = true
+				u.tween({
+					o = slider,
+					a = {Size = UDim2.new(slider.Size.X.Scale, 0, 1, 0)},
+					t = 0.025,d = "In",s = "Sine",
+				}):Play()
+
+			end)
+			slider.Changed:Connect(function()
+				local c = slider.Size.X.Scale
+				local f1 = 100*c 
+				local f = (0.01)*f1
+				local pos = ((max-min)*f)+min
+				local pos2 = math.round(pos)
+				value.Text = pos2
+				slider.value.Text = pos2
+			end)
+			RunService.RenderStepped:Connect(function()
+				if db then
+					local MousePos = UserInputService:GetMouseLocation().X
+					local FrameSize = sliderContainer.AbsoluteSize.X
+					local FramePos = sliderContainer.AbsolutePosition.X
+					local pos = snap((MousePos-FramePos)/FrameSize,step)
+					local percentage = math.clamp(pos,0,1)
+					u.tween({
+						o = slider,
+						a = {Size = UDim2.new(percentage, 0, 1, 0)},
+						t = 0.025,d = "In",s = "Sine"
+					}):Play()
+				end
+			end)
+		end
+		function library.tab.objects:CreateToggle(prop)
+			local newToggle = tmp.elements.newToggle:Clone()
+			newToggle.Parent = newTabWindow
+			newToggle.Visible = true
+			newToggle.Name = prop.Name or "Toggle"
+			newToggle.title.Text = prop.Name or "Toggle"
+			
+
+			local toggle = false
+
+			newToggle.button.MouseButton1Click:Connect(function()
+				toggle = not toggle
+				if toggle then
+					u.tween({
+						o = newToggle.switch,
+						a = {BackgroundColor3 = Color3.fromRGB(85, 220, 135)},
+						d = "In",s = "Circular",t = 0.15
+					}):Play()
+					u.tween({
+						o = newToggle.switch.circle,
+						a = {Position = UDim2.fromScale(1,0.5)},
+						d = "In",s = "Circular",t = 0.15
+					}):Play()
+				else
+					u.tween({
+						o = newToggle.switch,
+						a = {BackgroundColor3 = Color3.fromRGB(190, 100, 105)},
+						d = "In",s = "Circular",t = 0.15
+					}):Play()
+					u.tween({
+						o = newToggle.switch.circle,
+						a = {Position = UDim2.fromScale(0,0.5)},
+						d = "In",s = "Circular",t = 0.15
+					}):Play()
+				end
+
+				prop.Callback(toggle)
+
+			end)
+		end
+		function library.tab.objects:CreateTextLabel(prop)
+			local newTextLabel = tmp.elements.newTextLabel:Clone()
+			newTextLabel.Parent = newTabWindow
+			newTextLabel.Visible = true
+			newTextLabel.Name = prop or "TextLabel"
+			newTextLabel.Text = prop or "TextLabel"
+
+		end
+		
+		repeat task.wait() until addedTabs:FindFirstChildWhichIsA("TextButton")
+		for _,first in ipairs(addedTabs:GetChildren()) do
+			if first:IsA("TextButton") then
+				u.gtween({
+					o = {
+						first:FindFirstChild("a",true),
+						first:FindFirstChild("b",true),
+						first:FindFirstChild("c",true)
+					},
+					a = {BackgroundColor3 = Color3.fromRGB(96, 107, 169)},
+					t = 0.1,s = "Sine",d = "In"
+				})
+				u.tween({
+					o = first.name,
+					a = {
+						TextColor3 = Color3.fromRGB(255, 255, 255),TextTransparency = 0
+					},
+					t = 0.1,s = "Sine",d = "In"
+				}):Play()
+				u.tween({
+					o = first.icon,
+					a = {
+						ImageColor3 = Color3.fromRGB(255, 255, 255),ImageTransparency = 0
+					},
+					t = 0.1,s = "Sine",d = "In"
+				}):Play()
+				break
+			end
+		end
+		return library.tab.objects
+	end
+	return library.tab
+end
+return library
