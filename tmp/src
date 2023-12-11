@@ -1276,7 +1276,7 @@ function library:CreateWindow(prop)
 							t = 0.025,d = "In",s = "Sine"
 						}):Play() wait(0.025)
 
-						prop.Callback(value.Text)
+						prop.Callback(tonumber(value.Text))
 
 					end
 				end
