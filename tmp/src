@@ -4,11 +4,10 @@ local u = loadstring(game:HttpGet("https://raw.githubusercontent.com/idonthaveon
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
-
-function newWindow()
+function newWindow(title)
 	local libUI = u.create("ScreenGui",{
-		Name = "tmpLibrary",
-		Parent = game.Players.LocalPlayer.PlayerGui,
+		Name = "tmp | "..title,
+		Parent = game.CoreGui,
 		IgnoreGuiInset = true,
 		ResetOnSpawn = false
 	},{
@@ -802,7 +801,11 @@ function clearSelected(listOfTabs)
 end
 
 function library:CreateWindow(prop)
-	local tmp = newWindow()
+	prop.Title = prop.Title or "griffindoescooking"
+	if game.CoreGui:FindFirstChild("tmp | "..prop.Title) then
+		game.CoreGui:FindFirstChild("tmp | "..prop.Title):Destroy()
+	end
+	local tmp = newWindow(prop.Title)
 	local body = tmp.body
 	local elements = tmp.elements
 	local listOfTabs = tmp.body.listOfTabs
@@ -817,7 +820,7 @@ function library:CreateWindow(prop)
 
 	local isMax = false
 	
-	title.Text = prop.Title or "griffindoescooking"
+	title.Text = prop.Title
 
 	u.drag(body,15)
 
