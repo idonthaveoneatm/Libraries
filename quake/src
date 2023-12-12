@@ -1,10 +1,9 @@
-
 -- Will be used later for getting flattened globals
 local ImportGlobals
 
 -- Holds direct closure data (defining this before the DOM tree for line debugging etc)
 local ClosureBindings = {
-    [2] = function()local wax,script,require=ImportGlobals(2)local ImportGlobals return (function(...)local Fusion = require(script.Bundles.Fusion)
+    function()local wax,script,require=ImportGlobals(1)local ImportGlobals return (function(...)local Fusion = require(script.Bundles.Fusion)
 local get = require(script.utilities.get)
 local u = require(script.Bundles["ui-utilities"])
 local config = require(script.config)
@@ -565,7 +564,7 @@ end
 return lib--, Library
 
 end)() end,
-    [4] = function()local wax,script,require=ImportGlobals(4)local ImportGlobals return (function(...)--!strict
+    [3] = function()local wax,script,require=ImportGlobals(3)local ImportGlobals return (function(...)--!strict
 
 --[[
 	The entry point for the Fusion library.
@@ -639,7 +638,7 @@ return restrictRead("Fusion", {
 }) :: Fusion
 
 end)() end,
-    [6] = function()local wax,script,require=ImportGlobals(6)local ImportGlobals return (function(...)--!nonstrict
+    [5] = function()local wax,script,require=ImportGlobals(5)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new computed state object, which follows the value of another
@@ -857,7 +856,7 @@ end
 
 return Spring
 end)() end,
-    [7] = function()local wax,script,require=ImportGlobals(7)local ImportGlobals return (function(...)--!strict
+    [6] = function()local wax,script,require=ImportGlobals(6)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Manages batch updating of spring objects.
@@ -950,7 +949,7 @@ RunService:BindToRenderStep(
 
 return SpringScheduler
 end)() end,
-    [8] = function()local wax,script,require=ImportGlobals(8)local ImportGlobals return (function(...)--!nonstrict
+    [7] = function()local wax,script,require=ImportGlobals(7)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new computed state object, which follows the value of another
@@ -1086,7 +1085,7 @@ end
 
 return Tween
 end)() end,
-    [9] = function()local wax,script,require=ImportGlobals(9)local ImportGlobals return (function(...)--!strict
+    [8] = function()local wax,script,require=ImportGlobals(8)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Manages batch updating of tween objects.
@@ -1161,7 +1160,7 @@ RunService:BindToRenderStep(
 
 return TweenScheduler
 end)() end,
-    [10] = function()local wax,script,require=ImportGlobals(10)local ImportGlobals return (function(...)--!strict
+    [9] = function()local wax,script,require=ImportGlobals(9)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Given a `tweenInfo` and `currentTime`, returns a ratio which can be used to
@@ -1204,7 +1203,7 @@ end
 
 return getTweenRatio
 end)() end,
-    [11] = function()local wax,script,require=ImportGlobals(11)local ImportGlobals return (function(...)--!strict
+    [10] = function()local wax,script,require=ImportGlobals(10)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Linearly interpolates the given animatable types by a ratio.
@@ -1366,7 +1365,7 @@ end
 
 return lerpType
 end)() end,
-    [12] = function()local wax,script,require=ImportGlobals(12)local ImportGlobals return (function(...)--!strict
+    [11] = function()local wax,script,require=ImportGlobals(11)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Packs an array of numbers into a given animatable data type.
@@ -1465,7 +1464,7 @@ end
 
 return packType
 end)() end,
-    [13] = function()local wax,script,require=ImportGlobals(13)local ImportGlobals return (function(...)--!strict
+    [12] = function()local wax,script,require=ImportGlobals(12)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Returns a 2x2 matrix of coefficients for a given time, damping and speed.
@@ -1551,7 +1550,7 @@ end
 return springCoefficients
 
 end)() end,
-    [14] = function()local wax,script,require=ImportGlobals(14)local ImportGlobals return (function(...)--!strict
+    [13] = function()local wax,script,require=ImportGlobals(13)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Unpacks an animatable type into an array of numbers.
@@ -1640,7 +1639,7 @@ end
 
 return unpackType
 end)() end,
-    [16] = function()local wax,script,require=ImportGlobals(16)local ImportGlobals return (function(...)--!strict
+    [15] = function()local wax,script,require=ImportGlobals(15)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Provides functions for converting Color3s into Oklab space, for more
@@ -1695,7 +1694,7 @@ end
 return Oklab
 
 end)() end,
-    [18] = function()local wax,script,require=ImportGlobals(18)local ImportGlobals return (function(...)--!strict
+    [17] = function()local wax,script,require=ImportGlobals(17)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Calls the given callback, and stores any used external dependencies.
@@ -1752,7 +1751,7 @@ end
 return captureDependencies
 
 end)() end,
-    [19] = function()local wax,script,require=ImportGlobals(19)local ImportGlobals return (function(...)--!strict
+    [18] = function()local wax,script,require=ImportGlobals(18)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Registers the creation of an object which can be used as a dependency.
@@ -1781,7 +1780,7 @@ end
 
 return initDependency
 end)() end,
-    [20] = function()local wax,script,require=ImportGlobals(20)local ImportGlobals return (function(...)--!strict
+    [19] = function()local wax,script,require=ImportGlobals(19)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Stores shared state for dependency management functions.
@@ -1805,7 +1804,7 @@ return {
 	initialisedStackSize = initialisedStackSize
 }
 end)() end,
-    [21] = function()local wax,script,require=ImportGlobals(21)local ImportGlobals return (function(...)--!strict
+    [20] = function()local wax,script,require=ImportGlobals(20)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Given a reactive object, updates all dependent reactive objects.
@@ -1865,7 +1864,7 @@ end
 
 return updateAll
 end)() end,
-    [22] = function()local wax,script,require=ImportGlobals(22)local ImportGlobals return (function(...)--!strict
+    [21] = function()local wax,script,require=ImportGlobals(21)local ImportGlobals return (function(...)--!strict
 
 --[[
 	If a target set was specified by captureDependencies(), this will add the
@@ -1895,7 +1894,7 @@ end
 
 return useDependency
 end)() end,
-    [24] = function()local wax,script,require=ImportGlobals(24)local ImportGlobals return (function(...)--!strict
+    [23] = function()local wax,script,require=ImportGlobals(23)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A special key for property tables, which parents any given descendants into
@@ -2044,7 +2043,7 @@ end
 
 return Children :: PubTypes.SpecialKey
 end)() end,
-    [25] = function()local wax,script,require=ImportGlobals(25)local ImportGlobals return (function(...)--!strict
+    [24] = function()local wax,script,require=ImportGlobals(24)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A special key for property tables, which adds user-specified tasks to be run
@@ -2065,7 +2064,7 @@ end
 
 return Cleanup
 end)() end,
-    [26] = function()local wax,script,require=ImportGlobals(26)local ImportGlobals return (function(...)--!strict
+    [25] = function()local wax,script,require=ImportGlobals(25)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Processes and returns an existing instance, with options for setting
@@ -2085,7 +2084,7 @@ end
 
 return Hydrate
 end)() end,
-    [27] = function()local wax,script,require=ImportGlobals(27)local ImportGlobals return (function(...)--!strict
+    [26] = function()local wax,script,require=ImportGlobals(26)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Constructs and returns a new instance, with options for setting properties,
@@ -2121,7 +2120,7 @@ end
 
 return New
 end)() end,
-    [28] = function()local wax,script,require=ImportGlobals(28)local ImportGlobals return (function(...)--!strict
+    [27] = function()local wax,script,require=ImportGlobals(27)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Constructs special keys for property tables which connect property change
@@ -2156,7 +2155,7 @@ end
 
 return OnChange
 end)() end,
-    [29] = function()local wax,script,require=ImportGlobals(29)local ImportGlobals return (function(...)--!strict
+    [28] = function()local wax,script,require=ImportGlobals(28)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Constructs special keys for property tables which connect event listeners to
@@ -2193,7 +2192,7 @@ end
 
 return OnEvent
 end)() end,
-    [30] = function()local wax,script,require=ImportGlobals(30)local ImportGlobals return (function(...)--!strict
+    [29] = function()local wax,script,require=ImportGlobals(29)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A special key for property tables, which allows users to extract values from
@@ -2237,7 +2236,7 @@ end
 return Out
 
 end)() end,
-    [31] = function()local wax,script,require=ImportGlobals(31)local ImportGlobals return (function(...)--!strict
+    [30] = function()local wax,script,require=ImportGlobals(30)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A special key for property tables, which stores a reference to the instance
@@ -2267,7 +2266,7 @@ end
 
 return Ref
 end)() end,
-    [32] = function()local wax,script,require=ImportGlobals(32)local ImportGlobals return (function(...)--!strict
+    [31] = function()local wax,script,require=ImportGlobals(31)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Applies a table of properties to an instance, including binding to any
@@ -2394,7 +2393,7 @@ end
 
 return applyInstanceProps
 end)() end,
-    [33] = function()local wax,script,require=ImportGlobals(33)local ImportGlobals return (function(...)--!strict
+    [32] = function()local wax,script,require=ImportGlobals(32)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Stores 'sensible default' properties to be applied to instances created by
@@ -2505,7 +2504,7 @@ return {
 }
 
 end)() end,
-    [35] = function()local wax,script,require=ImportGlobals(35)local ImportGlobals return (function(...)--!strict
+    [34] = function()local wax,script,require=ImportGlobals(34)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Utility function to log a Fusion-specific error.
@@ -2538,7 +2537,7 @@ end
 
 return logError
 end)() end,
-    [36] = function()local wax,script,require=ImportGlobals(36)local ImportGlobals return (function(...)--!strict
+    [35] = function()local wax,script,require=ImportGlobals(35)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Utility function to log a Fusion-specific error, without halting execution.
@@ -2573,7 +2572,7 @@ end
 
 return logErrorNonFatal
 end)() end,
-    [37] = function()local wax,script,require=ImportGlobals(37)local ImportGlobals return (function(...)--!strict
+    [36] = function()local wax,script,require=ImportGlobals(36)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Utility function to log a Fusion-specific warning.
@@ -2597,7 +2596,7 @@ end
 
 return logWarn
 end)() end,
-    [38] = function()local wax,script,require=ImportGlobals(38)local ImportGlobals return (function(...)--!strict
+    [37] = function()local wax,script,require=ImportGlobals(37)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Stores templates for different kinds of logging messages.
@@ -2643,7 +2642,7 @@ return {
 	unrecognisedPropertyStage = "'%s' isn't a valid stage for a special key to be applied at."
 }
 end)() end,
-    [39] = function()local wax,script,require=ImportGlobals(39)local ImportGlobals return (function(...)--!strict
+    [38] = function()local wax,script,require=ImportGlobals(38)local ImportGlobals return (function(...)--!strict
 
 --[[
 	An xpcall() error handler to collect and parse useful information about
@@ -2666,7 +2665,7 @@ end
 
 return parseError
 end)() end,
-    [40] = function()local wax,script,require=ImportGlobals(40)local ImportGlobals return (function(...)--!strict
+    [39] = function()local wax,script,require=ImportGlobals(39)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Stores common public-facing type information for Fusion APIs.
@@ -2813,7 +2812,7 @@ export type PropertyTable = {[string | SpecialKey]: any}
 
 return nil
 end)() end,
-    [42] = function()local wax,script,require=ImportGlobals(42)local ImportGlobals return (function(...)--!nonstrict
+    [41] = function()local wax,script,require=ImportGlobals(41)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs and returns objects which can be used to model derived reactive
@@ -2927,7 +2926,7 @@ end
 
 return Computed
 end)() end,
-    [43] = function()local wax,script,require=ImportGlobals(43)local ImportGlobals return (function(...)--!nonstrict
+    [42] = function()local wax,script,require=ImportGlobals(42)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new ForKeys state object which maps keys of an array using
@@ -3176,7 +3175,7 @@ end
 
 return ForKeys
 end)() end,
-    [44] = function()local wax,script,require=ImportGlobals(44)local ImportGlobals return (function(...)--!nonstrict
+    [43] = function()local wax,script,require=ImportGlobals(43)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new ForPairs object which maps pairs of a table using
@@ -3486,7 +3485,7 @@ end
 
 return ForPairs
 end)() end,
-    [45] = function()local wax,script,require=ImportGlobals(45)local ImportGlobals return (function(...)--!nonstrict
+    [44] = function()local wax,script,require=ImportGlobals(44)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new ForValues object which maps values of a table using
@@ -3733,7 +3732,7 @@ end
 
 return ForValues
 end)() end,
-    [46] = function()local wax,script,require=ImportGlobals(46)local ImportGlobals return (function(...)--!nonstrict
+    [45] = function()local wax,script,require=ImportGlobals(45)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs a new state object which can listen for updates on another state
@@ -3817,7 +3816,7 @@ end
 
 return Observer
 end)() end,
-    [47] = function()local wax,script,require=ImportGlobals(47)local ImportGlobals return (function(...)--!nonstrict
+    [46] = function()local wax,script,require=ImportGlobals(46)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
 	Constructs and returns objects which can be used to model independent
@@ -3880,7 +3879,7 @@ end
 
 return Value
 end)() end,
-    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)--!strict
+    [47] = function()local wax,script,require=ImportGlobals(47)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A common interface for accessing the values of state objects or constants.
@@ -3896,7 +3895,7 @@ end
 
 return unwrap
 end)() end,
-    [49] = function()local wax,script,require=ImportGlobals(49)local ImportGlobals return (function(...)--!strict
+    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Stores common type information used internally.
@@ -4043,7 +4042,7 @@ export type Observer = PubTypes.Observer & {
 
 return nil
 end)() end,
-    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)--!strict
+    [50] = function()local wax,script,require=ImportGlobals(50)local ImportGlobals return (function(...)--!strict
 
 --[[
 	A symbol for representing nil values in contexts where nil is not usable.
@@ -4057,7 +4056,7 @@ return {
 	name = "None"
 } :: Types.None
 end)() end,
-    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)--!strict
+    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Cleans up the tasks passed in as the arguments.
@@ -4111,7 +4110,7 @@ end
 
 return cleanup
 end)() end,
-    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)--!strict
+    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)--!strict
 
 --[[
 	An empty function. Often used as a destructor to indicate no destruction.
@@ -4122,7 +4121,7 @@ end
 
 return doNothing
 end)() end,
-    [54] = function()local wax,script,require=ImportGlobals(54)local ImportGlobals return (function(...)--!strict
+    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)--!strict
 --[[
     Returns true if A and B are 'similar' - i.e. any user of A would not need
     to recompute if it changed to B.
@@ -4140,7 +4139,7 @@ end
 
 return isSimilar
 end)() end,
-    [55] = function()local wax,script,require=ImportGlobals(55)local ImportGlobals return (function(...)--!strict
+    [54] = function()local wax,script,require=ImportGlobals(54)local ImportGlobals return (function(...)--!strict
 
 --[[
     Returns true if the given value is not automatically memory managed, and
@@ -4153,7 +4152,7 @@ end
 
 return needsDestruction
 end)() end,
-    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)--!strict
+    [55] = function()local wax,script,require=ImportGlobals(55)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Restricts the reading of missing members for a table.
@@ -4182,7 +4181,7 @@ end
 
 return restrictRead
 end)() end,
-    [57] = function()local wax,script,require=ImportGlobals(57)local ImportGlobals return (function(...)--!strict
+    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)--!strict
 
 --[[
 	Extended typeof, designed for identifying custom objects.
@@ -4202,7 +4201,7 @@ end
 
 return xtypeof
 end)() end,
-    [58] = function()local wax,script,require=ImportGlobals(58)local ImportGlobals return (function(...)-- This file was @generated by Tarmac. It is not intended for manual editing.
+    [57] = function()local wax,script,require=ImportGlobals(57)local ImportGlobals return (function(...)-- This file was @generated by Tarmac. It is not intended for manual editing.
 local assets = {
 	["accessibility"] = "rbxassetid://10709751939",
 	["activity"] = "rbxassetid://10709752035",
@@ -5026,7 +5025,7 @@ local assets = {
 return assets
 
 end)() end,
-    [59] = function()local wax,script,require=ImportGlobals(59)local ImportGlobals return (function(...)local u = {} 
+    [58] = function()local wax,script,require=ImportGlobals(58)local ImportGlobals return (function(...)local u = {} 
 
 function u.create(instance,props, children)
 	local i = Instance.new(instance)
@@ -5172,7 +5171,7 @@ end
 
 return u
 end)() end,
-    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -5405,7 +5404,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -5537,7 +5536,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local lerpColor = require(script.Parent.Parent.utilities.lerpColor)
@@ -5625,7 +5624,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -5678,7 +5677,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -5894,7 +5893,7 @@ local outOf = 100
 (knownNumber/totalDistance) = x
 ]]
 end)() end,
-    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -6027,7 +6026,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -6144,7 +6143,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local lerpColor = require(script.Parent.Parent.utilities.lerpColor)
@@ -6198,7 +6197,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -6318,7 +6317,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)return {
+    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)return {
 	background = Color3.fromRGB(40, 44, 50),
 	secondaryBackground = Color3.fromRGB(49, 56, 66),
 	tertiaryBackground = Color3.fromRGB(57, 63, 75),
@@ -6329,14 +6328,14 @@ end)() end,
 	close = Color3.fromRGB(190, 100, 105)
 }
 end)() end,
-    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)return function(value, dependency)
+    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)return function(value, dependency)
 	if typeof(value) == "table" and value.type == "State" then
 		return value:get(dependency)
 	end
 	return value
 end
 end)() end,
-    [73] = function()local wax,script,require=ImportGlobals(73)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
+    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
 local white = Color3.new(1, 1, 1)
 
 return function(color: Color3, BorW: string, lerpAmount: number) 
@@ -6356,535 +6355,526 @@ end)() end
 local ObjectTree = {
     {
         1,
-        1,
+        2,
         {
             "quake"
         },
         {
             {
-                2,
+                69,
                 2,
                 {
-                    "project"
+                    "config"
+                }
+            },
+            {
+                70,
+                1,
+                {
+                    "utilities"
                 },
                 {
                     {
-                        3,
-                        1,
+                        72,
+                        2,
                         {
-                            "Bundles"
+                            "lerpColor"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "get"
+                        }
+                    }
+                }
+            },
+            {
+                2,
+                1,
+                {
+                    "Bundles"
+                },
+                {
+                    {
+                        58,
+                        2,
+                        {
+                            "ui-utilities"
+                        }
+                    },
+                    {
+                        57,
+                        2,
+                        {
+                            "lucide"
+                        }
+                    },
+                    {
+                        3,
+                        2,
+                        {
+                            "Fusion"
                         },
                         {
                             {
-                                4,
+                                48,
                                 2,
                                 {
-                                    "Fusion"
+                                    "Types"
+                                }
+                            },
+                            {
+                                40,
+                                1,
+                                {
+                                    "State"
                                 },
                                 {
                                     {
-                                        40,
+                                        47,
                                         2,
                                         {
-                                            "PubTypes"
+                                            "unwrap"
                                         }
                                     },
                                     {
-                                        34,
-                                        1,
+                                        46,
+                                        2,
                                         {
-                                            "Logging"
-                                        },
-                                        {
-                                            {
-                                                39,
-                                                2,
-                                                {
-                                                    "parseError"
-                                                }
-                                            },
-                                            {
-                                                38,
-                                                2,
-                                                {
-                                                    "messages"
-                                                }
-                                            },
-                                            {
-                                                37,
-                                                2,
-                                                {
-                                                    "logWarn"
-                                                }
-                                            },
-                                            {
-                                                36,
-                                                2,
-                                                {
-                                                    "logErrorNonFatal"
-                                                }
-                                            },
-                                            {
-                                                35,
-                                                2,
-                                                {
-                                                    "logError"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        17,
-                                        1,
-                                        {
-                                            "Dependencies"
-                                        },
-                                        {
-                                            {
-                                                20,
-                                                2,
-                                                {
-                                                    "sharedState"
-                                                }
-                                            },
-                                            {
-                                                19,
-                                                2,
-                                                {
-                                                    "initDependency"
-                                                }
-                                            },
-                                            {
-                                                21,
-                                                2,
-                                                {
-                                                    "updateAll"
-                                                }
-                                            },
-                                            {
-                                                22,
-                                                2,
-                                                {
-                                                    "useDependency"
-                                                }
-                                            },
-                                            {
-                                                18,
-                                                2,
-                                                {
-                                                    "captureDependencies"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        15,
-                                        1,
-                                        {
-                                            "Colour"
-                                        },
-                                        {
-                                            {
-                                                16,
-                                                2,
-                                                {
-                                                    "Oklab"
-                                                }
-                                            }
+                                            "Value"
                                         }
                                     },
                                     {
                                         41,
-                                        1,
-                                        {
-                                            "State"
-                                        },
-                                        {
-                                            {
-                                                42,
-                                                2,
-                                                {
-                                                    "Computed"
-                                                }
-                                            },
-                                            {
-                                                48,
-                                                2,
-                                                {
-                                                    "unwrap"
-                                                }
-                                            },
-                                            {
-                                                46,
-                                                2,
-                                                {
-                                                    "Observer"
-                                                }
-                                            },
-                                            {
-                                                44,
-                                                2,
-                                                {
-                                                    "ForPairs"
-                                                }
-                                            },
-                                            {
-                                                47,
-                                                2,
-                                                {
-                                                    "Value"
-                                                }
-                                            },
-                                            {
-                                                43,
-                                                2,
-                                                {
-                                                    "ForKeys"
-                                                }
-                                            },
-                                            {
-                                                45,
-                                                2,
-                                                {
-                                                    "ForValues"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        5,
-                                        1,
-                                        {
-                                            "Animation"
-                                        },
-                                        {
-                                            {
-                                                13,
-                                                2,
-                                                {
-                                                    "springCoefficients"
-                                                }
-                                            },
-                                            {
-                                                12,
-                                                2,
-                                                {
-                                                    "packType"
-                                                }
-                                            },
-                                            {
-                                                9,
-                                                2,
-                                                {
-                                                    "TweenScheduler"
-                                                }
-                                            },
-                                            {
-                                                8,
-                                                2,
-                                                {
-                                                    "Tween"
-                                                }
-                                            },
-                                            {
-                                                6,
-                                                2,
-                                                {
-                                                    "Spring"
-                                                }
-                                            },
-                                            {
-                                                14,
-                                                2,
-                                                {
-                                                    "unpackType"
-                                                }
-                                            },
-                                            {
-                                                7,
-                                                2,
-                                                {
-                                                    "SpringScheduler"
-                                                }
-                                            },
-                                            {
-                                                10,
-                                                2,
-                                                {
-                                                    "getTweenRatio"
-                                                }
-                                            },
-                                            {
-                                                11,
-                                                2,
-                                                {
-                                                    "lerpType"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    {
-                                        49,
                                         2,
                                         {
-                                            "Types"
+                                            "Computed"
                                         }
                                     },
                                     {
-                                        23,
-                                        1,
+                                        45,
+                                        2,
                                         {
-                                            "Instances"
-                                        },
-                                        {
-                                            {
-                                                24,
-                                                2,
-                                                {
-                                                    "Children"
-                                                }
-                                            },
-                                            {
-                                                28,
-                                                2,
-                                                {
-                                                    "OnChange"
-                                                }
-                                            },
-                                            {
-                                                25,
-                                                2,
-                                                {
-                                                    "Cleanup"
-                                                }
-                                            },
-                                            {
-                                                31,
-                                                2,
-                                                {
-                                                    "Ref"
-                                                }
-                                            },
-                                            {
-                                                30,
-                                                2,
-                                                {
-                                                    "Out"
-                                                }
-                                            },
-                                            {
-                                                27,
-                                                2,
-                                                {
-                                                    "New"
-                                                }
-                                            },
-                                            {
-                                                26,
-                                                2,
-                                                {
-                                                    "Hydrate"
-                                                }
-                                            },
-                                            {
-                                                32,
-                                                2,
-                                                {
-                                                    "applyInstanceProps"
-                                                }
-                                            },
-                                            {
-                                                29,
-                                                2,
-                                                {
-                                                    "OnEvent"
-                                                }
-                                            },
-                                            {
-                                                33,
-                                                2,
-                                                {
-                                                    "defaultProps"
-                                                }
-                                            }
+                                            "Observer"
                                         }
                                     },
                                     {
-                                        50,
-                                        1,
+                                        44,
+                                        2,
                                         {
-                                            "Utility"
-                                        },
+                                            "ForValues"
+                                        }
+                                    },
+                                    {
+                                        43,
+                                        2,
                                         {
-                                            {
-                                                52,
-                                                2,
-                                                {
-                                                    "cleanup"
-                                                }
-                                            },
-                                            {
-                                                56,
-                                                2,
-                                                {
-                                                    "restrictRead"
-                                                }
-                                            },
-                                            {
-                                                57,
-                                                2,
-                                                {
-                                                    "xtypeof"
-                                                }
-                                            },
-                                            {
-                                                55,
-                                                2,
-                                                {
-                                                    "needsDestruction"
-                                                }
-                                            },
-                                            {
-                                                54,
-                                                2,
-                                                {
-                                                    "isSimilar"
-                                                }
-                                            },
-                                            {
-                                                51,
-                                                2,
-                                                {
-                                                    "None"
-                                                }
-                                            },
-                                            {
-                                                53,
-                                                2,
-                                                {
-                                                    "doNothing"
-                                                }
-                                            }
+                                            "ForPairs"
+                                        }
+                                    },
+                                    {
+                                        42,
+                                        2,
+                                        {
+                                            "ForKeys"
                                         }
                                     }
                                 }
                             },
                             {
-                                59,
-                                2,
+                                4,
+                                1,
                                 {
-                                    "ui-utilities"
+                                    "Animation"
+                                },
+                                {
+                                    {
+                                        11,
+                                        2,
+                                        {
+                                            "packType"
+                                        }
+                                    },
+                                    {
+                                        10,
+                                        2,
+                                        {
+                                            "lerpType"
+                                        }
+                                    },
+                                    {
+                                        13,
+                                        2,
+                                        {
+                                            "unpackType"
+                                        }
+                                    },
+                                    {
+                                        8,
+                                        2,
+                                        {
+                                            "TweenScheduler"
+                                        }
+                                    },
+                                    {
+                                        7,
+                                        2,
+                                        {
+                                            "Tween"
+                                        }
+                                    },
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
+                                    {
+                                        12,
+                                        2,
+                                        {
+                                            "springCoefficients"
+                                        }
+                                    },
+                                    {
+                                        5,
+                                        2,
+                                        {
+                                            "Spring"
+                                        }
+                                    },
+                                    {
+                                        6,
+                                        2,
+                                        {
+                                            "SpringScheduler"
+                                        }
+                                    }
                                 }
                             },
                             {
-                                58,
-                                2,
+                                22,
+                                1,
                                 {
-                                    "lucide"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        71,
-                        1,
-                        {
-                            "utilities"
-                        },
-                        {
-                            {
-                                73,
-                                2,
+                                    "Instances"
+                                },
                                 {
-                                    "lerpColor"
+                                    {
+                                        23,
+                                        2,
+                                        {
+                                            "Children"
+                                        }
+                                    },
+                                    {
+                                        31,
+                                        2,
+                                        {
+                                            "applyInstanceProps"
+                                        }
+                                    },
+                                    {
+                                        27,
+                                        2,
+                                        {
+                                            "OnChange"
+                                        }
+                                    },
+                                    {
+                                        32,
+                                        2,
+                                        {
+                                            "defaultProps"
+                                        }
+                                    },
+                                    {
+                                        25,
+                                        2,
+                                        {
+                                            "Hydrate"
+                                        }
+                                    },
+                                    {
+                                        30,
+                                        2,
+                                        {
+                                            "Ref"
+                                        }
+                                    },
+                                    {
+                                        26,
+                                        2,
+                                        {
+                                            "New"
+                                        }
+                                    },
+                                    {
+                                        28,
+                                        2,
+                                        {
+                                            "OnEvent"
+                                        }
+                                    },
+                                    {
+                                        24,
+                                        2,
+                                        {
+                                            "Cleanup"
+                                        }
+                                    },
+                                    {
+                                        29,
+                                        2,
+                                        {
+                                            "Out"
+                                        }
+                                    }
                                 }
                             },
                             {
-                                72,
+                                16,
+                                1,
+                                {
+                                    "Dependencies"
+                                },
+                                {
+                                    {
+                                        20,
+                                        2,
+                                        {
+                                            "updateAll"
+                                        }
+                                    },
+                                    {
+                                        21,
+                                        2,
+                                        {
+                                            "useDependency"
+                                        }
+                                    },
+                                    {
+                                        19,
+                                        2,
+                                        {
+                                            "sharedState"
+                                        }
+                                    },
+                                    {
+                                        17,
+                                        2,
+                                        {
+                                            "captureDependencies"
+                                        }
+                                    },
+                                    {
+                                        18,
+                                        2,
+                                        {
+                                            "initDependency"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                33,
+                                1,
+                                {
+                                    "Logging"
+                                },
+                                {
+                                    {
+                                        35,
+                                        2,
+                                        {
+                                            "logErrorNonFatal"
+                                        }
+                                    },
+                                    {
+                                        34,
+                                        2,
+                                        {
+                                            "logError"
+                                        }
+                                    },
+                                    {
+                                        37,
+                                        2,
+                                        {
+                                            "messages"
+                                        }
+                                    },
+                                    {
+                                        36,
+                                        2,
+                                        {
+                                            "logWarn"
+                                        }
+                                    },
+                                    {
+                                        38,
+                                        2,
+                                        {
+                                            "parseError"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                39,
                                 2,
                                 {
-                                    "get"
+                                    "PubTypes"
+                                }
+                            },
+                            {
+                                14,
+                                1,
+                                {
+                                    "Colour"
+                                },
+                                {
+                                    {
+                                        15,
+                                        2,
+                                        {
+                                            "Oklab"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                49,
+                                1,
+                                {
+                                    "Utility"
+                                },
+                                {
+                                    {
+                                        51,
+                                        2,
+                                        {
+                                            "cleanup"
+                                        }
+                                    },
+                                    {
+                                        55,
+                                        2,
+                                        {
+                                            "restrictRead"
+                                        }
+                                    },
+                                    {
+                                        50,
+                                        2,
+                                        {
+                                            "None"
+                                        }
+                                    },
+                                    {
+                                        53,
+                                        2,
+                                        {
+                                            "isSimilar"
+                                        }
+                                    },
+                                    {
+                                        52,
+                                        2,
+                                        {
+                                            "doNothing"
+                                        }
+                                    },
+                                    {
+                                        54,
+                                        2,
+                                        {
+                                            "needsDestruction"
+                                        }
+                                    },
+                                    {
+                                        56,
+                                        2,
+                                        {
+                                            "xtypeof"
+                                        }
+                                    }
                                 }
                             }
                         }
-                    },
+                    }
+                }
+            },
+            {
+                59,
+                1,
+                {
+                    "components"
+                },
+                {
                     {
                         60,
-                        1,
+                        2,
                         {
-                            "components"
-                        },
-                        {
-                            {
-                                63,
-                                2,
-                                {
-                                    "newParagraph"
-                                }
-                            },
-                            {
-                                65,
-                                2,
-                                {
-                                    "newSlider"
-                                }
-                            },
-                            {
-                                62,
-                                2,
-                                {
-                                    "newKeybind"
-                                }
-                            },
-                            {
-                                68,
-                                2,
-                                {
-                                    "newTextLabel"
-                                }
-                            },
-                            {
-                                64,
-                                2,
-                                {
-                                    "newSection"
-                                }
-                            },
-                            {
-                                69,
-                                2,
-                                {
-                                    "newToggle"
-                                }
-                            },
-                            {
-                                67,
-                                2,
-                                {
-                                    "newTextButton"
-                                }
-                            },
-                            {
-                                66,
-                                2,
-                                {
-                                    "newTextBox"
-                                }
-                            },
-                            {
-                                61,
-                                2,
-                                {
-                                    "newDropdown"
-                                }
-                            }
+                            "newDropdown"
                         }
                     },
                     {
-                        70,
+                        62,
                         2,
                         {
-                            "config"
+                            "newParagraph"
+                        }
+                    },
+                    {
+                        61,
+                        2,
+                        {
+                            "newKeybind"
+                        }
+                    },
+                    {
+                        64,
+                        2,
+                        {
+                            "newSlider"
+                        }
+                    },
+                    {
+                        65,
+                        2,
+                        {
+                            "newTextBox"
+                        }
+                    },
+                    {
+                        63,
+                        2,
+                        {
+                            "newSection"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "newTextLabel"
+                        }
+                    },
+                    {
+                        66,
+                        2,
+                        {
+                            "newTextButton"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newToggle"
                         }
                     }
                 }
@@ -6895,68 +6885,68 @@ local ObjectTree = {
 
 -- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
-    [2] = 6,
-    [4] = 567,
-    [6] = 641,
-    [7] = 859,
-    [8] = 952,
-    [9] = 1088,
-    [10] = 1163,
-    [11] = 1206,
-    [12] = 1368,
-    [13] = 1467,
-    [14] = 1553,
-    [16] = 1642,
-    [18] = 1697,
-    [19] = 1754,
-    [20] = 1783,
-    [21] = 1807,
-    [22] = 1867,
-    [24] = 1897,
-    [25] = 2046,
-    [26] = 2067,
-    [27] = 2087,
-    [28] = 2123,
-    [29] = 2158,
-    [30] = 2195,
-    [31] = 2239,
-    [32] = 2269,
-    [33] = 2396,
-    [35] = 2507,
-    [36] = 2540,
-    [37] = 2575,
-    [38] = 2599,
-    [39] = 2645,
-    [40] = 2668,
-    [42] = 2815,
-    [43] = 2929,
-    [44] = 3178,
-    [45] = 3488,
-    [46] = 3735,
-    [47] = 3819,
-    [48] = 3882,
-    [49] = 3898,
-    [51] = 4045,
-    [52] = 4059,
-    [53] = 4113,
-    [54] = 4124,
-    [55] = 4142,
-    [56] = 4155,
-    [57] = 4184,
-    [58] = 4204,
-    [59] = 5028,
-    [61] = 5174,
-    [62] = 5407,
-    [63] = 5539,
-    [64] = 5627,
-    [65] = 5680,
-    [66] = 5896,
-    [67] = 6029,
-    [68] = 6146,
-    [69] = 6200,
-    [70] = 6320,
-    [72] = 6331,
-    [73] = 6338
+    6,
+    [3] = 567,
+    [5] = 641,
+    [6] = 859,
+    [7] = 952,
+    [8] = 1088,
+    [9] = 1163,
+    [10] = 1206,
+    [11] = 1368,
+    [12] = 1467,
+    [13] = 1553,
+    [15] = 1642,
+    [17] = 1697,
+    [18] = 1754,
+    [19] = 1783,
+    [20] = 1807,
+    [21] = 1867,
+    [23] = 1897,
+    [24] = 2046,
+    [25] = 2067,
+    [26] = 2087,
+    [27] = 2123,
+    [28] = 2158,
+    [29] = 2195,
+    [30] = 2239,
+    [31] = 2269,
+    [32] = 2396,
+    [34] = 2507,
+    [35] = 2540,
+    [36] = 2575,
+    [37] = 2599,
+    [38] = 2645,
+    [39] = 2668,
+    [41] = 2815,
+    [42] = 2929,
+    [43] = 3178,
+    [44] = 3488,
+    [45] = 3735,
+    [46] = 3819,
+    [47] = 3882,
+    [48] = 3898,
+    [50] = 4045,
+    [51] = 4059,
+    [52] = 4113,
+    [53] = 4124,
+    [54] = 4142,
+    [55] = 4155,
+    [56] = 4184,
+    [57] = 4204,
+    [58] = 5028,
+    [60] = 5174,
+    [61] = 5407,
+    [62] = 5539,
+    [63] = 5627,
+    [64] = 5680,
+    [65] = 5896,
+    [66] = 6029,
+    [67] = 6146,
+    [68] = 6200,
+    [69] = 6320,
+    [71] = 6331,
+    [72] = 6338
 }
 
 -- Misc AOT variable imports
@@ -7448,3 +7438,6 @@ end
 for _, ScriptRef in next, ScriptsToRun do
     Defer(LoadScript, ScriptRef)
 end
+
+-- AoT adjustment: Load init module (MainModule behavior)
+return LoadScript(RealObjectRoot:GetChildren()[1])
