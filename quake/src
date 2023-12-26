@@ -1,4 +1,3 @@
--- PLEASES
 -- Will be used later for getting flattened globals
 local ImportGlobals
 
@@ -21,11 +20,11 @@ local sideBarRef,windowsRef,uipagelayoutRef,topBarRef = value(),value(),value(),
 local Color,SelectedTab = value(Color3.fromRGB(220,221,225)),value("none")
 
 local function createLibrary(prop)
-	
+
 	local FrameRef = value()
 	local tmpRef = value()
 	local mini = value(false)
-	
+
 	local tmp = new "ScreenGui" {
 		Name = "FusionScreenGui",
 		Parent = prop.Parent,
@@ -37,7 +36,7 @@ local function createLibrary(prop)
 				AnchorPoint = Vector2.new(0.5,0),
 				Position = UDim2.new(0.5,0,0.5,-200),
 				Size = UDim2.fromOffset(550,45),
-				
+
 				[ref] = FrameRef,
 				[children] = {
 					new "Frame" {
@@ -117,7 +116,7 @@ local function createLibrary(prop)
 										AnchorPoint = Vector2.new(1,0.5),
 										Position = UDim2.new(1,0,0.5,0),
 										Size = UDim2.new(0,70,1,0),
-										
+
 										[children] = {
 											new "UIListLayout"{
 												FillDirection = Enum.FillDirection.Horizontal,
@@ -126,8 +125,8 @@ local function createLibrary(prop)
 											},
 											new "Frame" {
 												Size = UDim2.fromOffset(30,30),
-												BackgroundTransparency = 1,	
-												
+												BackgroundTransparency = 1,
+
 												[children] = {
 													new "TextButton" {
 														Name = "toggleMini",
@@ -135,11 +134,11 @@ local function createLibrary(prop)
 														BackgroundTransparency = 1,
 														Position = UDim2.fromScale(0.5,0.5),
 														Size = UDim2.fromOffset(30,30),
-														
+
 														[onevent "MouseButton1Click"] = function()
-															mini:set(not get(mini))	
+															mini:set(not get(mini))
 														end,
-														
+
 														[children] = {
 															new "ImageLabel" {
 																Name = "maximizeIcon",
@@ -230,7 +229,7 @@ local function createLibrary(prop)
 								Position = UDim2.new(0,60,0,50),
 								BackgroundTransparency = 1,
 								ClipsDescendants = true,
-								
+
 								[ref] = windowsRef,
 								[children] = {
 									new "UIPageLayout" {
@@ -260,7 +259,7 @@ local function createLibrary(prop)
 	return tmp
 end
 local function createTab(prop)
-	
+
 	local identifier = ""
 	for i = 1, 5 do
 		identifier = identifier..tostring(math.abs(math.random(0,9)))
@@ -269,7 +268,7 @@ local function createTab(prop)
 	local hover = value(false)
 	local xSize = value(0)
 	local textRef = value()
-	
+
 	do
 		local xySize = TextService:GetTextSize(prop.Name,14,Enum.Font.GothamMedium,Vector2.new(10000,14))
 		if xySize.X < 449 then
@@ -377,13 +376,13 @@ local function createTab(prop)
 			}
 		}
 	}
-	
+
 	return TextButton
 end
 local function createWindow(prop)
-	
+
 	local WindowRef = value()
-	
+
 	local Window = new "ScrollingFrame" {
 		Name = prop.Name,
 		Parent = prop.Parent,
@@ -392,7 +391,7 @@ local function createWindow(prop)
 		ScrollBarThickness = 0,
 		CanvasSize = UDim2.new(0,0,0,0),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		
+
 		[ref] = WindowRef,
 		[children] = {
 			new "UIListLayout" {
@@ -409,7 +408,7 @@ local function createWindow(prop)
 				TextColor3 = config.text,
 				Font = Enum.Font.GothamMedium,
 				TextXAlignment = Enum.TextXAlignment.Left,
-				
+
 				[children] = {
 					new "UITextSizeConstraint" {
 						MaxTextSize = 15,
@@ -426,23 +425,29 @@ local function createWindow(prop)
 end
 
 function lib:Window(prop)
-	
+	prop.Parent = prop.Parent or game.CoreGui
+	prop.Title = prop.Title or "Title"
+
+	if prop.Parent:FindFirstChild(prop.Title) then
+		prop.Parent:FindFirstChild(prop.Title):Destroy()
+	end
+
 	createLibrary({
-		Parent = prop.Parent or game.CoreGui,
-		Title = prop.Title or "Title"
+		Parent = prop.Parent,
+		Title = prop.Title
 	})
-	
+
 	lib.Windows = {}
 	function lib.Windows:Tab(prop)
-		
+
 		local tabColor = prop.tabColor or config.tab
-		
+
 		local newWindow = createWindow({
 			Name = prop.Name,
 			Parent = get(windowsRef),
 			tabColor = tabColor
 		})
-		
+
 		local newButton = createTab({
 			Name = prop.Name,
 			Parent = get(sideBarRef),
@@ -454,10 +459,10 @@ function lib:Window(prop)
 				Color:set(tabColor)
 			end,
 		})
-		
+
 		lib.Windows.Component = {}
 		function lib.Windows.Component:Button(prop)
-			
+
 			local newTextButton = require(script.components.newTextButton)
 			return newTextButton({
 				Name = prop.Name,
@@ -467,10 +472,10 @@ function lib:Window(prop)
 					prop.Callback()
 				end,
 			})
-			
+
 		end
 		function lib.Windows.Component:Toggle(prop)
-			
+
 			local newToggle = require(script.components.newToggle)
 			return newToggle({
 				Parent = newWindow,
@@ -481,10 +486,10 @@ function lib:Window(prop)
 					prop.Callback(variable)
 				end,
 			})
-			
+
 		end
 		function lib.Windows.Component:TextBox(prop)
-			
+
 			local newTextBox = require(script.components.newTextBox)
 			return newTextBox({
 				Parent = newWindow,
@@ -495,10 +500,10 @@ function lib:Window(prop)
 					prop.Callback(variable)
 				end,
 			})
-			
+
 		end
-		function lib.Windows.Component:Keybind(prop)	
-			
+		function lib.Windows.Component:Keybind(prop)
+
 			local newKeybind = require(script.components.newKeybind)
 			return newKeybind({
 				Name = prop.Name,
@@ -509,10 +514,10 @@ function lib:Window(prop)
 					prop.Callback()
 				end,
 			})
-			
+
 		end
 		function lib.Windows.Component:Dropdown(prop)
-			
+
 			local newDropdown = require(script.components.newDropdown)
 			return newDropdown({
 				Name = prop.Name,
@@ -524,7 +529,7 @@ function lib:Window(prop)
 					prop.Callback(variable)
 				end,
 			})
-			
+
 		end
 		function lib.Windows.Component:Slider(prop)
 			local newSlider = require(script.components.newSlider)
@@ -735,41 +740,385 @@ end
 
 return updateAll
 end)() end,
-    [36] = function()local wax,script,require=ImportGlobals(36)local ImportGlobals return (function(...)--!strict
+    [5] = function()local wax,script,require=ImportGlobals(5)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
-	Utility function to log a Fusion-specific warning.
+	Constructs a new computed state object, which follows the value of another
+	state object using a spring simulation.
 ]]
 
 local Package = script.Parent.Parent
-local messages = require(Package.Logging.messages)
+local PubTypes = require(Package.PubTypes)
+local Types = require(Package.Types)
+local logError = require(Package.Logging.logError)
+local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
+local unpackType = require(Package.Animation.unpackType)
+local SpringScheduler = require(Package.Animation.SpringScheduler)
+local useDependency = require(Package.Dependencies.useDependency)
+local initDependency = require(Package.Dependencies.initDependency)
+local updateAll = require(Package.Dependencies.updateAll)
+local xtypeof = require(Package.Utility.xtypeof)
+local unwrap = require(Package.State.unwrap)
 
-local function logWarn(messageID, ...)
-	local formatString: string
+local class = {}
 
-	if messages[messageID] ~= nil then
-		formatString = messages[messageID]
-	else
-		messageID = "unknownMessage"
-		formatString = messages[messageID]
+local CLASS_METATABLE = {__index = class}
+local WEAK_KEYS_METATABLE = {__mode = "k"}
+
+--[[
+	Returns the current value of this Spring object.
+	The object will be registered as a dependency unless `asDependency` is false.
+]]
+function class:get(asDependency: boolean?): any
+	if asDependency ~= false then
+		useDependency(self)
 	end
-
-	warn(string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...))
+	return self._currentValue
 end
 
-return logWarn
+--[[
+	Sets the position of the internal springs, meaning the value of this
+	Spring will jump to the given value. This doesn't affect velocity.
+
+	If the type doesn't match the current type of the spring, an error will be
+	thrown.
+]]
+function class:setPosition(newValue: PubTypes.Animatable)
+	local newType = typeof(newValue)
+	if newType ~= self._currentType then
+		logError("springTypeMismatch", nil, newType, self._currentType)
+	end
+
+	self._springPositions = unpackType(newValue, newType)
+	self._currentValue = newValue
+	SpringScheduler.add(self)
+	updateAll(self)
+end
+
+--[[
+	Sets the velocity of the internal springs, overwriting the existing velocity
+	of this Spring. This doesn't affect position.
+
+	If the type doesn't match the current type of the spring, an error will be
+	thrown.
+]]
+function class:setVelocity(newValue: PubTypes.Animatable)
+	local newType = typeof(newValue)
+	if newType ~= self._currentType then
+		logError("springTypeMismatch", nil, newType, self._currentType)
+	end
+
+	self._springVelocities = unpackType(newValue, newType)
+	SpringScheduler.add(self)
+end
+
+--[[
+	Adds to the velocity of the internal springs, on top of the existing
+	velocity of this Spring. This doesn't affect position.
+
+	If the type doesn't match the current type of the spring, an error will be
+	thrown.
+]]
+function class:addVelocity(deltaValue: PubTypes.Animatable)
+	local deltaType = typeof(deltaValue)
+	if deltaType ~= self._currentType then
+		logError("springTypeMismatch", nil, deltaType, self._currentType)
+	end
+
+	local springDeltas = unpackType(deltaValue, deltaType)
+	for index, delta in ipairs(springDeltas) do
+		self._springVelocities[index] += delta
+	end
+	SpringScheduler.add(self)
+end
+
+--[[
+	Called when the goal state changes value, or when the speed or damping has
+	changed.
+]]
+function class:update(): boolean
+	local goalValue = self._goalState:get(false)
+
+	-- figure out if this was a goal change or a speed/damping change
+	if goalValue == self._goalValue then
+		-- speed/damping change
+		local damping = unwrap(self._damping)
+		if typeof(damping) ~= "number" then
+			logErrorNonFatal("mistypedSpringDamping", nil, typeof(damping))
+		elseif damping < 0 then
+			logErrorNonFatal("invalidSpringDamping", nil, damping)
+		else
+			self._currentDamping = damping
+		end
+
+		local speed = unwrap(self._speed)
+		if typeof(speed) ~= "number" then
+			logErrorNonFatal("mistypedSpringSpeed", nil, typeof(speed))
+		elseif speed < 0 then
+			logErrorNonFatal("invalidSpringSpeed", nil, speed)
+		else
+			self._currentSpeed = speed
+		end
+
+		return false
+	else
+		-- goal change - reconfigure spring to target new goal
+		self._goalValue = goalValue
+
+		local oldType = self._currentType
+		local newType = typeof(goalValue)
+		self._currentType = newType
+
+		local springGoals = unpackType(goalValue, newType)
+		local numSprings = #springGoals
+		self._springGoals = springGoals
+
+		if newType ~= oldType then
+			-- if the type changed, snap to the new value and rebuild the
+			-- position and velocity tables
+			self._currentValue = self._goalValue
+
+			local springPositions = table.create(numSprings, 0)
+			local springVelocities = table.create(numSprings, 0)
+			for index, springGoal in ipairs(springGoals) do
+				springPositions[index] = springGoal
+			end
+			self._springPositions = springPositions
+			self._springVelocities = springVelocities
+
+			-- the spring may have been animating before, so stop that
+			SpringScheduler.remove(self)
+			return true
+
+			-- otherwise, the type hasn't changed, just the goal...
+		elseif numSprings == 0 then
+			-- if the type isn't animatable, snap to the new value
+			self._currentValue = self._goalValue
+			return true
+
+		else
+			-- if it's animatable, let it animate to the goal
+			SpringScheduler.add(self)
+			return false
+		end
+	end
+end
+
+local function Spring<T>(
+	goalState: PubTypes.Value<T>,
+	speed: PubTypes.CanBeState<number>?,
+	damping: PubTypes.CanBeState<number>?
+): Types.Spring<T>
+	-- apply defaults for speed and damping
+	if speed == nil then
+		speed = 10
+	end
+	if damping == nil then
+		damping = 1
+	end
+
+	local dependencySet = {[goalState] = true}
+	if xtypeof(speed) == "State" then
+		dependencySet[speed] = true
+	end
+	if xtypeof(damping) == "State" then
+		dependencySet[damping] = true
+	end
+
+	local self = setmetatable({
+		type = "State",
+		kind = "Spring",
+		dependencySet = dependencySet,
+		-- if we held strong references to the dependents, then they wouldn't be
+		-- able to get garbage collected when they fall out of scope
+		dependentSet = setmetatable({}, WEAK_KEYS_METATABLE),
+		_speed = speed,
+		_damping = damping,
+
+		_goalState = goalState,
+		_goalValue = nil,
+
+		_currentType = nil,
+		_currentValue = nil,
+		_currentSpeed = unwrap(speed),
+		_currentDamping = unwrap(damping),
+
+		_springPositions = nil,
+		_springGoals = nil,
+		_springVelocities = nil
+	}, CLASS_METATABLE)
+
+	initDependency(self)
+	-- add this object to the goal state's dependent set
+	goalState.dependentSet[self] = true
+	self:update()
+
+	return self
+end
+
+return Spring
 end)() end,
-    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)return {
-	tab = Color3.fromHex("#a49ae6"),
-	background = Color3.fromRGB(40, 44, 50),
-	secondaryBackground = Color3.fromRGB(49, 56, 66),
-	tertiaryBackground = Color3.fromRGB(57, 63, 75),
-	text = Color3.fromRGB(220,221,225),
-	image = Color3.fromRGB(220,221,225),
-	stroke = Color3.fromRGB(220,221,225),
-	placeholder = Color3.fromRGB(165,166,169),
-	close = Color3.fromRGB(190, 100, 105)
-}
+    [10] = function()local wax,script,require=ImportGlobals(10)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Linearly interpolates the given animatable types by a ratio.
+	If the types are different or not animatable, then the first value will be
+	returned for ratios below 0.5, and the second value for 0.5 and above.
+
+	FIXME: This function uses a lot of redefinitions to suppress false positives
+	from the Luau typechecker - ideally these wouldn't be required
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local Oklab = require(Package.Colour.Oklab)
+
+local function lerpType(from: any, to: any, ratio: number): any
+	local typeString = typeof(from)
+
+	if typeof(to) == typeString then
+		-- both types must match for interpolation to make sense
+		if typeString == "number" then
+			local to, from = to :: number, from :: number
+			return (to - from) * ratio + from
+
+		elseif typeString == "CFrame" then
+			local to, from = to :: CFrame, from :: CFrame
+			return from:Lerp(to, ratio)
+
+		elseif typeString == "Color3" then
+			local to, from = to :: Color3, from :: Color3
+			local fromLab = Oklab.to(from)
+			local toLab = Oklab.to(to)
+			return Oklab.from(
+				fromLab:Lerp(toLab, ratio),
+				false
+			)
+
+		elseif typeString == "ColorSequenceKeypoint" then
+			local to, from = to :: ColorSequenceKeypoint, from :: ColorSequenceKeypoint
+			local fromLab = Oklab.to(from.Value)
+			local toLab = Oklab.to(to.Value)
+			return ColorSequenceKeypoint.new(
+				(to.Time - from.Time) * ratio + from.Time,
+				Oklab.from(
+					fromLab:Lerp(toLab, ratio),
+					false
+				)
+			)
+
+		elseif typeString == "DateTime" then
+			local to, from = to :: DateTime, from :: DateTime
+			return DateTime.fromUnixTimestampMillis(
+				(to.UnixTimestampMillis - from.UnixTimestampMillis) * ratio + from.UnixTimestampMillis
+			)
+
+		elseif typeString == "NumberRange" then
+			local to, from = to :: NumberRange, from :: NumberRange
+			return NumberRange.new(
+				(to.Min - from.Min) * ratio + from.Min,
+				(to.Max - from.Max) * ratio + from.Max
+			)
+
+		elseif typeString == "NumberSequenceKeypoint" then
+			local to, from = to :: NumberSequenceKeypoint, from :: NumberSequenceKeypoint
+			return NumberSequenceKeypoint.new(
+				(to.Time - from.Time) * ratio + from.Time,
+				(to.Value - from.Value) * ratio + from.Value,
+				(to.Envelope - from.Envelope) * ratio + from.Envelope
+			)
+
+		elseif typeString == "PhysicalProperties" then
+			local to, from = to :: PhysicalProperties, from :: PhysicalProperties
+			return PhysicalProperties.new(
+				(to.Density - from.Density) * ratio + from.Density,
+				(to.Friction - from.Friction) * ratio + from.Friction,
+				(to.Elasticity - from.Elasticity) * ratio + from.Elasticity,
+				(to.FrictionWeight - from.FrictionWeight) * ratio + from.FrictionWeight,
+				(to.ElasticityWeight - from.ElasticityWeight) * ratio + from.ElasticityWeight
+			)
+
+		elseif typeString == "Ray" then
+			local to, from = to :: Ray, from :: Ray
+			return Ray.new(
+				from.Origin:Lerp(to.Origin, ratio),
+				from.Direction:Lerp(to.Direction, ratio)
+			)
+
+		elseif typeString == "Rect" then
+			local to, from = to :: Rect, from :: Rect
+			return Rect.new(
+				from.Min:Lerp(to.Min, ratio),
+				from.Max:Lerp(to.Max, ratio)
+			)
+
+		elseif typeString == "Region3" then
+			local to, from = to :: Region3, from :: Region3
+			-- FUTURE: support rotated Region3s if/when they become constructable
+			local position = from.CFrame.Position:Lerp(to.CFrame.Position, ratio)
+			local halfSize = from.Size:Lerp(to.Size, ratio) / 2
+			return Region3.new(position - halfSize, position + halfSize)
+
+		elseif typeString == "Region3int16" then
+			local to, from = to :: Region3int16, from :: Region3int16
+			return Region3int16.new(
+				Vector3int16.new(
+					(to.Min.X - from.Min.X) * ratio + from.Min.X,
+					(to.Min.Y - from.Min.Y) * ratio + from.Min.Y,
+					(to.Min.Z - from.Min.Z) * ratio + from.Min.Z
+				),
+				Vector3int16.new(
+					(to.Max.X - from.Max.X) * ratio + from.Max.X,
+					(to.Max.Y - from.Max.Y) * ratio + from.Max.Y,
+					(to.Max.Z - from.Max.Z) * ratio + from.Max.Z
+				)
+			)
+
+		elseif typeString == "UDim" then
+			local to, from = to :: UDim, from :: UDim
+			return UDim.new(
+				(to.Scale - from.Scale) * ratio + from.Scale,
+				(to.Offset - from.Offset) * ratio + from.Offset
+			)
+
+		elseif typeString == "UDim2" then
+			local to, from = to :: UDim2, from :: UDim2
+			return from:Lerp(to, ratio)
+
+		elseif typeString == "Vector2" then
+			local to, from = to :: Vector2, from :: Vector2
+			return from:Lerp(to, ratio)
+
+		elseif typeString == "Vector2int16" then
+			local to, from = to :: Vector2int16, from :: Vector2int16
+			return Vector2int16.new(
+				(to.X - from.X) * ratio + from.X,
+				(to.Y - from.Y) * ratio + from.Y
+			)
+
+		elseif typeString == "Vector3" then
+			local to, from = to :: Vector3, from :: Vector3
+			return from:Lerp(to, ratio)
+
+		elseif typeString == "Vector3int16" then
+			local to, from = to :: Vector3int16, from :: Vector3int16
+			return Vector3int16.new(
+				(to.X - from.X) * ratio + from.X,
+				(to.Y - from.Y) * ratio + from.Y,
+				(to.Z - from.Z) * ratio + from.Z
+			)
+		end
+	end
+
+	-- fallback case: the types are different or not animatable
+	if ratio < 0.5 then
+		return from
+	else
+		return to
+	end
+end
+
+return lerpType
 end)() end,
     [43] = function()local wax,script,require=ImportGlobals(43)local ImportGlobals return (function(...)--!nonstrict
 
@@ -1081,7 +1430,7 @@ end
 
 return ForPairs
 end)() end,
-    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -1090,63 +1439,28 @@ local function animate(callback, speed, damping)
 	return spring(computed(callback), speed, damping)
 end
 
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-
 return function(prop)
+	local multiselect = value(prop.Multiselect)
+	local multiTable = {}
+	local down = value(false)
+	local open = value(false)
+	local itemTable = value(prop.Items)
+	local itemsRef = value()
 	
-	local sliderRef = value()
-	local buttonRef = value()
-
 	local returnFunctions = {}
 
-	local mouseEntered = value(false)
-	local db = value(false)
-	local percentage = value(0)
-	local percentageOf = value(0)
-	local min = tonumber(prop.Min)
-	local max = tonumber(prop.Max)
-	local step = tonumber(prop.Step) / (min + max)
-
-	local initialValue = tonumber(prop.InitialValue)
-	if initialValue < min or initialValue > max then
-		percentage:set(min / (max - min))
-		error("InitialValue for "..prop.Name.." is either too big or too small! InitialValue = "..tostring(min))
-	else
-		percentage:set(initialValue / (max - min))
-	end
-
-	local function snap(number,factor)
-		if factor == 0 then
-			return number
-		end
-		return math.floor(number / factor) * factor
-	end
-
-	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			if get(db) then
-				db:set(false)
-
-				prop.Callback(get(percentageOf))
-
+	local newDropdown = new "Frame" {
+		Size = animate(function()
+			if get(open) then
+				return UDim2.new(1,0,0,138)
+			else 
+				return UDim2.new(1,0,0,40)
 			end
-		end
-	end)
-
-	local newSlider = new "Frame" {
-		Size = UDim2.new(1,0,0,40),
+		end,50,1),
 		BackgroundColor3 = config.secondaryBackground,
 		Parent = prop.Parent,
 		Name = prop.Name,
 		ClipsDescendants = true,
-
-		[onevent "MouseEnter"] = function()
-			mouseEntered:set(true)
-		end,
-		[onevent "MouseLeave"] = function()
-			mouseEntered:set(false)
-		end,
 
 		[children] = {
 			{
@@ -1159,7 +1473,15 @@ return function(prop)
 					AnchorPoint = Vector2.new(0.5,0),
 					Position = UDim2.fromScale(0.5,0),
 					BackgroundColor3 = prop.tabColor,
-					BackgroundTransparency = 0.85,
+					BackgroundTransparency = animate(function()
+
+						if get(down) then
+							return 0.95
+						else
+							return 0.85
+						end
+
+					end,50,1),
 
 					[children] = {
 						new "UICorner" {
@@ -1176,7 +1498,15 @@ return function(prop)
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					Text = prop.Name,
-					TextTransparency = 0,
+					TextTransparency = animate(function()
+
+						if get(down) then
+							return 0.35
+						else
+							return 0
+						end
+
+					end,50,1),
 					TextColor3 = config.text,
 
 					[children] = {
@@ -1184,137 +1514,170 @@ return function(prop)
 							PaddingLeft = UDim.new(0,10)
 						},
 					}
+				},
+				new "ImageLabel" {
+					Name = "icon",
+					AnchorPoint = Vector2.new(1,0),
+					Position = UDim2.new(1,-5,0,6),
+					Size = UDim2.fromOffset(28,28),
+					BackgroundTransparency = 1,
+					Image = "rbxassetid://15555233897", -- rbxassetid://15555233897
+					ImageColor3 = config.image
 				}
 			},
-			new "CanvasGroup" {
-				AnchorPoint = Vector2.new(1,0.5),
-				Size = animate(function()
-					if get(mouseEntered) then
-						return UDim2.fromOffset(180,16)
-					else
-						return UDim2.fromOffset(180,4)
-					end
-				end,40,1),
-				Position = UDim2.new(1,-10,0.5,0),
-				BackgroundColor3 = config.image,
-
-				[children] = {
-					new "UICorner" {
-						CornerRadius = animate(function()
-							if get(mouseEntered) then
-								return UDim.new(0,4)
-							else
-								return UDim.new(0,6)
-							end
-						end,40,1),
-					},
-					new "TextButton" {
-						AnchorPoint = Vector2.new(0.5,0.5),
-						Size = UDim2.fromScale(1,1),
-						Position = UDim2.fromScale(0.5,0.5),
-						BackgroundTransparency = 1,
-
-						[onevent "MouseButton1Down"] = function() 
-							db:set(true)
-						end,
-
-						[ref] = buttonRef,
-						[children] = {
-							new "Frame" {
-								AnchorPoint = Vector2.new(0,0.5),
-								Size = animate(function()
-									return UDim2.fromScale(get(percentage),1)
-								end,60,1),
-								Position = UDim2.fromScale(0,0.5),
-								BackgroundColor3 = prop.tabColor,
-
-								[ref] = sliderRef,
-								[onevent "Changed"] = function() 
-									local c = get(sliderRef).Size.X.Scale
-									local pos = ((max - min) * c) + min
-									local pos2 = math.round(pos)
-									percentageOf:set(pos2)
-								end
-							}
-						}
-					},
-				}
-			},
-			new "TextLabel" {
-				AnchorPoint = Vector2.new(1,0.5),
-				Size = UDim2.fromOffset(20,14),
-				Position = UDim2.new(1,-195,0.5,0),
+			new "TextButton" {
+				Size = UDim2.new(1,0,0,40),
+				Text = "",
 				BackgroundTransparency = 1,
-				Text = computed(function()
-					return tostring(get(percentageOf))
-				end),
-				TextColor3 = config.text,
-				Font = Enum.Font.Gotham,
-				TextSize = 14,
-				TextXAlignment = Enum.TextXAlignment.Right,
-				TextScaled = true
+				AnchorPoint = Vector2.new(0.5,0),
+				Position = UDim2.fromScale(0.5,0),
+
+
+				[onevent "MouseButton1Down"] = function()
+					down:set(true)
+				end,
+				[onevent "MouseButton1Up"] = function()
+					down:set(false)
+				end,
+				[onevent "MouseLeave"] = function()
+					down:set(false)
+				end,
+				[onevent "MouseButton1Click"] = function()
+					open:set(not get(open))
+				end,
+			},
+			new "ScrollingFrame" {
+				Name = "Items",
+				Size = UDim2.new(1,0,0,94),
+				BackgroundTransparency = 1,
+				ScrollBarThickness = 2,
+				Position = UDim2.new(0.5,0,0,40),
+				AnchorPoint = Vector2.new(0.5,0),
+				ScrollBarImageColor3 = prop.tabColor,
+				CanvasSize = UDim2.new(0,0,0,0),
+				AutomaticCanvasSize = Enum.AutomaticSize.Y,
+
+				[ref] = itemsRef,
+				[children] = {
+					new "UIListLayout" {
+						Padding = UDim.new(0,2),
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						SortOrder = Enum.SortOrder.LayoutOrder
+					}
+				}
 			}
 		}
 	}
-	task.spawn(function()
-		RunService.RenderStepped:Connect(function()
-			if get(db) then
-				local mousePositon = UserInputService:GetMouseLocation().X
-				local frameSizeX = get(buttonRef).AbsoluteSize.X
-				local framePositionX = get(buttonRef).AbsolutePosition.X
-				local newPercent = snap((mousePositon - framePositionX) / frameSizeX,step)
-				newPercent = math.clamp(math.round(newPercent * 100) / 100,0,1)
-				percentage:set(newPercent)
+	computed(function()
+		if newDropdown:FindFirstChild("Items", true) then
+			for _,old in ipairs(newDropdown:FindFirstChild("Items", true):GetChildren()) do
+				if old:IsA("TextButton") then
+					old:Destroy()
+				end
 			end
-		end)
+		end
+		for _,item in ipairs(get(itemTable)) do
+
+			local hover = value(false)
+			local selected = value(false)
+
+			new "TextButton" {
+				Name = item,
+				Parent = get(itemsRef),
+				BackgroundTransparency = animate(function()
+
+					if get(hover) then
+						return 0.95
+					else
+						return 1
+					end
+
+				end,50,1),
+				BackgroundColor3 = config.image,
+				Size = UDim2.new(0.95,0,0,30),
+
+				[onevent "MouseEnter"] = function()
+					hover:set(true)
+				end,
+				[onevent "MouseLeave"] = function()
+					hover:set(false)
+				end,
+
+				[onevent "MouseButton1Click"] = function()
+					if get(multiselect) then
+						if get(selected) then
+							selected:set(false)
+							table.remove(multiTable,table.find(multiTable,item))
+						else
+							selected:set(true)
+							table.insert(multiTable,item)
+						end
+						prop.Callback(multiTable)
+					else
+						open:set(false)
+						prop.Callback(item)
+					end
+				end,
+
+				[children] = {
+					new "UICorner" {CornerRadius = UDim.new(0,6)},
+					new "TextLabel" {
+						Text = item,
+						Size = UDim2.new(1,0,0,12),
+						BackgroundTransparency = 1,
+						Position = UDim2.fromScale(0.5,0.5),
+						AnchorPoint = Vector2.new(0.5,0.5),
+						TextColor3 = animate(function() 
+							if get(multiselect) then
+								if get(selected) and not get(hover) then
+									return Color3.fromRGB(85, 220, 135)
+								elseif get(selected) and get(hover) then
+									return Color3.fromRGB(190, 100, 105)
+								else
+									return config.text
+								end
+							else
+								return config.text
+							end
+						end,30,1),
+						Font = Enum.Font.Gotham,
+						TextSize = 12,
+						TextXAlignment = Enum.TextXAlignment.Left,
+
+						[children] = {
+							new "UIPadding" {PaddingLeft = UDim.new(0,20)},
+						}
+					}
+				}
+			}
+		end
 	end)
 
 	function returnFunctions:Remove()
-		newSlider:Destroy()
+		newDropdown:Destroy()
 	end
-	function returnFunctions:SetValue(newValue)
-		if typeof(newValue) == "number" and (newValue <= max) and (newValue >= min) then
-			local tmpVal = newValue - min
-			tmpVal = tmpVal / (max - min)
-			percentage:set(tmpVal)
-			percentageOf:set(newValue)
-			prop.Callback(get(percentageOf))
-		elseif typeof(newValue) ~= "number" then
-			error("you didnt give "..prop.Name.." a number for SetValue!")
+	function returnFunctions:SetItems(newTable)
+		if typeof(newTable) == "table" then
+			itemTable:set(newTable)
 		else
-			error("your SetValue for "..prop.Name.." is great or smaller than the maximum or minimum!\nMaximum: "..tostring(max).."\nMinimum: "..tostring(min).."\nAttempted Value: "..tostring(newValue))
+			error("you didnt give "..prop.Name.." a table for SetItems!")
 		end
 	end
 
 	return returnFunctions
 end
-
---[[
-local knownNumber = newValue
-local totalDistance = Maximum-Minimum
-local percentOf = ...
-local outOf = 100
-
-(knownNumber/totalDistance) = x
-]]
 end)() end,
-    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)--!strict
---[[
-    Returns true if A and B are 'similar' - i.e. any user of A would not need
-    to recompute if it changed to B.
-]]
-
-local function isSimilar(a: any, b: any): boolean
-    -- HACK: because tables are mutable data structures, don't make assumptions
-    -- about similarity from equality for now (see issue #44)
-    if typeof(a) == "table" then
-        return false
-    else
-        return a == b
-    end
-end
-
-return isSimilar
+    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)return {
+	tab = Color3.fromHex("#a49ae6"),
+	background = Color3.fromRGB(40, 44, 50),
+	secondaryBackground = Color3.fromRGB(49, 56, 66),
+	tertiaryBackground = Color3.fromRGB(57, 63, 75),
+	text = Color3.fromRGB(220,221,225),
+	image = Color3.fromRGB(220,221,225),
+	stroke = Color3.fromRGB(220,221,225),
+	placeholder = Color3.fromRGB(165,166,169),
+	close = Color3.fromRGB(190, 100, 105)
+}
 end)() end,
     [54] = function()local wax,script,require=ImportGlobals(54)local ImportGlobals return (function(...)--!strict
 
@@ -1620,26 +1983,152 @@ end
 
 return Computed
 end)() end,
-    [24] = function()local wax,script,require=ImportGlobals(24)local ImportGlobals return (function(...)--!strict
+    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)--!strict
 
 --[[
-	A special key for property tables, which adds user-specified tasks to be run
-	when the instance is destroyed.
+	Stores common type information used internally.
+
+	These types may be used internally so Fusion code can type-check, but
+	should never be exposed to public users, as these definitions are fair game
+	for breaking changes.
 ]]
 
-local Package = script.Parent.Parent
+local Package = script.Parent
 local PubTypes = require(Package.PubTypes)
 
-local Cleanup = {}
-Cleanup.type = "SpecialKey"
-Cleanup.kind = "Cleanup"
-Cleanup.stage = "observer"
+type Set<T> = {[T]: any}
 
-function Cleanup:apply(userTask: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
-	table.insert(cleanupTasks, userTask)
-end
+--[[
+	General use types
+]]
 
-return Cleanup
+-- A symbol that represents the absence of a value.
+export type None = PubTypes.Symbol & {
+	-- name: "None" (add this when Luau supports singleton types)
+}
+
+-- Stores useful information about Luau errors.
+export type Error = {
+	type: string, -- replace with "Error" when Luau supports singleton types
+	raw: string,
+	message: string,
+	trace: string
+}
+
+--[[
+	Specific reactive graph types
+]]
+
+-- A state object whose value can be set at any time by the user.
+export type State<T> = PubTypes.Value<T> & {
+	_value: T
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type Computed<T> = PubTypes.Computed<T> & {
+	_oldDependencySet: Set<PubTypes.Dependency>,
+	_callback: () -> T,
+	_value: T
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type ForPairs<KI, VI, KO, VO, M> = PubTypes.ForPairs<KO, VO> & {
+	_oldDependencySet: Set<PubTypes.Dependency>,
+	_processor: (KI, VI) -> (KO, VO),
+	_destructor: (VO, M?) -> (),
+	_inputIsState: boolean,
+	_inputTable: PubTypes.CanBeState<{ [KI]: VI }>,
+	_oldInputTable: { [KI]: VI },
+	_outputTable: { [KO]: VO },
+	_oldOutputTable: { [KO]: VO },
+	_keyIOMap: { [KI]: KO },
+	_meta: { [KO]: M? },
+	_keyData: {
+		[KI]: {
+			dependencySet: Set<PubTypes.Dependency>,
+			oldDependencySet: Set<PubTypes.Dependency>,
+			dependencyValues: { [PubTypes.Dependency]: any },
+		},
+	},
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type ForKeys<KI, KO, M> = PubTypes.ForKeys<KO, any> & {
+	_oldDependencySet: Set<PubTypes.Dependency>,
+	_processor: (KI) -> (KO),
+	_destructor: (KO, M?) -> (),
+	_inputIsState: boolean,
+	_inputTable: PubTypes.CanBeState<{ [KI]: KO }>,
+	_oldInputTable: { [KI]: KO },
+	_outputTable: { [KO]: any },
+	_keyOIMap: { [KO]: KI },
+	_meta: { [KO]: M? },
+	_keyData: {
+		[KI]: {
+			dependencySet: Set<PubTypes.Dependency>,
+			oldDependencySet: Set<PubTypes.Dependency>,
+			dependencyValues: { [PubTypes.Dependency]: any },
+		},
+	},
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type ForValues<VI, VO, M> = PubTypes.ForValues<any, VO> & {
+	_oldDependencySet: Set<PubTypes.Dependency>,
+	_processor: (VI) -> (VO),
+	_destructor: (VO, M?) -> (),
+	_inputIsState: boolean,
+	_inputTable: PubTypes.CanBeState<{ [VI]: VO }>,
+	_outputTable: { [any]: VI },
+	_valueCache: { [VO]: any },
+	_oldValueCache: { [VO]: any },
+	_meta: { [VO]: M? },
+	_valueData: {
+		[VI]: {
+			dependencySet: Set<PubTypes.Dependency>,
+			oldDependencySet: Set<PubTypes.Dependency>,
+			dependencyValues: { [PubTypes.Dependency]: any },
+		},
+	},
+}
+
+-- A state object which follows another state object using tweens.
+export type Tween<T> = PubTypes.Tween<T> & {
+	_goalState: State<T>,
+	_tweenInfo: TweenInfo,
+	_prevValue: T,
+	_nextValue: T,
+	_currentValue: T,
+	_currentTweenInfo: TweenInfo,
+	_currentTweenDuration: number,
+	_currentTweenStartTime: number,
+	_currentlyAnimating: boolean
+}
+
+-- A state object which follows another state object using spring simulation.
+export type Spring<T> = PubTypes.Spring<T> & {
+	_speed: PubTypes.CanBeState<number>,
+	_speedIsState: boolean,
+	_lastSpeed: number,
+	_damping: PubTypes.CanBeState<number>,
+	_dampingIsState: boolean,
+	_lastDamping: number,
+	_goalState: State<T>,
+	_goalValue: T,
+	_currentType: string,
+	_currentValue: T,
+	_springPositions: {number},
+	_springGoals: {number},
+	_springVelocities: {number}
+}
+
+-- An object which can listen for updates on another state object.
+export type Observer = PubTypes.Observer & {
+	_changeListeners: Set<() -> ()>,
+	_numChangeListeners: number
+}
+
+return nil
 end)() end,
     [12] = function()local wax,script,require=ImportGlobals(12)local ImportGlobals return (function(...)--!strict
 
@@ -1726,6 +2215,758 @@ end
 
 return springCoefficients
 
+end)() end,
+    [37] = function()local wax,script,require=ImportGlobals(37)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Stores templates for different kinds of logging messages.
+]]
+
+return {
+	cannotAssignProperty = "The class type '%s' has no assignable property '%s'.",
+	cannotConnectChange = "The %s class doesn't have a property called '%s'.",
+	cannotConnectEvent = "The %s class doesn't have an event called '%s'.",
+	cannotCreateClass = "Can't create a new instance of class '%s'.",
+	computedCallbackError = "Computed callback error: ERROR_MESSAGE",
+	destructorNeededValue = "To save instances into Values, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
+	destructorNeededComputed = "To return instances from Computeds, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
+	multiReturnComputed = "Returning multiple values from Computeds is discouraged, as behaviour will change soon - see discussion #189 on GitHub.",
+	destructorNeededForKeys = "To return instances from ForKeys, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
+	destructorNeededForValues = "To return instances from ForValues, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
+	destructorNeededForPairs = "To return instances from ForPairs, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
+	duplicatePropertyKey = "",
+	forKeysProcessorError = "ForKeys callback error: ERROR_MESSAGE",
+	forKeysKeyCollision = "ForKeys should only write to output key '%s' once when processing key changes, but it wrote to it twice. Previously input key: '%s'; New input key: '%s'",
+	forKeysDestructorError = "ForKeys destructor error: ERROR_MESSAGE",
+	forPairsDestructorError = "ForPairs destructor error: ERROR_MESSAGE",
+	forPairsKeyCollision = "ForPairs should only write to output key '%s' once when processing key changes, but it wrote to it twice. Previous input pair: '[%s] = %s'; New input pair: '[%s] = %s'",
+	forPairsProcessorError = "ForPairs callback error: ERROR_MESSAGE",
+	forValuesProcessorError = "ForValues callback error: ERROR_MESSAGE",
+	forValuesDestructorError = "ForValues destructor error: ERROR_MESSAGE",
+	invalidChangeHandler = "The change handler for the '%s' property must be a function.",
+	invalidEventHandler = "The handler for the '%s' event must be a function.",
+	invalidPropertyType = "'%s.%s' expected a '%s' type, but got a '%s' type.",
+	invalidRefType = "Instance refs must be Value objects.",
+	invalidOutType = "[Out] properties must be given Value objects.",
+	invalidOutProperty = "The %s class doesn't have a property called '%s'.",
+	invalidSpringDamping = "The damping ratio for a spring must be >= 0. (damping was %.2f)",
+	invalidSpringSpeed = "The speed of a spring must be >= 0. (speed was %.2f)",
+	mistypedSpringDamping = "The damping ratio for a spring must be a number. (got a %s)",
+	mistypedSpringSpeed = "The speed of a spring must be a number. (got a %s)",
+	mistypedTweenInfo = "The tween info of a tween must be a TweenInfo. (got a %s)",
+	springTypeMismatch = "The type '%s' doesn't match the spring's type '%s'.",
+	strictReadError = "'%s' is not a valid member of '%s'.",
+	unknownMessage = "Unknown error: ERROR_MESSAGE",
+	unrecognisedChildType = "'%s' type children aren't accepted by `[Children]`.",
+	unrecognisedPropertyKey = "'%s' keys aren't accepted in property tables.",
+	unrecognisedPropertyStage = "'%s' isn't a valid stage for a special key to be applied at."
+}
+end)() end,
+    [34] = function()local wax,script,require=ImportGlobals(34)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Utility function to log a Fusion-specific error.
+]]
+
+local Package = script.Parent.Parent
+local Types = require(Package.Types)
+local messages = require(Package.Logging.messages)
+
+local function logError(messageID: string, errObj: Types.Error?, ...)
+	local formatString: string
+
+	if messages[messageID] ~= nil then
+		formatString = messages[messageID]
+	else
+		messageID = "unknownMessage"
+		formatString = messages[messageID]
+	end
+
+	local errorString
+	if errObj == nil then
+		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...)
+	else
+		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
+		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")\n---- Stack trace ----\n" .. errObj.trace, ...)
+	end
+
+	error(errorString:gsub("\n", "\n    "), 0)
+end
+
+return logError
+end)() end,
+    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+local get = require(script.Parent.Parent.utilities.get)
+local config = require(script.Parent.Parent.config)
+local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
+local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
+
+return function(prop)
+	local textValue = value(prop.Text)
+	
+	local returnFunctions = {}
+	
+	local newSection = new "Frame" {
+		Size = UDim2.new(1,0,0,30),
+		BackgroundTransparency = 1,
+		Parent = prop.Parent,
+		
+		[children] = {
+			new "TextLabel" {
+				Size = UDim2.new(1,0,0,30),
+				AnchorPoint = Vector2.new(0,0.5),
+				Position = UDim2.fromScale(0,0.5),
+				Text = computed(function() 
+					return get(textValue)
+				end),
+				BackgroundTransparency = 1,
+				TextScaled = true,
+				TextColor3 = config.text,
+				Font = Enum.Font.GothamMedium,
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				[children] = {
+					new "UITextSizeConstraint" {
+						MaxTextSize = 15,
+						MinTextSize = 1
+					},
+					new "UIPadding" {
+						PaddingLeft = UDim.new(0,5)
+					}
+				}
+			}
+		}
+	}
+
+	function returnFunctions:Remove()
+		newSection:Destroy()
+	end
+	function returnFunctions:SetText(newText)
+		if typeof(newText) == "string" then
+			textValue:set(newText)
+		else
+			error("you didnt give "..prop.Name.." a string for SetText!")
+		end
+	end
+
+	return returnFunctions
+end
+end)() end,
+    [35] = function()local wax,script,require=ImportGlobals(35)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Utility function to log a Fusion-specific error, without halting execution.
+]]
+
+local Package = script.Parent.Parent
+local Types = require(Package.Types)
+local messages = require(Package.Logging.messages)
+
+local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
+	local formatString: string
+
+	if messages[messageID] ~= nil then
+		formatString = messages[messageID]
+	else
+		messageID = "unknownMessage"
+		formatString = messages[messageID]
+	end
+
+	local errorString
+	if errObj == nil then
+		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...)
+	else
+		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
+		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")\n---- Stack trace ----\n" .. errObj.trace, ...)
+	end
+
+	task.spawn(function(...)
+		error(errorString:gsub("\n", "\n    "), 0)
+	end, ...)
+end
+
+return logErrorNonFatal
+end)() end,
+    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)--!strict
+
+--[[
+	An empty function. Often used as a destructor to indicate no destruction.
+]]
+
+local function doNothing(...: any)
+end
+
+return doNothing
+end)() end,
+    [18] = function()local wax,script,require=ImportGlobals(18)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Registers the creation of an object which can be used as a dependency.
+
+	This is used to make sure objects don't capture dependencies originating
+	from inside of themselves.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local sharedState = require(Package.Dependencies.sharedState)
+
+local initialisedStack = sharedState.initialisedStack
+
+local function initDependency(dependency: PubTypes.Dependency)
+	local initialisedStackSize = sharedState.initialisedStackSize
+
+	for index, initialisedSet in ipairs(initialisedStack) do
+		if index > initialisedStackSize then
+			return
+		end
+
+		initialisedSet[dependency] = true
+	end
+end
+
+return initDependency
+end)() end,
+    [36] = function()local wax,script,require=ImportGlobals(36)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Utility function to log a Fusion-specific warning.
+]]
+
+local Package = script.Parent.Parent
+local messages = require(Package.Logging.messages)
+
+local function logWarn(messageID, ...)
+	local formatString: string
+
+	if messages[messageID] ~= nil then
+		formatString = messages[messageID]
+	else
+		messageID = "unknownMessage"
+		formatString = messages[messageID]
+	end
+
+	warn(string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...))
+end
+
+return logWarn
+end)() end,
+    [23] = function()local wax,script,require=ImportGlobals(23)local ImportGlobals return (function(...)--!strict
+
+--[[
+	A special key for property tables, which parents any given descendants into
+	an instance.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local logWarn = require(Package.Logging.logWarn)
+local Observer = require(Package.State.Observer)
+local xtypeof = require(Package.Utility.xtypeof)
+
+type Set<T> = {[T]: boolean}
+
+-- Experimental flag: name children based on the key used in the [Children] table
+local EXPERIMENTAL_AUTO_NAMING = false
+
+local Children = {}
+Children.type = "SpecialKey"
+Children.kind = "Children"
+Children.stage = "descendants"
+
+function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+	local newParented: Set<Instance> = {}
+	local oldParented: Set<Instance> = {}
+
+	-- save disconnection functions for state object observers
+	local newDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
+	local oldDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
+
+	local updateQueued = false
+	local queueUpdate: () -> ()
+
+	-- Rescans this key's value to find new instances to parent and state objects
+	-- to observe for changes; then unparents instances no longer found and
+	-- disconnects observers for state objects no longer present.
+	local function updateChildren()
+		if not updateQueued then
+			return -- this update may have been canceled by destruction, etc.
+		end
+		updateQueued = false
+
+		oldParented, newParented = newParented, oldParented
+		oldDisconnects, newDisconnects = newDisconnects, oldDisconnects
+		table.clear(newParented)
+		table.clear(newDisconnects)
+
+		local function processChild(child: any, autoName: string?)
+			local kind = xtypeof(child)
+
+			if kind == "Instance" then
+				-- case 1; single instance
+
+				newParented[child] = true
+				if oldParented[child] == nil then
+					-- wasn't previously present
+
+					-- TODO: check for ancestry conflicts here
+					child.Parent = applyTo
+				else
+					-- previously here; we want to reuse, so remove from old
+					-- set so we don't encounter it during unparenting
+					oldParented[child] = nil
+				end
+
+				if EXPERIMENTAL_AUTO_NAMING and autoName ~= nil then
+					child.Name = autoName
+				end
+
+			elseif kind == "State" then
+				-- case 2; state object
+
+				local value = child:get(false)
+				-- allow nil to represent the absence of a child
+				if value ~= nil then
+					processChild(value, autoName)
+				end
+
+				local disconnect = oldDisconnects[child]
+				if disconnect == nil then
+					-- wasn't previously present
+					disconnect = Observer(child):onChange(queueUpdate)
+				else
+					-- previously here; we want to reuse, so remove from old
+					-- set so we don't encounter it during unparenting
+					oldDisconnects[child] = nil
+				end
+
+				newDisconnects[child] = disconnect
+
+			elseif kind == "table" then
+				-- case 3; table of objects
+
+				for key, subChild in pairs(child) do
+					local keyType = typeof(key)
+					local subAutoName: string? = nil
+
+					if keyType == "string" then
+						subAutoName = key
+					elseif keyType == "number" and autoName ~= nil then
+						subAutoName = autoName .. "_" .. key
+					end
+
+					processChild(subChild, subAutoName)
+				end
+
+			else
+				logWarn("unrecognisedChildType", kind)
+			end
+		end
+
+		if propValue ~= nil then
+			-- `propValue` is set to nil on cleanup, so we don't process children
+			-- in that case
+			processChild(propValue)
+		end
+
+		-- unparent any children that are no longer present
+		for oldInstance in pairs(oldParented) do
+			oldInstance.Parent = nil
+		end
+
+		-- disconnect observers which weren't reused
+		for oldState, disconnect in pairs(oldDisconnects) do
+			disconnect()
+		end
+	end
+
+	queueUpdate = function()
+		if not updateQueued then
+			updateQueued = true
+			task.defer(updateChildren)
+		end
+	end
+
+	table.insert(cleanupTasks, function()
+		propValue = nil
+		updateQueued = true
+		updateChildren()
+	end)
+
+	-- perform initial child parenting
+	updateQueued = true
+	updateChildren()
+end
+
+return Children :: PubTypes.SpecialKey
+end)() end,
+    [26] = function()local wax,script,require=ImportGlobals(26)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Constructs and returns a new instance, with options for setting properties,
+	event handlers and other attributes on the instance right away.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local defaultProps = require(Package.Instances.defaultProps)
+local applyInstanceProps = require(Package.Instances.applyInstanceProps)
+local logError= require(Package.Logging.logError)
+
+local function New(className: string)
+	return function(props: PubTypes.PropertyTable): Instance
+		local ok, instance = pcall(Instance.new, className)
+
+		if not ok then
+			logError("cannotCreateClass", nil, className)
+		end
+
+		local classDefaults = defaultProps[className]
+		if classDefaults ~= nil then
+			for defaultProp, defaultValue in pairs(classDefaults) do
+				instance[defaultProp] = defaultValue
+			end
+		end
+
+		applyInstanceProps(props, instance)
+
+		return instance
+	end
+end
+
+return New
+end)() end,
+    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Cleans up the tasks passed in as the arguments.
+	A task can be any of the following:
+
+	- an Instance - will be destroyed
+	- an RBXScriptConnection - will be disconnected
+	- a function - will be run
+	- a table with a `Destroy` or `destroy` function - will be called
+	- an array - `cleanup` will be called on each item
+]]
+
+local function cleanupOne(task: any)
+	local taskType = typeof(task)
+
+	-- case 1: Instance
+	if taskType == "Instance" then
+		task:Destroy()
+
+	-- case 2: RBXScriptConnection
+	elseif taskType == "RBXScriptConnection" then
+		task:Disconnect()
+
+	-- case 3: callback
+	elseif taskType == "function" then
+		task()
+
+	elseif taskType == "table" then
+		-- case 4: destroy() function
+		if typeof(task.destroy) == "function" then
+			task:destroy()
+
+		-- case 5: Destroy() function
+		elseif typeof(task.Destroy) == "function" then
+			task:Destroy()
+
+		-- case 6: array of tasks
+		elseif task[1] ~= nil then
+			for _, subtask in ipairs(task) do
+				cleanupOne(subtask)
+			end
+		end
+	end
+end
+
+local function cleanup(...: any)
+	for index = 1, select("#", ...) do
+		cleanupOne(select(index, ...))
+	end
+end
+
+return cleanup
+end)() end,
+    [25] = function()local wax,script,require=ImportGlobals(25)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Processes and returns an existing instance, with options for setting
+	properties, event handlers and other attributes on the instance.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local applyInstanceProps = require(Package.Instances.applyInstanceProps)
+
+local function Hydrate(target: Instance)
+	return function(props: PubTypes.PropertyTable): Instance
+		applyInstanceProps(props, target)
+		return target
+	end
+end
+
+return Hydrate
+end)() end,
+    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)return function(value, dependency)
+	if typeof(value) == "table" and value.type == "State" then
+		return value:get(dependency)
+	end
+	return value
+end
+end)() end,
+    [47] = function()local wax,script,require=ImportGlobals(47)local ImportGlobals return (function(...)--!strict
+
+--[[
+	A common interface for accessing the values of state objects or constants.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local xtypeof = require(Package.Utility.xtypeof)
+
+local function unwrap<T>(item: PubTypes.CanBeState<T>, useDependency: boolean?): T
+	return if xtypeof(item) == "State" then (item :: PubTypes.StateObject<T>):get(useDependency) else (item :: T)
+end
+
+return unwrap
+end)() end,
+    [30] = function()local wax,script,require=ImportGlobals(30)local ImportGlobals return (function(...)--!strict
+
+--[[
+	A special key for property tables, which stores a reference to the instance
+	in a user-provided Value object.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local logError = require(Package.Logging.logError)
+local xtypeof = require(Package.Utility.xtypeof)
+
+local Ref = {}
+Ref.type = "SpecialKey"
+Ref.kind = "Ref"
+Ref.stage = "observer"
+
+function Ref:apply(refState: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+	if xtypeof(refState) ~= "State" or refState.kind ~= "Value" then
+		logError("invalidRefType")
+	else
+		refState:set(applyTo)
+		table.insert(cleanupTasks, function()
+			refState:set(nil)
+		end)
+	end
+end
+
+return Ref
+end)() end,
+    [24] = function()local wax,script,require=ImportGlobals(24)local ImportGlobals return (function(...)--!strict
+
+--[[
+	A special key for property tables, which adds user-specified tasks to be run
+	when the instance is destroyed.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+
+local Cleanup = {}
+Cleanup.type = "SpecialKey"
+Cleanup.kind = "Cleanup"
+Cleanup.stage = "observer"
+
+function Cleanup:apply(userTask: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+	table.insert(cleanupTasks, userTask)
+end
+
+return Cleanup
+end)() end,
+    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
+local white = Color3.new(1, 1, 1)
+
+return function(color: Color3, BorW: string, lerpAmount: number) 
+	local check = string.lower(BorW)
+	if BorW == "black" then
+		return color:Lerp(black, lerpAmount)
+	elseif BorW == "white" then
+		return color:Lerp(white, lerpAmount)
+	else
+		return error("hey its not white or black")
+	end
+end
+end)() end,
+    [9] = function()local wax,script,require=ImportGlobals(9)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Given a `tweenInfo` and `currentTime`, returns a ratio which can be used to
+	tween between two values over time.
+]]
+
+local TweenService = game:GetService("TweenService")
+
+local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
+	local delay = tweenInfo.DelayTime
+	local duration = tweenInfo.Time
+	local reverses = tweenInfo.Reverses
+	local numCycles = 1 + tweenInfo.RepeatCount
+	local easeStyle = tweenInfo.EasingStyle
+	local easeDirection = tweenInfo.EasingDirection
+
+	local cycleDuration = delay + duration
+	if reverses then
+		cycleDuration += duration
+	end
+
+	if currentTime >= cycleDuration * numCycles then
+		return 1
+	end
+
+	local cycleTime = currentTime % cycleDuration
+
+	if cycleTime <= delay then
+		return 0
+	end
+
+	local tweenProgress = (cycleTime - delay) / duration
+	if tweenProgress > 1 then
+		tweenProgress = 2 - tweenProgress
+	end
+
+	local ratio = TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
+	return ratio
+end
+
+return getTweenRatio
+end)() end,
+    [31] = function()local wax,script,require=ImportGlobals(31)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Applies a table of properties to an instance, including binding to any
+	given state objects and applying any special keys.
+
+	No strong reference is kept by default - special keys should take care not
+	to accidentally hold strong references to instances forever.
+
+	If a key is used twice, an error will be thrown. This is done to avoid
+	double assignments or double bindings. However, some special keys may want
+	to enable such assignments - in which case unique keys should be used for
+	each occurence.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local cleanup = require(Package.Utility.cleanup)
+local xtypeof = require(Package.Utility.xtypeof)
+local logError = require(Package.Logging.logError)
+local Observer = require(Package.State.Observer)
+
+local function setProperty_unsafe(instance: Instance, property: string, value: any)
+	(instance :: any)[property] = value
+end
+
+local function testPropertyAssignable(instance: Instance, property: string)
+	(instance :: any)[property] = (instance :: any)[property]
+end
+
+local function setProperty(instance: Instance, property: string, value: any)
+	if not pcall(setProperty_unsafe, instance, property, value) then
+		if not pcall(testPropertyAssignable, instance, property) then
+			if instance == nil then
+				-- reference has been lost
+				logError("setPropertyNilRef", nil, property, tostring(value))
+			else
+				-- property is not assignable
+				logError("cannotAssignProperty", nil, instance.ClassName, property)
+			end
+		else
+			-- property is assignable, but this specific assignment failed
+			-- this typically implies the wrong type was received
+			local givenType = typeof(value)
+			local expectedType = typeof((instance :: any)[property])
+			logError("invalidPropertyType", nil, instance.ClassName, property, expectedType, givenType)
+		end
+	end
+end
+
+local function bindProperty(instance: Instance, property: string, value: PubTypes.CanBeState<any>, cleanupTasks: {PubTypes.Task})
+	if xtypeof(value) == "State" then
+		-- value is a state object - assign and observe for changes
+		local willUpdate = false
+		local function updateLater()
+			if not willUpdate then
+				willUpdate = true
+				task.defer(function()
+					willUpdate = false
+					setProperty(instance, property, value:get(false))
+				end)
+			end
+		end
+
+		setProperty(instance, property, value:get(false))
+		table.insert(cleanupTasks, Observer(value :: any):onChange(updateLater))
+	else
+		-- value is a constant - assign once only
+		setProperty(instance, property, value)
+	end
+end
+
+local function applyInstanceProps(props: PubTypes.PropertyTable, applyTo: Instance)
+	local specialKeys = {
+		self = {} :: {[PubTypes.SpecialKey]: any},
+		descendants = {} :: {[PubTypes.SpecialKey]: any},
+		ancestor = {} :: {[PubTypes.SpecialKey]: any},
+		observer = {} :: {[PubTypes.SpecialKey]: any}
+	}
+	local cleanupTasks = {}
+
+	for key, value in pairs(props) do
+		local keyType = xtypeof(key)
+
+		if keyType == "string" then
+			if key ~= "Parent" then
+				bindProperty(applyTo, key :: string, value, cleanupTasks)
+			end
+		elseif keyType == "SpecialKey" then
+			local stage = (key :: PubTypes.SpecialKey).stage
+			local keys = specialKeys[stage]
+			if keys == nil then
+				logError("unrecognisedPropertyStage", nil, stage)
+			else
+				keys[key] = value
+			end
+		else
+			-- we don't recognise what this key is supposed to be
+			logError("unrecognisedPropertyKey", nil, xtypeof(key))
+		end
+	end
+
+	for key, value in pairs(specialKeys.self) do
+		key:apply(value, applyTo, cleanupTasks)
+	end
+	for key, value in pairs(specialKeys.descendants) do
+		key:apply(value, applyTo, cleanupTasks)
+	end
+
+	if props.Parent ~= nil then
+		bindProperty(applyTo, "Parent", props.Parent, cleanupTasks)
+	end
+
+	for key, value in pairs(specialKeys.ancestor) do
+		key:apply(value, applyTo, cleanupTasks)
+	end
+	for key, value in pairs(specialKeys.observer) do
+		key:apply(value, applyTo, cleanupTasks)
+	end
+
+	applyTo.Destroying:Connect(function()
+		cleanup(cleanupTasks)
+	end)
+end
+
+return applyInstanceProps
 end)() end,
     [57] = function()local wax,script,require=ImportGlobals(57)local ImportGlobals return (function(...)-- This file was @generated by Tarmac. It is not intended for manual editing.
 local assets = {
@@ -2551,1240 +3792,6 @@ local assets = {
 return assets
 
 end)() end,
-    [39] = function()local wax,script,require=ImportGlobals(39)local ImportGlobals return (function(...)--!strict
-
---[[
-	Stores common public-facing type information for Fusion APIs.
-]]
-
-type Set<T> = {[T]: any}
-
---[[
-	General use types
-]]
-
--- A unique symbolic value.
-export type Symbol = {
-	type: string, -- replace with "Symbol" when Luau supports singleton types
-	name: string
-}
-
--- Types that can be expressed as vectors of numbers, and so can be animated.
-export type Animatable =
-	number |
-	CFrame |
-	Color3 |
-	ColorSequenceKeypoint |
-	DateTime |
-	NumberRange |
-	NumberSequenceKeypoint |
-	PhysicalProperties |
-	Ray |
-	Rect |
-	Region3 |
-	Region3int16 |
-	UDim |
-	UDim2 |
-	Vector2 |
-	Vector2int16 |
-	Vector3 |
-	Vector3int16
-
--- A task which can be accepted for cleanup.
-export type Task =
-	Instance |
-	RBXScriptConnection |
-	() -> () |
-	{destroy: (any) -> ()} |
-	{Destroy: (any) -> ()} |
-	{Task}
-
--- Script-readable version information.
-export type Version = {
-	major: number,
-	minor: number,
-	isRelease: boolean
-}
---[[
-	Generic reactive graph types
-]]
-
--- A graph object which can have dependents.
-export type Dependency = {
-	dependentSet: Set<Dependent>
-}
-
--- A graph object which can have dependencies.
-export type Dependent = {
-	update: (Dependent) -> boolean,
-	dependencySet: Set<Dependency>
-}
-
--- An object which stores a piece of reactive state.
-export type StateObject<T> = Dependency & {
-	type: string, -- replace with "State" when Luau supports singleton types
-	kind: string,
-	get: (StateObject<T>, asDependency: boolean?) -> T
-}
-
--- Either a constant value of type T, or a state object containing type T.
-export type CanBeState<T> = StateObject<T> | T
-
---[[
-	Specific reactive graph types
-]]
-
--- A state object whose value can be set at any time by the user.
-export type Value<T> = StateObject<T> & {
-	-- kind: "State" (add this when Luau supports singleton types)
- 	set: (Value<T>, newValue: any, force: boolean?) -> ()
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type Computed<T> = StateObject<T> & Dependent & {
-	-- kind: "Computed" (add this when Luau supports singleton types)
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type ForPairs<KO, VO> = StateObject<{ [KO]: VO }> & Dependent & {
-	-- kind: "ForPairs" (add this when Luau supports singleton types)
-}
--- A state object whose value is derived from other objects using a callback.
-export type ForKeys<KO, V> = StateObject<{ [KO]: V }> & Dependent & {
-	-- kind: "ForKeys" (add this when Luau supports singleton types)
-}
--- A state object whose value is derived from other objects using a callback.
-export type ForValues<K, VO> = StateObject<{ [K]: VO }> & Dependent & {
-	-- kind: "ForKeys" (add this when Luau supports singleton types)
-}
-
--- A state object which follows another state object using tweens.
-export type Tween<T> = StateObject<T> & Dependent & {
-	-- kind: "Tween" (add this when Luau supports singleton types)
-}
-
--- A state object which follows another state object using spring simulation.
-export type Spring<T> = StateObject<T> & Dependent & {
-	-- kind: "Spring" (add this when Luau supports singleton types)
-	-- Uncomment when ENABLE_PARAM_SETTERS is enabled
-	-- setPosition: (Spring<T>, newValue: Animatable) -> (),
-	-- setVelocity: (Spring<T>, newValue: Animatable) -> (),
-	-- addVelocity: (Spring<T>, deltaValue: Animatable) -> ()
-}
-
--- An object which can listen for updates on another state object.
-export type Observer = Dependent & {
-	-- kind: "Observer" (add this when Luau supports singleton types)
-  	onChange: (Observer, callback: () -> ()) -> (() -> ())
-}
-
---[[
-	Instance related types
-]]
-
--- Denotes children instances in an instance or component's property table.
-export type SpecialKey = {
-	type: string, -- replace with "SpecialKey" when Luau supports singleton types
-	kind: string,
-	stage: string, -- replace with "self" | "descendants" | "ancestor" | "observer" when Luau supports singleton types
-	apply: (SpecialKey, value: any, applyTo: Instance, cleanupTasks: {Task}) -> ()
-}
-
--- A collection of instances that may be parented to another instance.
-export type Children = Instance | StateObject<Children> | {[any]: Children}
-
--- A table that defines an instance's properties, handlers and children.
-export type PropertyTable = {[string | SpecialKey]: any}
-
-return nil
-end)() end,
-    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
-
-return function(prop)
-	local textValue = value(prop.Text)
-	
-	local returnFunctions = {}
-	
-	local newSection = new "Frame" {
-		Size = UDim2.new(1,0,0,30),
-		BackgroundTransparency = 1,
-		Parent = prop.Parent,
-		
-		[children] = {
-			new "TextLabel" {
-				Size = UDim2.new(1,0,0,30),
-				AnchorPoint = Vector2.new(0,0.5),
-				Position = UDim2.fromScale(0,0.5),
-				Text = computed(function() 
-					return get(textValue)
-				end),
-				BackgroundTransparency = 1,
-				TextScaled = true,
-				TextColor3 = config.text,
-				Font = Enum.Font.GothamMedium,
-				TextXAlignment = Enum.TextXAlignment.Left,
-
-				[children] = {
-					new "UITextSizeConstraint" {
-						MaxTextSize = 15,
-						MinTextSize = 1
-					},
-					new "UIPadding" {
-						PaddingLeft = UDim.new(0,5)
-					}
-				}
-			}
-		}
-	}
-
-	function returnFunctions:Remove()
-		newSection:Destroy()
-	end
-	function returnFunctions:SetText(newText)
-		if typeof(newText) == "string" then
-			textValue:set(newText)
-		else
-			error("you didnt give "..prop.Name.." a string for SetText!")
-		end
-	end
-
-	return returnFunctions
-end
-end)() end,
-    [10] = function()local wax,script,require=ImportGlobals(10)local ImportGlobals return (function(...)--!strict
-
---[[
-	Linearly interpolates the given animatable types by a ratio.
-	If the types are different or not animatable, then the first value will be
-	returned for ratios below 0.5, and the second value for 0.5 and above.
-
-	FIXME: This function uses a lot of redefinitions to suppress false positives
-	from the Luau typechecker - ideally these wouldn't be required
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Oklab = require(Package.Colour.Oklab)
-
-local function lerpType(from: any, to: any, ratio: number): any
-	local typeString = typeof(from)
-
-	if typeof(to) == typeString then
-		-- both types must match for interpolation to make sense
-		if typeString == "number" then
-			local to, from = to :: number, from :: number
-			return (to - from) * ratio + from
-
-		elseif typeString == "CFrame" then
-			local to, from = to :: CFrame, from :: CFrame
-			return from:Lerp(to, ratio)
-
-		elseif typeString == "Color3" then
-			local to, from = to :: Color3, from :: Color3
-			local fromLab = Oklab.to(from)
-			local toLab = Oklab.to(to)
-			return Oklab.from(
-				fromLab:Lerp(toLab, ratio),
-				false
-			)
-
-		elseif typeString == "ColorSequenceKeypoint" then
-			local to, from = to :: ColorSequenceKeypoint, from :: ColorSequenceKeypoint
-			local fromLab = Oklab.to(from.Value)
-			local toLab = Oklab.to(to.Value)
-			return ColorSequenceKeypoint.new(
-				(to.Time - from.Time) * ratio + from.Time,
-				Oklab.from(
-					fromLab:Lerp(toLab, ratio),
-					false
-				)
-			)
-
-		elseif typeString == "DateTime" then
-			local to, from = to :: DateTime, from :: DateTime
-			return DateTime.fromUnixTimestampMillis(
-				(to.UnixTimestampMillis - from.UnixTimestampMillis) * ratio + from.UnixTimestampMillis
-			)
-
-		elseif typeString == "NumberRange" then
-			local to, from = to :: NumberRange, from :: NumberRange
-			return NumberRange.new(
-				(to.Min - from.Min) * ratio + from.Min,
-				(to.Max - from.Max) * ratio + from.Max
-			)
-
-		elseif typeString == "NumberSequenceKeypoint" then
-			local to, from = to :: NumberSequenceKeypoint, from :: NumberSequenceKeypoint
-			return NumberSequenceKeypoint.new(
-				(to.Time - from.Time) * ratio + from.Time,
-				(to.Value - from.Value) * ratio + from.Value,
-				(to.Envelope - from.Envelope) * ratio + from.Envelope
-			)
-
-		elseif typeString == "PhysicalProperties" then
-			local to, from = to :: PhysicalProperties, from :: PhysicalProperties
-			return PhysicalProperties.new(
-				(to.Density - from.Density) * ratio + from.Density,
-				(to.Friction - from.Friction) * ratio + from.Friction,
-				(to.Elasticity - from.Elasticity) * ratio + from.Elasticity,
-				(to.FrictionWeight - from.FrictionWeight) * ratio + from.FrictionWeight,
-				(to.ElasticityWeight - from.ElasticityWeight) * ratio + from.ElasticityWeight
-			)
-
-		elseif typeString == "Ray" then
-			local to, from = to :: Ray, from :: Ray
-			return Ray.new(
-				from.Origin:Lerp(to.Origin, ratio),
-				from.Direction:Lerp(to.Direction, ratio)
-			)
-
-		elseif typeString == "Rect" then
-			local to, from = to :: Rect, from :: Rect
-			return Rect.new(
-				from.Min:Lerp(to.Min, ratio),
-				from.Max:Lerp(to.Max, ratio)
-			)
-
-		elseif typeString == "Region3" then
-			local to, from = to :: Region3, from :: Region3
-			-- FUTURE: support rotated Region3s if/when they become constructable
-			local position = from.CFrame.Position:Lerp(to.CFrame.Position, ratio)
-			local halfSize = from.Size:Lerp(to.Size, ratio) / 2
-			return Region3.new(position - halfSize, position + halfSize)
-
-		elseif typeString == "Region3int16" then
-			local to, from = to :: Region3int16, from :: Region3int16
-			return Region3int16.new(
-				Vector3int16.new(
-					(to.Min.X - from.Min.X) * ratio + from.Min.X,
-					(to.Min.Y - from.Min.Y) * ratio + from.Min.Y,
-					(to.Min.Z - from.Min.Z) * ratio + from.Min.Z
-				),
-				Vector3int16.new(
-					(to.Max.X - from.Max.X) * ratio + from.Max.X,
-					(to.Max.Y - from.Max.Y) * ratio + from.Max.Y,
-					(to.Max.Z - from.Max.Z) * ratio + from.Max.Z
-				)
-			)
-
-		elseif typeString == "UDim" then
-			local to, from = to :: UDim, from :: UDim
-			return UDim.new(
-				(to.Scale - from.Scale) * ratio + from.Scale,
-				(to.Offset - from.Offset) * ratio + from.Offset
-			)
-
-		elseif typeString == "UDim2" then
-			local to, from = to :: UDim2, from :: UDim2
-			return from:Lerp(to, ratio)
-
-		elseif typeString == "Vector2" then
-			local to, from = to :: Vector2, from :: Vector2
-			return from:Lerp(to, ratio)
-
-		elseif typeString == "Vector2int16" then
-			local to, from = to :: Vector2int16, from :: Vector2int16
-			return Vector2int16.new(
-				(to.X - from.X) * ratio + from.X,
-				(to.Y - from.Y) * ratio + from.Y
-			)
-
-		elseif typeString == "Vector3" then
-			local to, from = to :: Vector3, from :: Vector3
-			return from:Lerp(to, ratio)
-
-		elseif typeString == "Vector3int16" then
-			local to, from = to :: Vector3int16, from :: Vector3int16
-			return Vector3int16.new(
-				(to.X - from.X) * ratio + from.X,
-				(to.Y - from.Y) * ratio + from.Y,
-				(to.Z - from.Z) * ratio + from.Z
-			)
-		end
-	end
-
-	-- fallback case: the types are different or not animatable
-	if ratio < 0.5 then
-		return from
-	else
-		return to
-	end
-end
-
-return lerpType
-end)() end,
-    [52] = function()local wax,script,require=ImportGlobals(52)local ImportGlobals return (function(...)--!strict
-
---[[
-	An empty function. Often used as a destructor to indicate no destruction.
-]]
-
-local function doNothing(...: any)
-end
-
-return doNothing
-end)() end,
-    [18] = function()local wax,script,require=ImportGlobals(18)local ImportGlobals return (function(...)--!strict
-
---[[
-	Registers the creation of an object which can be used as a dependency.
-
-	This is used to make sure objects don't capture dependencies originating
-	from inside of themselves.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local sharedState = require(Package.Dependencies.sharedState)
-
-local initialisedStack = sharedState.initialisedStack
-
-local function initDependency(dependency: PubTypes.Dependency)
-	local initialisedStackSize = sharedState.initialisedStackSize
-
-	for index, initialisedSet in ipairs(initialisedStack) do
-		if index > initialisedStackSize then
-			return
-		end
-
-		initialisedSet[dependency] = true
-	end
-end
-
-return initDependency
-end)() end,
-    [7] = function()local wax,script,require=ImportGlobals(7)local ImportGlobals return (function(...)--!nonstrict
-
---[[
-	Constructs a new computed state object, which follows the value of another
-	state object using a tween.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
-local TweenScheduler = require(Package.Animation.TweenScheduler)
-local useDependency = require(Package.Dependencies.useDependency)
-local initDependency = require(Package.Dependencies.initDependency)
-local logError = require(Package.Logging.logError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local xtypeof = require(Package.Utility.xtypeof)
-
-local class = {}
-
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
-
---[[
-	Returns the current value of this Tween object.
-	The object will be registered as a dependency unless `asDependency` is false.
-]]
-function class:get(asDependency: boolean?): any
-	if asDependency ~= false then
-		useDependency(self)
-	end
-	return self._currentValue
-end
-
---[[
-	Called when the goal state changes value; this will initiate a new tween.
-	Returns false as the current value doesn't change right away.
-]]
-function class:update(): boolean
-	local goalValue = self._goalState:get(false)
-
-	-- if the goal hasn't changed, then this is a TweenInfo change.
-	-- in that case, if we're not currently animating, we can skip everything
-	if goalValue == self._nextValue and not self._currentlyAnimating then
-		return false
-	end
-
-	local tweenInfo = self._tweenInfo
-	if self._tweenInfoIsState then
-		tweenInfo = tweenInfo:get()
-	end
-
-	-- if we receive a bad TweenInfo, then error and stop the update
-	if typeof(tweenInfo) ~= "TweenInfo" then
-		logErrorNonFatal("mistypedTweenInfo", nil, typeof(tweenInfo))
-		return false
-	end
-
-	self._prevValue = self._currentValue
-	self._nextValue = goalValue
-
-	self._currentTweenStartTime = os.clock()
-	self._currentTweenInfo = tweenInfo
-
-	local tweenDuration = tweenInfo.DelayTime + tweenInfo.Time
-	if tweenInfo.Reverses then
-		tweenDuration += tweenInfo.Time
-	end
-	tweenDuration *= tweenInfo.RepeatCount + 1
-	self._currentTweenDuration = tweenDuration
-
-	-- start animating this tween
-	TweenScheduler.add(self)
-
-	return false
-end
-
-local function Tween<T>(
-	goalState: PubTypes.StateObject<PubTypes.Animatable>,
-	tweenInfo: PubTypes.CanBeState<TweenInfo>?
-): Types.Tween<T>
-	local currentValue = goalState:get(false)
-
-	-- apply defaults for tween info
-	if tweenInfo == nil then
-		tweenInfo = TweenInfo.new()
-	end
-
-	local dependencySet = {[goalState] = true}
-	local tweenInfoIsState = xtypeof(tweenInfo) == "State"
-
-	if tweenInfoIsState then
-		dependencySet[tweenInfo] = true
-	end
-
-	local startingTweenInfo = tweenInfo
-	if tweenInfoIsState then
-		startingTweenInfo = startingTweenInfo:get()
-	end
-
-	-- If we start with a bad TweenInfo, then we don't want to construct a Tween
-	if typeof(startingTweenInfo) ~= "TweenInfo" then
-		logError("mistypedTweenInfo", nil, typeof(startingTweenInfo))
-	end
-
-	local self = setmetatable({
-		type = "State",
-		kind = "Tween",
-		dependencySet = dependencySet,
-		-- if we held strong references to the dependents, then they wouldn't be
-		-- able to get garbage collected when they fall out of scope
-		dependentSet = setmetatable({}, WEAK_KEYS_METATABLE),
-		_goalState = goalState,
-		_tweenInfo = tweenInfo,
-		_tweenInfoIsState = tweenInfoIsState,
-
-		_prevValue = currentValue,
-		_nextValue = currentValue,
-		_currentValue = currentValue,
-
-		-- store current tween into separately from 'real' tween into, so it
-		-- isn't affected by :setTweenInfo() until next change
-		_currentTweenInfo = tweenInfo,
-		_currentTweenDuration = 0,
-		_currentTweenStartTime = 0,
-		_currentlyAnimating = false
-	}, CLASS_METATABLE)
-
-	initDependency(self)
-	-- add this object to the goal state's dependent set
-	goalState.dependentSet[self] = true
-
-	return self
-end
-
-return Tween
-end)() end,
-    [6] = function()local wax,script,require=ImportGlobals(6)local ImportGlobals return (function(...)--!strict
-
---[[
-	Manages batch updating of spring objects.
-]]
-
-local RunService = game:GetService("RunService")
-
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local packType = require(Package.Animation.packType)
-local springCoefficients = require(Package.Animation.springCoefficients)
-local updateAll = require(Package.Dependencies.updateAll)
-
-type Set<T> = {[T]: any}
-type Spring = Types.Spring<any>
-
-local SpringScheduler = {}
-
-local EPSILON = 0.0001
-local activeSprings: Set<Spring> = {}
-local lastUpdateTime = os.clock()
-
-function SpringScheduler.add(spring: Spring)
-	-- we don't necessarily want to use the most accurate time - here we snap to
-	-- the last update time so that springs started within the same frame have
-	-- identical time steps
-	spring._lastSchedule = lastUpdateTime
-	spring._startDisplacements = {}
-	spring._startVelocities = {}
-	for index, goal in ipairs(spring._springGoals) do
-		spring._startDisplacements[index] = spring._springPositions[index] - goal
-		spring._startVelocities[index] = spring._springVelocities[index]
-	end
-
-	activeSprings[spring] = true
-end
-
-function SpringScheduler.remove(spring: Spring)
-	activeSprings[spring] = nil
-end
-
-
-local function updateAllSprings()
-	local springsToSleep: Set<Spring> = {}
-	lastUpdateTime = os.clock()
-
-	for spring in pairs(activeSprings) do
-		local posPos, posVel, velPos, velVel = springCoefficients(lastUpdateTime - spring._lastSchedule, spring._currentDamping, spring._currentSpeed)
-
-		local positions = spring._springPositions
-		local velocities = spring._springVelocities
-		local startDisplacements = spring._startDisplacements
-		local startVelocities = spring._startVelocities
-		local isMoving = false
-
-		for index, goal in ipairs(spring._springGoals) do
-			local oldDisplacement = startDisplacements[index]
-			local oldVelocity = startVelocities[index]
-			local newDisplacement = oldDisplacement * posPos + oldVelocity * posVel
-			local newVelocity = oldDisplacement * velPos + oldVelocity * velVel
-
-			if math.abs(newDisplacement) > EPSILON or math.abs(newVelocity) > EPSILON then
-				isMoving = true
-			end
-
-			positions[index] = newDisplacement + goal
-			velocities[index] = newVelocity
-		end
-
-		if not isMoving then
-			springsToSleep[spring] = true
-		end
-	end
-
-	for spring in pairs(activeSprings) do
-		spring._currentValue = packType(spring._springPositions, spring._currentType)
-		updateAll(spring)
-	end
-
-	for spring in pairs(springsToSleep) do
-		activeSprings[spring] = nil
-	end
-end
-
-RunService:BindToRenderStep(
-	"__FusionSpringScheduler",
-	Enum.RenderPriority.First.Value,
-	updateAllSprings
-)
-
-return SpringScheduler
-end)() end,
-    [47] = function()local wax,script,require=ImportGlobals(47)local ImportGlobals return (function(...)--!strict
-
---[[
-	A common interface for accessing the values of state objects or constants.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local xtypeof = require(Package.Utility.xtypeof)
-
-local function unwrap<T>(item: PubTypes.CanBeState<T>, useDependency: boolean?): T
-	return if xtypeof(item) == "State" then (item :: PubTypes.StateObject<T>):get(useDependency) else (item :: T)
-end
-
-return unwrap
-end)() end,
-    [51] = function()local wax,script,require=ImportGlobals(51)local ImportGlobals return (function(...)--!strict
-
---[[
-	Cleans up the tasks passed in as the arguments.
-	A task can be any of the following:
-
-	- an Instance - will be destroyed
-	- an RBXScriptConnection - will be disconnected
-	- a function - will be run
-	- a table with a `Destroy` or `destroy` function - will be called
-	- an array - `cleanup` will be called on each item
-]]
-
-local function cleanupOne(task: any)
-	local taskType = typeof(task)
-
-	-- case 1: Instance
-	if taskType == "Instance" then
-		task:Destroy()
-
-	-- case 2: RBXScriptConnection
-	elseif taskType == "RBXScriptConnection" then
-		task:Disconnect()
-
-	-- case 3: callback
-	elseif taskType == "function" then
-		task()
-
-	elseif taskType == "table" then
-		-- case 4: destroy() function
-		if typeof(task.destroy) == "function" then
-			task:destroy()
-
-		-- case 5: Destroy() function
-		elseif typeof(task.Destroy) == "function" then
-			task:Destroy()
-
-		-- case 6: array of tasks
-		elseif task[1] ~= nil then
-			for _, subtask in ipairs(task) do
-				cleanupOne(subtask)
-			end
-		end
-	end
-end
-
-local function cleanup(...: any)
-	for index = 1, select("#", ...) do
-		cleanupOne(select(index, ...))
-	end
-end
-
-return cleanup
-end)() end,
-    [25] = function()local wax,script,require=ImportGlobals(25)local ImportGlobals return (function(...)--!strict
-
---[[
-	Processes and returns an existing instance, with options for setting
-	properties, event handlers and other attributes on the instance.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local applyInstanceProps = require(Package.Instances.applyInstanceProps)
-
-local function Hydrate(target: Instance)
-	return function(props: PubTypes.PropertyTable): Instance
-		applyInstanceProps(props, target)
-		return target
-	end
-end
-
-return Hydrate
-end)() end,
-    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)return function(value, dependency)
-	if typeof(value) == "table" and value.type == "State" then
-		return value:get(dependency)
-	end
-	return value
-end
-end)() end,
-    [5] = function()local wax,script,require=ImportGlobals(5)local ImportGlobals return (function(...)--!nonstrict
-
---[[
-	Constructs a new computed state object, which follows the value of another
-	state object using a spring simulation.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Types = require(Package.Types)
-local logError = require(Package.Logging.logError)
-local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
-local unpackType = require(Package.Animation.unpackType)
-local SpringScheduler = require(Package.Animation.SpringScheduler)
-local useDependency = require(Package.Dependencies.useDependency)
-local initDependency = require(Package.Dependencies.initDependency)
-local updateAll = require(Package.Dependencies.updateAll)
-local xtypeof = require(Package.Utility.xtypeof)
-local unwrap = require(Package.State.unwrap)
-
-local class = {}
-
-local CLASS_METATABLE = {__index = class}
-local WEAK_KEYS_METATABLE = {__mode = "k"}
-
---[[
-	Returns the current value of this Spring object.
-	The object will be registered as a dependency unless `asDependency` is false.
-]]
-function class:get(asDependency: boolean?): any
-	if asDependency ~= false then
-		useDependency(self)
-	end
-	return self._currentValue
-end
-
---[[
-	Sets the position of the internal springs, meaning the value of this
-	Spring will jump to the given value. This doesn't affect velocity.
-
-	If the type doesn't match the current type of the spring, an error will be
-	thrown.
-]]
-function class:setPosition(newValue: PubTypes.Animatable)
-	local newType = typeof(newValue)
-	if newType ~= self._currentType then
-		logError("springTypeMismatch", nil, newType, self._currentType)
-	end
-
-	self._springPositions = unpackType(newValue, newType)
-	self._currentValue = newValue
-	SpringScheduler.add(self)
-	updateAll(self)
-end
-
---[[
-	Sets the velocity of the internal springs, overwriting the existing velocity
-	of this Spring. This doesn't affect position.
-
-	If the type doesn't match the current type of the spring, an error will be
-	thrown.
-]]
-function class:setVelocity(newValue: PubTypes.Animatable)
-	local newType = typeof(newValue)
-	if newType ~= self._currentType then
-		logError("springTypeMismatch", nil, newType, self._currentType)
-	end
-
-	self._springVelocities = unpackType(newValue, newType)
-	SpringScheduler.add(self)
-end
-
---[[
-	Adds to the velocity of the internal springs, on top of the existing
-	velocity of this Spring. This doesn't affect position.
-
-	If the type doesn't match the current type of the spring, an error will be
-	thrown.
-]]
-function class:addVelocity(deltaValue: PubTypes.Animatable)
-	local deltaType = typeof(deltaValue)
-	if deltaType ~= self._currentType then
-		logError("springTypeMismatch", nil, deltaType, self._currentType)
-	end
-
-	local springDeltas = unpackType(deltaValue, deltaType)
-	for index, delta in ipairs(springDeltas) do
-		self._springVelocities[index] += delta
-	end
-	SpringScheduler.add(self)
-end
-
---[[
-	Called when the goal state changes value, or when the speed or damping has
-	changed.
-]]
-function class:update(): boolean
-	local goalValue = self._goalState:get(false)
-
-	-- figure out if this was a goal change or a speed/damping change
-	if goalValue == self._goalValue then
-		-- speed/damping change
-		local damping = unwrap(self._damping)
-		if typeof(damping) ~= "number" then
-			logErrorNonFatal("mistypedSpringDamping", nil, typeof(damping))
-		elseif damping < 0 then
-			logErrorNonFatal("invalidSpringDamping", nil, damping)
-		else
-			self._currentDamping = damping
-		end
-
-		local speed = unwrap(self._speed)
-		if typeof(speed) ~= "number" then
-			logErrorNonFatal("mistypedSpringSpeed", nil, typeof(speed))
-		elseif speed < 0 then
-			logErrorNonFatal("invalidSpringSpeed", nil, speed)
-		else
-			self._currentSpeed = speed
-		end
-
-		return false
-	else
-		-- goal change - reconfigure spring to target new goal
-		self._goalValue = goalValue
-
-		local oldType = self._currentType
-		local newType = typeof(goalValue)
-		self._currentType = newType
-
-		local springGoals = unpackType(goalValue, newType)
-		local numSprings = #springGoals
-		self._springGoals = springGoals
-
-		if newType ~= oldType then
-			-- if the type changed, snap to the new value and rebuild the
-			-- position and velocity tables
-			self._currentValue = self._goalValue
-
-			local springPositions = table.create(numSprings, 0)
-			local springVelocities = table.create(numSprings, 0)
-			for index, springGoal in ipairs(springGoals) do
-				springPositions[index] = springGoal
-			end
-			self._springPositions = springPositions
-			self._springVelocities = springVelocities
-
-			-- the spring may have been animating before, so stop that
-			SpringScheduler.remove(self)
-			return true
-
-			-- otherwise, the type hasn't changed, just the goal...
-		elseif numSprings == 0 then
-			-- if the type isn't animatable, snap to the new value
-			self._currentValue = self._goalValue
-			return true
-
-		else
-			-- if it's animatable, let it animate to the goal
-			SpringScheduler.add(self)
-			return false
-		end
-	end
-end
-
-local function Spring<T>(
-	goalState: PubTypes.Value<T>,
-	speed: PubTypes.CanBeState<number>?,
-	damping: PubTypes.CanBeState<number>?
-): Types.Spring<T>
-	-- apply defaults for speed and damping
-	if speed == nil then
-		speed = 10
-	end
-	if damping == nil then
-		damping = 1
-	end
-
-	local dependencySet = {[goalState] = true}
-	if xtypeof(speed) == "State" then
-		dependencySet[speed] = true
-	end
-	if xtypeof(damping) == "State" then
-		dependencySet[damping] = true
-	end
-
-	local self = setmetatable({
-		type = "State",
-		kind = "Spring",
-		dependencySet = dependencySet,
-		-- if we held strong references to the dependents, then they wouldn't be
-		-- able to get garbage collected when they fall out of scope
-		dependentSet = setmetatable({}, WEAK_KEYS_METATABLE),
-		_speed = speed,
-		_damping = damping,
-
-		_goalState = goalState,
-		_goalValue = nil,
-
-		_currentType = nil,
-		_currentValue = nil,
-		_currentSpeed = unwrap(speed),
-		_currentDamping = unwrap(damping),
-
-		_springPositions = nil,
-		_springGoals = nil,
-		_springVelocities = nil
-	}, CLASS_METATABLE)
-
-	initDependency(self)
-	-- add this object to the goal state's dependent set
-	goalState.dependentSet[self] = true
-	self:update()
-
-	return self
-end
-
-return Spring
-end)() end,
-    [30] = function()local wax,script,require=ImportGlobals(30)local ImportGlobals return (function(...)--!strict
-
---[[
-	A special key for property tables, which stores a reference to the instance
-	in a user-provided Value object.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
-local xtypeof = require(Package.Utility.xtypeof)
-
-local Ref = {}
-Ref.type = "SpecialKey"
-Ref.kind = "Ref"
-Ref.stage = "observer"
-
-function Ref:apply(refState: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
-	if xtypeof(refState) ~= "State" or refState.kind ~= "Value" then
-		logError("invalidRefType")
-	else
-		refState:set(applyTo)
-		table.insert(cleanupTasks, function()
-			refState:set(nil)
-		end)
-	end
-end
-
-return Ref
-end)() end,
-    [9] = function()local wax,script,require=ImportGlobals(9)local ImportGlobals return (function(...)--!strict
-
---[[
-	Given a `tweenInfo` and `currentTime`, returns a ratio which can be used to
-	tween between two values over time.
-]]
-
-local TweenService = game:GetService("TweenService")
-
-local function getTweenRatio(tweenInfo: TweenInfo, currentTime: number): number
-	local delay = tweenInfo.DelayTime
-	local duration = tweenInfo.Time
-	local reverses = tweenInfo.Reverses
-	local numCycles = 1 + tweenInfo.RepeatCount
-	local easeStyle = tweenInfo.EasingStyle
-	local easeDirection = tweenInfo.EasingDirection
-
-	local cycleDuration = delay + duration
-	if reverses then
-		cycleDuration += duration
-	end
-
-	if currentTime >= cycleDuration * numCycles then
-		return 1
-	end
-
-	local cycleTime = currentTime % cycleDuration
-
-	if cycleTime <= delay then
-		return 0
-	end
-
-	local tweenProgress = (cycleTime - delay) / duration
-	if tweenProgress > 1 then
-		tweenProgress = 2 - tweenProgress
-	end
-
-	local ratio = TweenService:GetValue(tweenProgress, easeStyle, easeDirection)
-	return ratio
-end
-
-return getTweenRatio
-end)() end,
-    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
-local white = Color3.new(1, 1, 1)
-
-return function(color: Color3, BorW: string, lerpAmount: number) 
-	local check = string.lower(BorW)
-	if BorW == "black" then
-		return color:Lerp(black, lerpAmount)
-	elseif BorW == "white" then
-		return color:Lerp(white, lerpAmount)
-	else
-		return error("hey its not white or black")
-	end
-end
-end)() end,
-    [34] = function()local wax,script,require=ImportGlobals(34)local ImportGlobals return (function(...)--!strict
-
---[[
-	Utility function to log a Fusion-specific error.
-]]
-
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local messages = require(Package.Logging.messages)
-
-local function logError(messageID: string, errObj: Types.Error?, ...)
-	local formatString: string
-
-	if messages[messageID] ~= nil then
-		formatString = messages[messageID]
-	else
-		messageID = "unknownMessage"
-		formatString = messages[messageID]
-	end
-
-	local errorString
-	if errObj == nil then
-		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...)
-	else
-		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
-		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")\n---- Stack trace ----\n" .. errObj.trace, ...)
-	end
-
-	error(errorString:gsub("\n", "\n    "), 0)
-end
-
-return logError
-end)() end,
-    [8] = function()local wax,script,require=ImportGlobals(8)local ImportGlobals return (function(...)--!strict
-
---[[
-	Manages batch updating of tween objects.
-]]
-
-local RunService = game:GetService("RunService")
-
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local lerpType = require(Package.Animation.lerpType)
-local getTweenRatio = require(Package.Animation.getTweenRatio)
-local updateAll = require(Package.Dependencies.updateAll)
-
-local TweenScheduler = {}
-
-type Set<T> = {[T]: any}
-type Tween = Types.Tween<any>
-
-local WEAK_KEYS_METATABLE = {__mode = "k"}
-
--- all the tweens currently being updated
-local allTweens: Set<Tween> = {}
-setmetatable(allTweens, WEAK_KEYS_METATABLE)
-
---[[
-	Adds a Tween to be updated every render step.
-]]
-function TweenScheduler.add(tween: Tween)
-	allTweens[tween] = true
-end
-
---[[
-	Removes a Tween from the scheduler.
-]]
-function TweenScheduler.remove(tween: Tween)
-	allTweens[tween] = nil
-end
-
---[[
-	Updates all Tween objects.
-]]
-local function updateAllTweens()
-	local now = os.clock()
-	-- FIXME: Typed Luau doesn't understand this loop yet
-	for tween: Tween in pairs(allTweens :: any) do
-		local currentTime = now - tween._currentTweenStartTime
-
-		if currentTime > tween._currentTweenDuration then
-			if tween._currentTweenInfo.Reverses then
-				tween._currentValue = tween._prevValue
-			else
-				tween._currentValue = tween._nextValue
-			end
-			tween._currentlyAnimating = false
-			updateAll(tween)
-			TweenScheduler.remove(tween)
-		else
-			local ratio = getTweenRatio(tween._currentTweenInfo, currentTime)
-			local currentValue = lerpType(tween._prevValue, tween._nextValue, ratio)
-			tween._currentValue = currentValue
-			tween._currentlyAnimating = true
-			updateAll(tween)
-		end
-	end
-end
-
-RunService:BindToRenderStep(
-	"__FusionTweenScheduler",
-	Enum.RenderPriority.First.Value,
-	updateAllTweens
-)
-
-return TweenScheduler
-end)() end,
-    [13] = function()local wax,script,require=ImportGlobals(13)local ImportGlobals return (function(...)--!strict
-
---[[
-	Unpacks an animatable type into an array of numbers.
-	If the type is not animatable, an empty array will be returned.
-
-	FIXME: This function uses a lot of redefinitions to suppress false positives
-	from the Luau typechecker - ideally these wouldn't be required
-
-	FUTURE: When Luau supports singleton types, those could be used in
-	conjunction with intersection types to make this function fully statically
-	type checkable.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local Oklab = require(Package.Colour.Oklab)
-
-local function unpackType(value: any, typeString: string): {number}
-	if typeString == "number" then
-		local value = value :: number
-		return {value}
-
-	elseif typeString == "CFrame" then
-		-- FUTURE: is there a better way of doing this? doing distance
-		-- calculations on `angle` may be incorrect
-		local axis, angle = value:ToAxisAngle()
-		return {value.X, value.Y, value.Z, axis.X, axis.Y, axis.Z, angle}
-
-	elseif typeString == "Color3" then
-		local lab = Oklab.to(value)
-		return {lab.X, lab.Y, lab.Z}
-
-	elseif typeString == "ColorSequenceKeypoint" then
-		local lab = Oklab.to(value.Value)
-		return {lab.X, lab.Y, lab.Z, value.Time}
-
-	elseif typeString == "DateTime" then
-		return {value.UnixTimestampMillis}
-
-	elseif typeString == "NumberRange" then
-		return {value.Min, value.Max}
-
-	elseif typeString == "NumberSequenceKeypoint" then
-		return {value.Value, value.Time, value.Envelope}
-
-	elseif typeString == "PhysicalProperties" then
-		return {value.Density, value.Friction, value.Elasticity, value.FrictionWeight, value.ElasticityWeight}
-
-	elseif typeString == "Ray" then
-		return {value.Origin.X, value.Origin.Y, value.Origin.Z, value.Direction.X, value.Direction.Y, value.Direction.Z}
-
-	elseif typeString == "Rect" then
-		return {value.Min.X, value.Min.Y, value.Max.X, value.Max.Y}
-
-	elseif typeString == "Region3" then
-		-- FUTURE: support rotated Region3s if/when they become constructable
-		return {
-			value.CFrame.X, value.CFrame.Y, value.CFrame.Z,
-			value.Size.X, value.Size.Y, value.Size.Z
-		}
-
-	elseif typeString == "Region3int16" then
-		return {value.Min.X, value.Min.Y, value.Min.Z, value.Max.X, value.Max.Y, value.Max.Z}
-
-	elseif typeString == "UDim" then
-		return {value.Scale, value.Offset}
-
-	elseif typeString == "UDim2" then
-		return {value.X.Scale, value.X.Offset, value.Y.Scale, value.Y.Offset}
-
-	elseif typeString == "Vector2" then
-		return {value.X, value.Y}
-
-	elseif typeString == "Vector2int16" then
-		return {value.X, value.Y}
-
-	elseif typeString == "Vector3" then
-		return {value.X, value.Y, value.Z}
-
-	elseif typeString == "Vector3int16" then
-		return {value.X, value.Y, value.Z}
-	else
-		return {}
-	end
-end
-
-return unpackType
-end)() end,
     [38] = function()local wax,script,require=ImportGlobals(38)local ImportGlobals return (function(...)--!strict
 
 --[[
@@ -3944,155 +3951,80 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [17] = function()local wax,script,require=ImportGlobals(17)local ImportGlobals return (function(...)--!strict
+    [8] = function()local wax,script,require=ImportGlobals(8)local ImportGlobals return (function(...)--!strict
 
 --[[
-	Calls the given callback, and stores any used external dependencies.
-	Arguments can be passed in after the callback.
-	If the callback completed successfully, returns true and the returned value,
-	otherwise returns false and the error thrown.
-	The callback shouldn't yield or run asynchronously.
-
-	NOTE: any calls to useDependency() inside the callback (even if inside any
-	nested captureDependencies() call) will not be included in the set, to avoid
-	self-dependencies.
+	Manages batch updating of tween objects.
 ]]
 
+local RunService = game:GetService("RunService")
+
 local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local parseError = require(Package.Logging.parseError)
-local sharedState = require(Package.Dependencies.sharedState)
+local Types = require(Package.Types)
+local lerpType = require(Package.Animation.lerpType)
+local getTweenRatio = require(Package.Animation.getTweenRatio)
+local updateAll = require(Package.Dependencies.updateAll)
+
+local TweenScheduler = {}
 
 type Set<T> = {[T]: any}
+type Tween = Types.Tween<any>
 
-local initialisedStack = sharedState.initialisedStack
-local initialisedStackCapacity = 0
+local WEAK_KEYS_METATABLE = {__mode = "k"}
 
-local function captureDependencies(
-	saveToSet: Set<PubTypes.Dependency>,
-	callback: (...any) -> any,
-	...
-): (boolean, any)
-
-	local prevDependencySet = sharedState.dependencySet
-	sharedState.dependencySet = saveToSet
-
-	sharedState.initialisedStackSize += 1
-	local initialisedStackSize = sharedState.initialisedStackSize
-
-	local initialisedSet
-	if initialisedStackSize > initialisedStackCapacity then
-		initialisedSet = {}
-		initialisedStack[initialisedStackSize] = initialisedSet
-		initialisedStackCapacity = initialisedStackSize
-	else
-		initialisedSet = initialisedStack[initialisedStackSize]
-		table.clear(initialisedSet)
-	end
-
-	local data = table.pack(xpcall(callback, parseError, ...))
-
-	sharedState.dependencySet = prevDependencySet
-	sharedState.initialisedStackSize -= 1
-
-	return table.unpack(data, 1, data.n)
-end
-
-return captureDependencies
-
-end)() end,
-    [26] = function()local wax,script,require=ImportGlobals(26)local ImportGlobals return (function(...)--!strict
+-- all the tweens currently being updated
+local allTweens: Set<Tween> = {}
+setmetatable(allTweens, WEAK_KEYS_METATABLE)
 
 --[[
-	Constructs and returns a new instance, with options for setting properties,
-	event handlers and other attributes on the instance right away.
+	Adds a Tween to be updated every render step.
 ]]
+function TweenScheduler.add(tween: Tween)
+	allTweens[tween] = true
+end
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local defaultProps = require(Package.Instances.defaultProps)
-local applyInstanceProps = require(Package.Instances.applyInstanceProps)
-local logError= require(Package.Logging.logError)
+--[[
+	Removes a Tween from the scheduler.
+]]
+function TweenScheduler.remove(tween: Tween)
+	allTweens[tween] = nil
+end
 
-local function New(className: string)
-	return function(props: PubTypes.PropertyTable): Instance
-		local ok, instance = pcall(Instance.new, className)
+--[[
+	Updates all Tween objects.
+]]
+local function updateAllTweens()
+	local now = os.clock()
+	-- FIXME: Typed Luau doesn't understand this loop yet
+	for tween: Tween in pairs(allTweens :: any) do
+		local currentTime = now - tween._currentTweenStartTime
 
-		if not ok then
-			logError("cannotCreateClass", nil, className)
-		end
-
-		local classDefaults = defaultProps[className]
-		if classDefaults ~= nil then
-			for defaultProp, defaultValue in pairs(classDefaults) do
-				instance[defaultProp] = defaultValue
+		if currentTime > tween._currentTweenDuration then
+			if tween._currentTweenInfo.Reverses then
+				tween._currentValue = tween._prevValue
+			else
+				tween._currentValue = tween._nextValue
 			end
-		end
-
-		applyInstanceProps(props, instance)
-
-		return instance
-	end
-end
-
-return New
-end)() end,
-    [28] = function()local wax,script,require=ImportGlobals(28)local ImportGlobals return (function(...)--!strict
-
---[[
-	Constructs special keys for property tables which connect event listeners to
-	an instance.
-]]
-
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logError = require(Package.Logging.logError)
-
-local function getProperty_unsafe(instance: Instance, property: string)
-	return (instance :: any)[property]
-end
-
-local function OnEvent(eventName: string): PubTypes.SpecialKey
-	local eventKey = {}
-	eventKey.type = "SpecialKey"
-	eventKey.kind = "OnEvent"
-	eventKey.stage = "observer"
-
-	function eventKey:apply(callback: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
-		local ok, event = pcall(getProperty_unsafe, applyTo, eventName)
-		if not ok or typeof(event) ~= "RBXScriptSignal" then
-			logError("cannotConnectEvent", nil, applyTo.ClassName, eventName)
-		elseif typeof(callback) ~= "function" then
-			logError("invalidEventHandler", nil, eventName)
+			tween._currentlyAnimating = false
+			updateAll(tween)
+			TweenScheduler.remove(tween)
 		else
-			table.insert(cleanupTasks, event:Connect(callback))
+			local ratio = getTweenRatio(tween._currentTweenInfo, currentTime)
+			local currentValue = lerpType(tween._prevValue, tween._nextValue, ratio)
+			tween._currentValue = currentValue
+			tween._currentlyAnimating = true
+			updateAll(tween)
 		end
 	end
-
-	return eventKey
 end
 
-return OnEvent
-end)() end,
-    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)--!strict
+RunService:BindToRenderStep(
+	"__FusionTweenScheduler",
+	Enum.RenderPriority.First.Value,
+	updateAllTweens
+)
 
---[[
-	Extended typeof, designed for identifying custom objects.
-	If given a table with a `type` string, returns that.
-	Otherwise, returns `typeof()` the argument.
-]]
-
-local function xtypeof(x: any)
-	local typeString = typeof(x)
-
-	if typeString == "table" and typeof(x.type) == "string" then
-		return x.type
-	else
-		return typeString
-	end
-end
-
-return xtypeof
+return TweenScheduler
 end)() end,
     [32] = function()local wax,script,require=ImportGlobals(32)local ImportGlobals return (function(...)--!strict
 
@@ -4203,6 +4135,120 @@ return {
 		BorderSizePixel = 0
 	}
 }
+
+end)() end,
+    [28] = function()local wax,script,require=ImportGlobals(28)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Constructs special keys for property tables which connect event listeners to
+	an instance.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local logError = require(Package.Logging.logError)
+
+local function getProperty_unsafe(instance: Instance, property: string)
+	return (instance :: any)[property]
+end
+
+local function OnEvent(eventName: string): PubTypes.SpecialKey
+	local eventKey = {}
+	eventKey.type = "SpecialKey"
+	eventKey.kind = "OnEvent"
+	eventKey.stage = "observer"
+
+	function eventKey:apply(callback: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
+		local ok, event = pcall(getProperty_unsafe, applyTo, eventName)
+		if not ok or typeof(event) ~= "RBXScriptSignal" then
+			logError("cannotConnectEvent", nil, applyTo.ClassName, eventName)
+		elseif typeof(callback) ~= "function" then
+			logError("invalidEventHandler", nil, eventName)
+		else
+			table.insert(cleanupTasks, event:Connect(callback))
+		end
+	end
+
+	return eventKey
+end
+
+return OnEvent
+end)() end,
+    [56] = function()local wax,script,require=ImportGlobals(56)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Extended typeof, designed for identifying custom objects.
+	If given a table with a `type` string, returns that.
+	Otherwise, returns `typeof()` the argument.
+]]
+
+local function xtypeof(x: any)
+	local typeString = typeof(x)
+
+	if typeString == "table" and typeof(x.type) == "string" then
+		return x.type
+	else
+		return typeString
+	end
+end
+
+return xtypeof
+end)() end,
+    [17] = function()local wax,script,require=ImportGlobals(17)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Calls the given callback, and stores any used external dependencies.
+	Arguments can be passed in after the callback.
+	If the callback completed successfully, returns true and the returned value,
+	otherwise returns false and the error thrown.
+	The callback shouldn't yield or run asynchronously.
+
+	NOTE: any calls to useDependency() inside the callback (even if inside any
+	nested captureDependencies() call) will not be included in the set, to avoid
+	self-dependencies.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local parseError = require(Package.Logging.parseError)
+local sharedState = require(Package.Dependencies.sharedState)
+
+type Set<T> = {[T]: any}
+
+local initialisedStack = sharedState.initialisedStack
+local initialisedStackCapacity = 0
+
+local function captureDependencies(
+	saveToSet: Set<PubTypes.Dependency>,
+	callback: (...any) -> any,
+	...
+): (boolean, any)
+
+	local prevDependencySet = sharedState.dependencySet
+	sharedState.dependencySet = saveToSet
+
+	sharedState.initialisedStackSize += 1
+	local initialisedStackSize = sharedState.initialisedStackSize
+
+	local initialisedSet
+	if initialisedStackSize > initialisedStackCapacity then
+		initialisedSet = {}
+		initialisedStack[initialisedStackSize] = initialisedSet
+		initialisedStackCapacity = initialisedStackSize
+	else
+		initialisedSet = initialisedStack[initialisedStackSize]
+		table.clear(initialisedSet)
+	end
+
+	local data = table.pack(xpcall(callback, parseError, ...))
+
+	sharedState.dependencySet = prevDependencySet
+	sharedState.initialisedStackSize -= 1
+
+	return table.unpack(data, 1, data.n)
+end
+
+return captureDependencies
 
 end)() end,
     [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
@@ -4321,295 +4367,323 @@ return {
 	initialisedStackSize = initialisedStackSize
 }
 end)() end,
-    [31] = function()local wax,script,require=ImportGlobals(31)local ImportGlobals return (function(...)--!strict
+    [7] = function()local wax,script,require=ImportGlobals(7)local ImportGlobals return (function(...)--!nonstrict
 
 --[[
-	Applies a table of properties to an instance, including binding to any
-	given state objects and applying any special keys.
-
-	No strong reference is kept by default - special keys should take care not
-	to accidentally hold strong references to instances forever.
-
-	If a key is used twice, an error will be thrown. This is done to avoid
-	double assignments or double bindings. However, some special keys may want
-	to enable such assignments - in which case unique keys should be used for
-	each occurence.
+	Constructs a new computed state object, which follows the value of another
+	state object using a tween.
 ]]
 
 local Package = script.Parent.Parent
 local PubTypes = require(Package.PubTypes)
-local cleanup = require(Package.Utility.cleanup)
-local xtypeof = require(Package.Utility.xtypeof)
+local Types = require(Package.Types)
+local TweenScheduler = require(Package.Animation.TweenScheduler)
+local useDependency = require(Package.Dependencies.useDependency)
+local initDependency = require(Package.Dependencies.initDependency)
 local logError = require(Package.Logging.logError)
-local Observer = require(Package.State.Observer)
+local logErrorNonFatal = require(Package.Logging.logErrorNonFatal)
+local xtypeof = require(Package.Utility.xtypeof)
 
-local function setProperty_unsafe(instance: Instance, property: string, value: any)
-	(instance :: any)[property] = value
-end
+local class = {}
 
-local function testPropertyAssignable(instance: Instance, property: string)
-	(instance :: any)[property] = (instance :: any)[property]
-end
-
-local function setProperty(instance: Instance, property: string, value: any)
-	if not pcall(setProperty_unsafe, instance, property, value) then
-		if not pcall(testPropertyAssignable, instance, property) then
-			if instance == nil then
-				-- reference has been lost
-				logError("setPropertyNilRef", nil, property, tostring(value))
-			else
-				-- property is not assignable
-				logError("cannotAssignProperty", nil, instance.ClassName, property)
-			end
-		else
-			-- property is assignable, but this specific assignment failed
-			-- this typically implies the wrong type was received
-			local givenType = typeof(value)
-			local expectedType = typeof((instance :: any)[property])
-			logError("invalidPropertyType", nil, instance.ClassName, property, expectedType, givenType)
-		end
-	end
-end
-
-local function bindProperty(instance: Instance, property: string, value: PubTypes.CanBeState<any>, cleanupTasks: {PubTypes.Task})
-	if xtypeof(value) == "State" then
-		-- value is a state object - assign and observe for changes
-		local willUpdate = false
-		local function updateLater()
-			if not willUpdate then
-				willUpdate = true
-				task.defer(function()
-					willUpdate = false
-					setProperty(instance, property, value:get(false))
-				end)
-			end
-		end
-
-		setProperty(instance, property, value:get(false))
-		table.insert(cleanupTasks, Observer(value :: any):onChange(updateLater))
-	else
-		-- value is a constant - assign once only
-		setProperty(instance, property, value)
-	end
-end
-
-local function applyInstanceProps(props: PubTypes.PropertyTable, applyTo: Instance)
-	local specialKeys = {
-		self = {} :: {[PubTypes.SpecialKey]: any},
-		descendants = {} :: {[PubTypes.SpecialKey]: any},
-		ancestor = {} :: {[PubTypes.SpecialKey]: any},
-		observer = {} :: {[PubTypes.SpecialKey]: any}
-	}
-	local cleanupTasks = {}
-
-	for key, value in pairs(props) do
-		local keyType = xtypeof(key)
-
-		if keyType == "string" then
-			if key ~= "Parent" then
-				bindProperty(applyTo, key :: string, value, cleanupTasks)
-			end
-		elseif keyType == "SpecialKey" then
-			local stage = (key :: PubTypes.SpecialKey).stage
-			local keys = specialKeys[stage]
-			if keys == nil then
-				logError("unrecognisedPropertyStage", nil, stage)
-			else
-				keys[key] = value
-			end
-		else
-			-- we don't recognise what this key is supposed to be
-			logError("unrecognisedPropertyKey", nil, xtypeof(key))
-		end
-	end
-
-	for key, value in pairs(specialKeys.self) do
-		key:apply(value, applyTo, cleanupTasks)
-	end
-	for key, value in pairs(specialKeys.descendants) do
-		key:apply(value, applyTo, cleanupTasks)
-	end
-
-	if props.Parent ~= nil then
-		bindProperty(applyTo, "Parent", props.Parent, cleanupTasks)
-	end
-
-	for key, value in pairs(specialKeys.ancestor) do
-		key:apply(value, applyTo, cleanupTasks)
-	end
-	for key, value in pairs(specialKeys.observer) do
-		key:apply(value, applyTo, cleanupTasks)
-	end
-
-	applyTo.Destroying:Connect(function()
-		cleanup(cleanupTasks)
-	end)
-end
-
-return applyInstanceProps
-end)() end,
-    [50] = function()local wax,script,require=ImportGlobals(50)local ImportGlobals return (function(...)--!strict
+local CLASS_METATABLE = {__index = class}
+local WEAK_KEYS_METATABLE = {__mode = "k"}
 
 --[[
-	A symbol for representing nil values in contexts where nil is not usable.
+	Returns the current value of this Tween object.
+	The object will be registered as a dependency unless `asDependency` is false.
 ]]
+function class:get(asDependency: boolean?): any
+	if asDependency ~= false then
+		useDependency(self)
+	end
+	return self._currentValue
+end
+
+--[[
+	Called when the goal state changes value; this will initiate a new tween.
+	Returns false as the current value doesn't change right away.
+]]
+function class:update(): boolean
+	local goalValue = self._goalState:get(false)
+
+	-- if the goal hasn't changed, then this is a TweenInfo change.
+	-- in that case, if we're not currently animating, we can skip everything
+	if goalValue == self._nextValue and not self._currentlyAnimating then
+		return false
+	end
+
+	local tweenInfo = self._tweenInfo
+	if self._tweenInfoIsState then
+		tweenInfo = tweenInfo:get()
+	end
+
+	-- if we receive a bad TweenInfo, then error and stop the update
+	if typeof(tweenInfo) ~= "TweenInfo" then
+		logErrorNonFatal("mistypedTweenInfo", nil, typeof(tweenInfo))
+		return false
+	end
+
+	self._prevValue = self._currentValue
+	self._nextValue = goalValue
+
+	self._currentTweenStartTime = os.clock()
+	self._currentTweenInfo = tweenInfo
+
+	local tweenDuration = tweenInfo.DelayTime + tweenInfo.Time
+	if tweenInfo.Reverses then
+		tweenDuration += tweenInfo.Time
+	end
+	tweenDuration *= tweenInfo.RepeatCount + 1
+	self._currentTweenDuration = tweenDuration
+
+	-- start animating this tween
+	TweenScheduler.add(self)
+
+	return false
+end
+
+local function Tween<T>(
+	goalState: PubTypes.StateObject<PubTypes.Animatable>,
+	tweenInfo: PubTypes.CanBeState<TweenInfo>?
+): Types.Tween<T>
+	local currentValue = goalState:get(false)
+
+	-- apply defaults for tween info
+	if tweenInfo == nil then
+		tweenInfo = TweenInfo.new()
+	end
+
+	local dependencySet = {[goalState] = true}
+	local tweenInfoIsState = xtypeof(tweenInfo) == "State"
+
+	if tweenInfoIsState then
+		dependencySet[tweenInfo] = true
+	end
+
+	local startingTweenInfo = tweenInfo
+	if tweenInfoIsState then
+		startingTweenInfo = startingTweenInfo:get()
+	end
+
+	-- If we start with a bad TweenInfo, then we don't want to construct a Tween
+	if typeof(startingTweenInfo) ~= "TweenInfo" then
+		logError("mistypedTweenInfo", nil, typeof(startingTweenInfo))
+	end
+
+	local self = setmetatable({
+		type = "State",
+		kind = "Tween",
+		dependencySet = dependencySet,
+		-- if we held strong references to the dependents, then they wouldn't be
+		-- able to get garbage collected when they fall out of scope
+		dependentSet = setmetatable({}, WEAK_KEYS_METATABLE),
+		_goalState = goalState,
+		_tweenInfo = tweenInfo,
+		_tweenInfoIsState = tweenInfoIsState,
+
+		_prevValue = currentValue,
+		_nextValue = currentValue,
+		_currentValue = currentValue,
+
+		-- store current tween into separately from 'real' tween into, so it
+		-- isn't affected by :setTweenInfo() until next change
+		_currentTweenInfo = tweenInfo,
+		_currentTweenDuration = 0,
+		_currentTweenStartTime = 0,
+		_currentlyAnimating = false
+	}, CLASS_METATABLE)
+
+	initDependency(self)
+	-- add this object to the goal state's dependent set
+	goalState.dependentSet[self] = true
+
+	return self
+end
+
+return Tween
+end)() end,
+    [13] = function()local wax,script,require=ImportGlobals(13)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Unpacks an animatable type into an array of numbers.
+	If the type is not animatable, an empty array will be returned.
+
+	FIXME: This function uses a lot of redefinitions to suppress false positives
+	from the Luau typechecker - ideally these wouldn't be required
+
+	FUTURE: When Luau supports singleton types, those could be used in
+	conjunction with intersection types to make this function fully statically
+	type checkable.
+]]
+
+local Package = script.Parent.Parent
+local PubTypes = require(Package.PubTypes)
+local Oklab = require(Package.Colour.Oklab)
+
+local function unpackType(value: any, typeString: string): {number}
+	if typeString == "number" then
+		local value = value :: number
+		return {value}
+
+	elseif typeString == "CFrame" then
+		-- FUTURE: is there a better way of doing this? doing distance
+		-- calculations on `angle` may be incorrect
+		local axis, angle = value:ToAxisAngle()
+		return {value.X, value.Y, value.Z, axis.X, axis.Y, axis.Z, angle}
+
+	elseif typeString == "Color3" then
+		local lab = Oklab.to(value)
+		return {lab.X, lab.Y, lab.Z}
+
+	elseif typeString == "ColorSequenceKeypoint" then
+		local lab = Oklab.to(value.Value)
+		return {lab.X, lab.Y, lab.Z, value.Time}
+
+	elseif typeString == "DateTime" then
+		return {value.UnixTimestampMillis}
+
+	elseif typeString == "NumberRange" then
+		return {value.Min, value.Max}
+
+	elseif typeString == "NumberSequenceKeypoint" then
+		return {value.Value, value.Time, value.Envelope}
+
+	elseif typeString == "PhysicalProperties" then
+		return {value.Density, value.Friction, value.Elasticity, value.FrictionWeight, value.ElasticityWeight}
+
+	elseif typeString == "Ray" then
+		return {value.Origin.X, value.Origin.Y, value.Origin.Z, value.Direction.X, value.Direction.Y, value.Direction.Z}
+
+	elseif typeString == "Rect" then
+		return {value.Min.X, value.Min.Y, value.Max.X, value.Max.Y}
+
+	elseif typeString == "Region3" then
+		-- FUTURE: support rotated Region3s if/when they become constructable
+		return {
+			value.CFrame.X, value.CFrame.Y, value.CFrame.Z,
+			value.Size.X, value.Size.Y, value.Size.Z
+		}
+
+	elseif typeString == "Region3int16" then
+		return {value.Min.X, value.Min.Y, value.Min.Z, value.Max.X, value.Max.Y, value.Max.Z}
+
+	elseif typeString == "UDim" then
+		return {value.Scale, value.Offset}
+
+	elseif typeString == "UDim2" then
+		return {value.X.Scale, value.X.Offset, value.Y.Scale, value.Y.Offset}
+
+	elseif typeString == "Vector2" then
+		return {value.X, value.Y}
+
+	elseif typeString == "Vector2int16" then
+		return {value.X, value.Y}
+
+	elseif typeString == "Vector3" then
+		return {value.X, value.Y, value.Z}
+
+	elseif typeString == "Vector3int16" then
+		return {value.X, value.Y, value.Z}
+	else
+		return {}
+	end
+end
+
+return unpackType
+end)() end,
+    [6] = function()local wax,script,require=ImportGlobals(6)local ImportGlobals return (function(...)--!strict
+
+--[[
+	Manages batch updating of spring objects.
+]]
+
+local RunService = game:GetService("RunService")
 
 local Package = script.Parent.Parent
 local Types = require(Package.Types)
+local packType = require(Package.Animation.packType)
+local springCoefficients = require(Package.Animation.springCoefficients)
+local updateAll = require(Package.Dependencies.updateAll)
 
-return {
-	type = "Symbol",
-	name = "None"
-} :: Types.None
-end)() end,
-    [23] = function()local wax,script,require=ImportGlobals(23)local ImportGlobals return (function(...)--!strict
+type Set<T> = {[T]: any}
+type Spring = Types.Spring<any>
 
---[[
-	A special key for property tables, which parents any given descendants into
-	an instance.
-]]
+local SpringScheduler = {}
 
-local Package = script.Parent.Parent
-local PubTypes = require(Package.PubTypes)
-local logWarn = require(Package.Logging.logWarn)
-local Observer = require(Package.State.Observer)
-local xtypeof = require(Package.Utility.xtypeof)
+local EPSILON = 0.0001
+local activeSprings: Set<Spring> = {}
+local lastUpdateTime = os.clock()
 
-type Set<T> = {[T]: boolean}
-
--- Experimental flag: name children based on the key used in the [Children] table
-local EXPERIMENTAL_AUTO_NAMING = false
-
-local Children = {}
-Children.type = "SpecialKey"
-Children.kind = "Children"
-Children.stage = "descendants"
-
-function Children:apply(propValue: any, applyTo: Instance, cleanupTasks: {PubTypes.Task})
-	local newParented: Set<Instance> = {}
-	local oldParented: Set<Instance> = {}
-
-	-- save disconnection functions for state object observers
-	local newDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
-	local oldDisconnects: {[PubTypes.StateObject<any>]: () -> ()} = {}
-
-	local updateQueued = false
-	local queueUpdate: () -> ()
-
-	-- Rescans this key's value to find new instances to parent and state objects
-	-- to observe for changes; then unparents instances no longer found and
-	-- disconnects observers for state objects no longer present.
-	local function updateChildren()
-		if not updateQueued then
-			return -- this update may have been canceled by destruction, etc.
-		end
-		updateQueued = false
-
-		oldParented, newParented = newParented, oldParented
-		oldDisconnects, newDisconnects = newDisconnects, oldDisconnects
-		table.clear(newParented)
-		table.clear(newDisconnects)
-
-		local function processChild(child: any, autoName: string?)
-			local kind = xtypeof(child)
-
-			if kind == "Instance" then
-				-- case 1; single instance
-
-				newParented[child] = true
-				if oldParented[child] == nil then
-					-- wasn't previously present
-
-					-- TODO: check for ancestry conflicts here
-					child.Parent = applyTo
-				else
-					-- previously here; we want to reuse, so remove from old
-					-- set so we don't encounter it during unparenting
-					oldParented[child] = nil
-				end
-
-				if EXPERIMENTAL_AUTO_NAMING and autoName ~= nil then
-					child.Name = autoName
-				end
-
-			elseif kind == "State" then
-				-- case 2; state object
-
-				local value = child:get(false)
-				-- allow nil to represent the absence of a child
-				if value ~= nil then
-					processChild(value, autoName)
-				end
-
-				local disconnect = oldDisconnects[child]
-				if disconnect == nil then
-					-- wasn't previously present
-					disconnect = Observer(child):onChange(queueUpdate)
-				else
-					-- previously here; we want to reuse, so remove from old
-					-- set so we don't encounter it during unparenting
-					oldDisconnects[child] = nil
-				end
-
-				newDisconnects[child] = disconnect
-
-			elseif kind == "table" then
-				-- case 3; table of objects
-
-				for key, subChild in pairs(child) do
-					local keyType = typeof(key)
-					local subAutoName: string? = nil
-
-					if keyType == "string" then
-						subAutoName = key
-					elseif keyType == "number" and autoName ~= nil then
-						subAutoName = autoName .. "_" .. key
-					end
-
-					processChild(subChild, subAutoName)
-				end
-
-			else
-				logWarn("unrecognisedChildType", kind)
-			end
-		end
-
-		if propValue ~= nil then
-			-- `propValue` is set to nil on cleanup, so we don't process children
-			-- in that case
-			processChild(propValue)
-		end
-
-		-- unparent any children that are no longer present
-		for oldInstance in pairs(oldParented) do
-			oldInstance.Parent = nil
-		end
-
-		-- disconnect observers which weren't reused
-		for oldState, disconnect in pairs(oldDisconnects) do
-			disconnect()
-		end
+function SpringScheduler.add(spring: Spring)
+	-- we don't necessarily want to use the most accurate time - here we snap to
+	-- the last update time so that springs started within the same frame have
+	-- identical time steps
+	spring._lastSchedule = lastUpdateTime
+	spring._startDisplacements = {}
+	spring._startVelocities = {}
+	for index, goal in ipairs(spring._springGoals) do
+		spring._startDisplacements[index] = spring._springPositions[index] - goal
+		spring._startVelocities[index] = spring._springVelocities[index]
 	end
 
-	queueUpdate = function()
-		if not updateQueued then
-			updateQueued = true
-			task.defer(updateChildren)
-		end
-	end
-
-	table.insert(cleanupTasks, function()
-		propValue = nil
-		updateQueued = true
-		updateChildren()
-	end)
-
-	-- perform initial child parenting
-	updateQueued = true
-	updateChildren()
+	activeSprings[spring] = true
 end
 
-return Children :: PubTypes.SpecialKey
+function SpringScheduler.remove(spring: Spring)
+	activeSprings[spring] = nil
+end
+
+
+local function updateAllSprings()
+	local springsToSleep: Set<Spring> = {}
+	lastUpdateTime = os.clock()
+
+	for spring in pairs(activeSprings) do
+		local posPos, posVel, velPos, velVel = springCoefficients(lastUpdateTime - spring._lastSchedule, spring._currentDamping, spring._currentSpeed)
+
+		local positions = spring._springPositions
+		local velocities = spring._springVelocities
+		local startDisplacements = spring._startDisplacements
+		local startVelocities = spring._startVelocities
+		local isMoving = false
+
+		for index, goal in ipairs(spring._springGoals) do
+			local oldDisplacement = startDisplacements[index]
+			local oldVelocity = startVelocities[index]
+			local newDisplacement = oldDisplacement * posPos + oldVelocity * posVel
+			local newVelocity = oldDisplacement * velPos + oldVelocity * velVel
+
+			if math.abs(newDisplacement) > EPSILON or math.abs(newVelocity) > EPSILON then
+				isMoving = true
+			end
+
+			positions[index] = newDisplacement + goal
+			velocities[index] = newVelocity
+		end
+
+		if not isMoving then
+			springsToSleep[spring] = true
+		end
+	end
+
+	for spring in pairs(activeSprings) do
+		spring._currentValue = packType(spring._springPositions, spring._currentType)
+		updateAll(spring)
+	end
+
+	for spring in pairs(springsToSleep) do
+		activeSprings[spring] = nil
+	end
+end
+
+RunService:BindToRenderStep(
+	"__FusionSpringScheduler",
+	Enum.RenderPriority.First.Value,
+	updateAllSprings
+)
+
+return SpringScheduler
 end)() end,
     [58] = function()local wax,script,require=ImportGlobals(58)local ImportGlobals return (function(...)local u = {} 
 
@@ -4757,152 +4831,19 @@ end
 
 return u
 end)() end,
-    [48] = function()local wax,script,require=ImportGlobals(48)local ImportGlobals return (function(...)--!strict
+    [50] = function()local wax,script,require=ImportGlobals(50)local ImportGlobals return (function(...)--!strict
 
 --[[
-	Stores common type information used internally.
-
-	These types may be used internally so Fusion code can type-check, but
-	should never be exposed to public users, as these definitions are fair game
-	for breaking changes.
+	A symbol for representing nil values in contexts where nil is not usable.
 ]]
 
-local Package = script.Parent
-local PubTypes = require(Package.PubTypes)
+local Package = script.Parent.Parent
+local Types = require(Package.Types)
 
-type Set<T> = {[T]: any}
-
---[[
-	General use types
-]]
-
--- A symbol that represents the absence of a value.
-export type None = PubTypes.Symbol & {
-	-- name: "None" (add this when Luau supports singleton types)
-}
-
--- Stores useful information about Luau errors.
-export type Error = {
-	type: string, -- replace with "Error" when Luau supports singleton types
-	raw: string,
-	message: string,
-	trace: string
-}
-
---[[
-	Specific reactive graph types
-]]
-
--- A state object whose value can be set at any time by the user.
-export type State<T> = PubTypes.Value<T> & {
-	_value: T
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type Computed<T> = PubTypes.Computed<T> & {
-	_oldDependencySet: Set<PubTypes.Dependency>,
-	_callback: () -> T,
-	_value: T
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type ForPairs<KI, VI, KO, VO, M> = PubTypes.ForPairs<KO, VO> & {
-	_oldDependencySet: Set<PubTypes.Dependency>,
-	_processor: (KI, VI) -> (KO, VO),
-	_destructor: (VO, M?) -> (),
-	_inputIsState: boolean,
-	_inputTable: PubTypes.CanBeState<{ [KI]: VI }>,
-	_oldInputTable: { [KI]: VI },
-	_outputTable: { [KO]: VO },
-	_oldOutputTable: { [KO]: VO },
-	_keyIOMap: { [KI]: KO },
-	_meta: { [KO]: M? },
-	_keyData: {
-		[KI]: {
-			dependencySet: Set<PubTypes.Dependency>,
-			oldDependencySet: Set<PubTypes.Dependency>,
-			dependencyValues: { [PubTypes.Dependency]: any },
-		},
-	},
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type ForKeys<KI, KO, M> = PubTypes.ForKeys<KO, any> & {
-	_oldDependencySet: Set<PubTypes.Dependency>,
-	_processor: (KI) -> (KO),
-	_destructor: (KO, M?) -> (),
-	_inputIsState: boolean,
-	_inputTable: PubTypes.CanBeState<{ [KI]: KO }>,
-	_oldInputTable: { [KI]: KO },
-	_outputTable: { [KO]: any },
-	_keyOIMap: { [KO]: KI },
-	_meta: { [KO]: M? },
-	_keyData: {
-		[KI]: {
-			dependencySet: Set<PubTypes.Dependency>,
-			oldDependencySet: Set<PubTypes.Dependency>,
-			dependencyValues: { [PubTypes.Dependency]: any },
-		},
-	},
-}
-
--- A state object whose value is derived from other objects using a callback.
-export type ForValues<VI, VO, M> = PubTypes.ForValues<any, VO> & {
-	_oldDependencySet: Set<PubTypes.Dependency>,
-	_processor: (VI) -> (VO),
-	_destructor: (VO, M?) -> (),
-	_inputIsState: boolean,
-	_inputTable: PubTypes.CanBeState<{ [VI]: VO }>,
-	_outputTable: { [any]: VI },
-	_valueCache: { [VO]: any },
-	_oldValueCache: { [VO]: any },
-	_meta: { [VO]: M? },
-	_valueData: {
-		[VI]: {
-			dependencySet: Set<PubTypes.Dependency>,
-			oldDependencySet: Set<PubTypes.Dependency>,
-			dependencyValues: { [PubTypes.Dependency]: any },
-		},
-	},
-}
-
--- A state object which follows another state object using tweens.
-export type Tween<T> = PubTypes.Tween<T> & {
-	_goalState: State<T>,
-	_tweenInfo: TweenInfo,
-	_prevValue: T,
-	_nextValue: T,
-	_currentValue: T,
-	_currentTweenInfo: TweenInfo,
-	_currentTweenDuration: number,
-	_currentTweenStartTime: number,
-	_currentlyAnimating: boolean
-}
-
--- A state object which follows another state object using spring simulation.
-export type Spring<T> = PubTypes.Spring<T> & {
-	_speed: PubTypes.CanBeState<number>,
-	_speedIsState: boolean,
-	_lastSpeed: number,
-	_damping: PubTypes.CanBeState<number>,
-	_dampingIsState: boolean,
-	_lastDamping: number,
-	_goalState: State<T>,
-	_goalValue: T,
-	_currentType: string,
-	_currentValue: T,
-	_springPositions: {number},
-	_springGoals: {number},
-	_springVelocities: {number}
-}
-
--- An object which can listen for updates on another state object.
-export type Observer = PubTypes.Observer & {
-	_changeListeners: Set<() -> ()>,
-	_numChangeListeners: number
-}
-
-return nil
+return {
+	type = "Symbol",
+	name = "None"
+} :: Types.None
 end)() end,
     [29] = function()local wax,script,require=ImportGlobals(29)local ImportGlobals return (function(...)--!strict
 
@@ -5003,40 +4944,152 @@ end
 return Oklab
 
 end)() end,
-    [35] = function()local wax,script,require=ImportGlobals(35)local ImportGlobals return (function(...)--!strict
+    [39] = function()local wax,script,require=ImportGlobals(39)local ImportGlobals return (function(...)--!strict
 
 --[[
-	Utility function to log a Fusion-specific error, without halting execution.
+	Stores common public-facing type information for Fusion APIs.
 ]]
 
-local Package = script.Parent.Parent
-local Types = require(Package.Types)
-local messages = require(Package.Logging.messages)
+type Set<T> = {[T]: any}
 
-local function logErrorNonFatal(messageID: string, errObj: Types.Error?, ...)
-	local formatString: string
+--[[
+	General use types
+]]
 
-	if messages[messageID] ~= nil then
-		formatString = messages[messageID]
-	else
-		messageID = "unknownMessage"
-		formatString = messages[messageID]
-	end
+-- A unique symbolic value.
+export type Symbol = {
+	type: string, -- replace with "Symbol" when Luau supports singleton types
+	name: string
+}
 
-	local errorString
-	if errObj == nil then
-		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")", ...)
-	else
-		formatString = formatString:gsub("ERROR_MESSAGE", errObj.message)
-		errorString = string.format("[Fusion] " .. formatString .. "\n(ID: " .. messageID .. ")\n---- Stack trace ----\n" .. errObj.trace, ...)
-	end
+-- Types that can be expressed as vectors of numbers, and so can be animated.
+export type Animatable =
+	number |
+	CFrame |
+	Color3 |
+	ColorSequenceKeypoint |
+	DateTime |
+	NumberRange |
+	NumberSequenceKeypoint |
+	PhysicalProperties |
+	Ray |
+	Rect |
+	Region3 |
+	Region3int16 |
+	UDim |
+	UDim2 |
+	Vector2 |
+	Vector2int16 |
+	Vector3 |
+	Vector3int16
 
-	task.spawn(function(...)
-		error(errorString:gsub("\n", "\n    "), 0)
-	end, ...)
-end
+-- A task which can be accepted for cleanup.
+export type Task =
+	Instance |
+	RBXScriptConnection |
+	() -> () |
+	{destroy: (any) -> ()} |
+	{Destroy: (any) -> ()} |
+	{Task}
 
-return logErrorNonFatal
+-- Script-readable version information.
+export type Version = {
+	major: number,
+	minor: number,
+	isRelease: boolean
+}
+--[[
+	Generic reactive graph types
+]]
+
+-- A graph object which can have dependents.
+export type Dependency = {
+	dependentSet: Set<Dependent>
+}
+
+-- A graph object which can have dependencies.
+export type Dependent = {
+	update: (Dependent) -> boolean,
+	dependencySet: Set<Dependency>
+}
+
+-- An object which stores a piece of reactive state.
+export type StateObject<T> = Dependency & {
+	type: string, -- replace with "State" when Luau supports singleton types
+	kind: string,
+	get: (StateObject<T>, asDependency: boolean?) -> T
+}
+
+-- Either a constant value of type T, or a state object containing type T.
+export type CanBeState<T> = StateObject<T> | T
+
+--[[
+	Specific reactive graph types
+]]
+
+-- A state object whose value can be set at any time by the user.
+export type Value<T> = StateObject<T> & {
+	-- kind: "State" (add this when Luau supports singleton types)
+ 	set: (Value<T>, newValue: any, force: boolean?) -> ()
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type Computed<T> = StateObject<T> & Dependent & {
+	-- kind: "Computed" (add this when Luau supports singleton types)
+}
+
+-- A state object whose value is derived from other objects using a callback.
+export type ForPairs<KO, VO> = StateObject<{ [KO]: VO }> & Dependent & {
+	-- kind: "ForPairs" (add this when Luau supports singleton types)
+}
+-- A state object whose value is derived from other objects using a callback.
+export type ForKeys<KO, V> = StateObject<{ [KO]: V }> & Dependent & {
+	-- kind: "ForKeys" (add this when Luau supports singleton types)
+}
+-- A state object whose value is derived from other objects using a callback.
+export type ForValues<K, VO> = StateObject<{ [K]: VO }> & Dependent & {
+	-- kind: "ForKeys" (add this when Luau supports singleton types)
+}
+
+-- A state object which follows another state object using tweens.
+export type Tween<T> = StateObject<T> & Dependent & {
+	-- kind: "Tween" (add this when Luau supports singleton types)
+}
+
+-- A state object which follows another state object using spring simulation.
+export type Spring<T> = StateObject<T> & Dependent & {
+	-- kind: "Spring" (add this when Luau supports singleton types)
+	-- Uncomment when ENABLE_PARAM_SETTERS is enabled
+	-- setPosition: (Spring<T>, newValue: Animatable) -> (),
+	-- setVelocity: (Spring<T>, newValue: Animatable) -> (),
+	-- addVelocity: (Spring<T>, deltaValue: Animatable) -> ()
+}
+
+-- An object which can listen for updates on another state object.
+export type Observer = Dependent & {
+	-- kind: "Observer" (add this when Luau supports singleton types)
+  	onChange: (Observer, callback: () -> ()) -> (() -> ())
+}
+
+--[[
+	Instance related types
+]]
+
+-- Denotes children instances in an instance or component's property table.
+export type SpecialKey = {
+	type: string, -- replace with "SpecialKey" when Luau supports singleton types
+	kind: string,
+	stage: string, -- replace with "self" | "descendants" | "ancestor" | "observer" when Luau supports singleton types
+	apply: (SpecialKey, value: any, applyTo: Instance, cleanupTasks: {Task}) -> ()
+}
+
+-- A collection of instances that may be parented to another instance.
+export type Children = Instance | StateObject<Children> | {[any]: Children}
+
+-- A table that defines an instance's properties, handlers and children.
+export type PropertyTable = {[string | SpecialKey]: any}
+
+return nil
 end)() end,
     [11] = function()local wax,script,require=ImportGlobals(11)local ImportGlobals return (function(...)--!strict
 
@@ -5852,53 +5905,25 @@ end
 
 return ForKeys
 end)() end,
-    [37] = function()local wax,script,require=ImportGlobals(37)local ImportGlobals return (function(...)--!strict
-
+    [53] = function()local wax,script,require=ImportGlobals(53)local ImportGlobals return (function(...)--!strict
 --[[
-	Stores templates for different kinds of logging messages.
+    Returns true if A and B are 'similar' - i.e. any user of A would not need
+    to recompute if it changed to B.
 ]]
 
-return {
-	cannotAssignProperty = "The class type '%s' has no assignable property '%s'.",
-	cannotConnectChange = "The %s class doesn't have a property called '%s'.",
-	cannotConnectEvent = "The %s class doesn't have an event called '%s'.",
-	cannotCreateClass = "Can't create a new instance of class '%s'.",
-	computedCallbackError = "Computed callback error: ERROR_MESSAGE",
-	destructorNeededValue = "To save instances into Values, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
-	destructorNeededComputed = "To return instances from Computeds, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
-	multiReturnComputed = "Returning multiple values from Computeds is discouraged, as behaviour will change soon - see discussion #189 on GitHub.",
-	destructorNeededForKeys = "To return instances from ForKeys, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
-	destructorNeededForValues = "To return instances from ForValues, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
-	destructorNeededForPairs = "To return instances from ForPairs, provide a destructor function. This will be an error soon - see discussion #183 on GitHub.",
-	duplicatePropertyKey = "",
-	forKeysProcessorError = "ForKeys callback error: ERROR_MESSAGE",
-	forKeysKeyCollision = "ForKeys should only write to output key '%s' once when processing key changes, but it wrote to it twice. Previously input key: '%s'; New input key: '%s'",
-	forKeysDestructorError = "ForKeys destructor error: ERROR_MESSAGE",
-	forPairsDestructorError = "ForPairs destructor error: ERROR_MESSAGE",
-	forPairsKeyCollision = "ForPairs should only write to output key '%s' once when processing key changes, but it wrote to it twice. Previous input pair: '[%s] = %s'; New input pair: '[%s] = %s'",
-	forPairsProcessorError = "ForPairs callback error: ERROR_MESSAGE",
-	forValuesProcessorError = "ForValues callback error: ERROR_MESSAGE",
-	forValuesDestructorError = "ForValues destructor error: ERROR_MESSAGE",
-	invalidChangeHandler = "The change handler for the '%s' property must be a function.",
-	invalidEventHandler = "The handler for the '%s' event must be a function.",
-	invalidPropertyType = "'%s.%s' expected a '%s' type, but got a '%s' type.",
-	invalidRefType = "Instance refs must be Value objects.",
-	invalidOutType = "[Out] properties must be given Value objects.",
-	invalidOutProperty = "The %s class doesn't have a property called '%s'.",
-	invalidSpringDamping = "The damping ratio for a spring must be >= 0. (damping was %.2f)",
-	invalidSpringSpeed = "The speed of a spring must be >= 0. (speed was %.2f)",
-	mistypedSpringDamping = "The damping ratio for a spring must be a number. (got a %s)",
-	mistypedSpringSpeed = "The speed of a spring must be a number. (got a %s)",
-	mistypedTweenInfo = "The tween info of a tween must be a TweenInfo. (got a %s)",
-	springTypeMismatch = "The type '%s' doesn't match the spring's type '%s'.",
-	strictReadError = "'%s' is not a valid member of '%s'.",
-	unknownMessage = "Unknown error: ERROR_MESSAGE",
-	unrecognisedChildType = "'%s' type children aren't accepted by `[Children]`.",
-	unrecognisedPropertyKey = "'%s' keys aren't accepted in property tables.",
-	unrecognisedPropertyStage = "'%s' isn't a valid stage for a special key to be applied at."
-}
+local function isSimilar(a: any, b: any): boolean
+    -- HACK: because tables are mutable data structures, don't make assumptions
+    -- about similarity from equality for now (see issue #44)
+    if typeof(a) == "table" then
+        return false
+    else
+        return a == b
+    end
+end
+
+return isSimilar
 end)() end,
-    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
 local config = require(script.Parent.Parent.config)
 local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
@@ -5907,28 +5932,63 @@ local function animate(callback, speed, damping)
 	return spring(computed(callback), speed, damping)
 end
 
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
 return function(prop)
-	local multiselect = value(prop.Multiselect)
-	local multiTable = {}
-	local down = value(false)
-	local open = value(false)
-	local itemTable = value(prop.Items)
-	local itemsRef = value()
 	
+	local sliderRef = value()
+	local buttonRef = value()
+
 	local returnFunctions = {}
 
-	local newDropdown = new "Frame" {
-		Size = animate(function()
-			if get(open) then
-				return UDim2.new(1,0,0,138)
-			else 
-				return UDim2.new(1,0,0,40)
+	local mouseEntered = value(false)
+	local db = value(false)
+	local percentage = value(0)
+	local percentageOf = value(0)
+	local min = tonumber(prop.Min)
+	local max = tonumber(prop.Max)
+	local step = tonumber(prop.Step) / (min + max)
+
+	local initialValue = tonumber(prop.InitialValue)
+	if initialValue < min or initialValue > max then
+		percentage:set(min / (max - min))
+		error("InitialValue for "..prop.Name.." is either too big or too small! InitialValue = "..tostring(min))
+	else
+		percentage:set(initialValue / (max - min))
+	end
+
+	local function snap(number,factor)
+		if factor == 0 then
+			return number
+		end
+		return math.floor(number / factor) * factor
+	end
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if get(db) then
+				db:set(false)
+
+				prop.Callback(get(percentageOf))
+
 			end
-		end,50,1),
+		end
+	end)
+
+	local newSlider = new "Frame" {
+		Size = UDim2.new(1,0,0,40),
 		BackgroundColor3 = config.secondaryBackground,
 		Parent = prop.Parent,
 		Name = prop.Name,
 		ClipsDescendants = true,
+
+		[onevent "MouseEnter"] = function()
+			mouseEntered:set(true)
+		end,
+		[onevent "MouseLeave"] = function()
+			mouseEntered:set(false)
+		end,
 
 		[children] = {
 			{
@@ -5941,15 +6001,7 @@ return function(prop)
 					AnchorPoint = Vector2.new(0.5,0),
 					Position = UDim2.fromScale(0.5,0),
 					BackgroundColor3 = prop.tabColor,
-					BackgroundTransparency = animate(function()
-
-						if get(down) then
-							return 0.95
-						else
-							return 0.85
-						end
-
-					end,50,1),
+					BackgroundTransparency = 0.85,
 
 					[children] = {
 						new "UICorner" {
@@ -5966,15 +6018,7 @@ return function(prop)
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					Text = prop.Name,
-					TextTransparency = animate(function()
-
-						if get(down) then
-							return 0.35
-						else
-							return 0
-						end
-
-					end,50,1),
+					TextTransparency = 0,
 					TextColor3 = config.text,
 
 					[children] = {
@@ -5982,158 +6026,119 @@ return function(prop)
 							PaddingLeft = UDim.new(0,10)
 						},
 					}
-				},
-				new "ImageLabel" {
-					Name = "icon",
-					AnchorPoint = Vector2.new(1,0),
-					Position = UDim2.new(1,-5,0,6),
-					Size = UDim2.fromOffset(28,28),
-					BackgroundTransparency = 1,
-					Image = "rbxassetid://15555233897", -- rbxassetid://15555233897
-					ImageColor3 = config.image
 				}
 			},
-			new "TextButton" {
-				Size = UDim2.new(1,0,0,40),
-				Text = "",
-				BackgroundTransparency = 1,
-				AnchorPoint = Vector2.new(0.5,0),
-				Position = UDim2.fromScale(0.5,0),
+			new "CanvasGroup" {
+				AnchorPoint = Vector2.new(1,0.5),
+				Size = animate(function()
+					if get(mouseEntered) then
+						return UDim2.fromOffset(180,16)
+					else
+						return UDim2.fromOffset(180,4)
+					end
+				end,40,1),
+				Position = UDim2.new(1,-10,0.5,0),
+				BackgroundColor3 = config.image,
 
-
-				[onevent "MouseButton1Down"] = function()
-					down:set(true)
-				end,
-				[onevent "MouseButton1Up"] = function()
-					down:set(false)
-				end,
-				[onevent "MouseLeave"] = function()
-					down:set(false)
-				end,
-				[onevent "MouseButton1Click"] = function()
-					open:set(not get(open))
-				end,
-			},
-			new "ScrollingFrame" {
-				Name = "Items",
-				Size = UDim2.new(1,0,0,94),
-				BackgroundTransparency = 1,
-				ScrollBarThickness = 2,
-				Position = UDim2.new(0.5,0,0,40),
-				AnchorPoint = Vector2.new(0.5,0),
-				ScrollBarImageColor3 = prop.tabColor,
-				CanvasSize = UDim2.new(0,0,0,0),
-				AutomaticCanvasSize = Enum.AutomaticSize.Y,
-
-				[ref] = itemsRef,
 				[children] = {
-					new "UIListLayout" {
-						Padding = UDim.new(0,2),
-						HorizontalAlignment = Enum.HorizontalAlignment.Center,
-						SortOrder = Enum.SortOrder.LayoutOrder
-					}
+					new "UICorner" {
+						CornerRadius = animate(function()
+							if get(mouseEntered) then
+								return UDim.new(0,4)
+							else
+								return UDim.new(0,6)
+							end
+						end,40,1),
+					},
+					new "TextButton" {
+						AnchorPoint = Vector2.new(0.5,0.5),
+						Size = UDim2.fromScale(1,1),
+						Position = UDim2.fromScale(0.5,0.5),
+						BackgroundTransparency = 1,
+
+						[onevent "MouseButton1Down"] = function() 
+							db:set(true)
+						end,
+
+						[ref] = buttonRef,
+						[children] = {
+							new "Frame" {
+								AnchorPoint = Vector2.new(0,0.5),
+								Size = animate(function()
+									return UDim2.fromScale(get(percentage),1)
+								end,60,1),
+								Position = UDim2.fromScale(0,0.5),
+								BackgroundColor3 = prop.tabColor,
+
+								[ref] = sliderRef,
+								[onevent "Changed"] = function() 
+									local c = get(sliderRef).Size.X.Scale
+									local pos = ((max - min) * c) + min
+									local pos2 = math.round(pos)
+									percentageOf:set(pos2)
+								end
+							}
+						}
+					},
 				}
+			},
+			new "TextLabel" {
+				AnchorPoint = Vector2.new(1,0.5),
+				Size = UDim2.fromOffset(20,14),
+				Position = UDim2.new(1,-195,0.5,0),
+				BackgroundTransparency = 1,
+				Text = computed(function()
+					return tostring(get(percentageOf))
+				end),
+				TextColor3 = config.text,
+				Font = Enum.Font.Gotham,
+				TextSize = 14,
+				TextXAlignment = Enum.TextXAlignment.Right,
+				TextScaled = true
 			}
 		}
 	}
-	computed(function()
-		if newDropdown:FindFirstChild("Items", true) then
-			for _,old in ipairs(newDropdown:FindFirstChild("Items", true):GetChildren()) do
-				if old:IsA("TextButton") then
-					old:Destroy()
-				end
+	task.spawn(function()
+		RunService.RenderStepped:Connect(function()
+			if get(db) then
+				local mousePositon = UserInputService:GetMouseLocation().X
+				local frameSizeX = get(buttonRef).AbsoluteSize.X
+				local framePositionX = get(buttonRef).AbsolutePosition.X
+				local newPercent = snap((mousePositon - framePositionX) / frameSizeX,step)
+				newPercent = math.clamp(math.round(newPercent * 100) / 100,0,1)
+				percentage:set(newPercent)
 			end
-		end
-		for _,item in ipairs(get(itemTable)) do
-
-			local hover = value(false)
-			local selected = value(false)
-
-			new "TextButton" {
-				Name = item,
-				Parent = get(itemsRef),
-				BackgroundTransparency = animate(function()
-
-					if get(hover) then
-						return 0.95
-					else
-						return 1
-					end
-
-				end,50,1),
-				BackgroundColor3 = config.image,
-				Size = UDim2.new(0.95,0,0,30),
-
-				[onevent "MouseEnter"] = function()
-					hover:set(true)
-				end,
-				[onevent "MouseLeave"] = function()
-					hover:set(false)
-				end,
-
-				[onevent "MouseButton1Click"] = function()
-					if get(multiselect) then
-						if get(selected) then
-							selected:set(false)
-							table.remove(multiTable,table.find(multiTable,item))
-						else
-							selected:set(true)
-							table.insert(multiTable,item)
-						end
-						prop.Callback(multiTable)
-					else
-						open:set(false)
-						prop.Callback(item)
-					end
-				end,
-
-				[children] = {
-					new "UICorner" {CornerRadius = UDim.new(0,6)},
-					new "TextLabel" {
-						Text = item,
-						Size = UDim2.new(1,0,0,12),
-						BackgroundTransparency = 1,
-						Position = UDim2.fromScale(0.5,0.5),
-						AnchorPoint = Vector2.new(0.5,0.5),
-						TextColor3 = animate(function() 
-							if get(multiselect) then
-								if get(selected) and not get(hover) then
-									return Color3.fromRGB(85, 220, 135)
-								elseif get(selected) and get(hover) then
-									return Color3.fromRGB(190, 100, 105)
-								else
-									return config.text
-								end
-							else
-								return config.text
-							end
-						end,30,1),
-						Font = Enum.Font.Gotham,
-						TextSize = 12,
-						TextXAlignment = Enum.TextXAlignment.Left,
-
-						[children] = {
-							new "UIPadding" {PaddingLeft = UDim.new(0,20)},
-						}
-					}
-				}
-			}
-		end
+		end)
 	end)
 
 	function returnFunctions:Remove()
-		newDropdown:Destroy()
+		newSlider:Destroy()
 	end
-	function returnFunctions:SetItems(newTable)
-		if typeof(newTable) == "table" then
-			itemTable:set(newTable)
+	function returnFunctions:SetValue(newValue)
+		if typeof(newValue) == "number" and (newValue <= max) and (newValue >= min) then
+			local tmpVal = newValue - min
+			tmpVal = tmpVal / (max - min)
+			percentage:set(tmpVal)
+			percentageOf:set(newValue)
+			prop.Callback(get(percentageOf))
+		elseif typeof(newValue) ~= "number" then
+			error("you didnt give "..prop.Name.." a number for SetValue!")
 		else
-			error("you didnt give "..prop.Name.." a table for SetItems!")
+			error("your SetValue for "..prop.Name.." is great or smaller than the maximum or minimum!\nMaximum: "..tostring(max).."\nMinimum: "..tostring(min).."\nAttempted Value: "..tostring(newValue))
 		end
 	end
 
 	return returnFunctions
 end
+
+--[[
+local knownNumber = newValue
+local totalDistance = Maximum-Minimum
+local percentOf = ...
+local outOf = 100
+
+(knownNumber/totalDistance) = x
+]]
 end)() end,
     [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local get = require(script.Parent.Parent.utilities.get)
@@ -6398,6 +6403,36 @@ local ObjectTree = {
         },
         {
             {
+                70,
+                1,
+                {
+                    "utilities"
+                },
+                {
+                    {
+                        72,
+                        2,
+                        {
+                            "lerpColor"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "get"
+                        }
+                    }
+                }
+            },
+            {
+                69,
+                2,
+                {
+                    "config"
+                }
+            },
+            {
                 59,
                 1,
                 {
@@ -6405,10 +6440,10 @@ local ObjectTree = {
                 },
                 {
                     {
-                        60,
+                        66,
                         2,
                         {
-                            "newDropdown"
+                            "newTextButton"
                         }
                     },
                     {
@@ -6419,13 +6454,6 @@ local ObjectTree = {
                         }
                     },
                     {
-                        68,
-                        2,
-                        {
-                            "newToggle"
-                        }
-                    },
-                    {
                         65,
                         2,
                         {
@@ -6433,10 +6461,10 @@ local ObjectTree = {
                         }
                     },
                     {
-                        64,
+                        60,
                         2,
                         {
-                            "newSlider"
+                            "newDropdown"
                         }
                     },
                     {
@@ -6447,10 +6475,24 @@ local ObjectTree = {
                         }
                     },
                     {
-                        66,
+                        63,
                         2,
                         {
-                            "newTextButton"
+                            "newSection"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newToggle"
+                        }
+                    },
+                    {
+                        64,
+                        2,
+                        {
+                            "newSlider"
                         }
                     },
                     {
@@ -6458,36 +6500,6 @@ local ObjectTree = {
                         2,
                         {
                             "newParagraph"
-                        }
-                    },
-                    {
-                        63,
-                        2,
-                        {
-                            "newSection"
-                        }
-                    }
-                }
-            },
-            {
-                70,
-                1,
-                {
-                    "utilities"
-                },
-                {
-                    {
-                        71,
-                        2,
-                        {
-                            "get"
-                        }
-                    },
-                    {
-                        72,
-                        2,
-                        {
-                            "lerpColor"
                         }
                     }
                 }
@@ -6500,28 +6512,19 @@ local ObjectTree = {
                 },
                 {
                     {
+                        57,
+                        2,
+                        {
+                            "lucide"
+                        }
+                    },
+                    {
                         3,
                         2,
                         {
                             "Fusion"
                         },
                         {
-                            {
-                                14,
-                                1,
-                                {
-                                    "Colour"
-                                },
-                                {
-                                    {
-                                        15,
-                                        2,
-                                        {
-                                            "Oklab"
-                                        }
-                                    }
-                                }
-                            },
                             {
                                 40,
                                 1,
@@ -6530,10 +6533,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        41,
+                                        47,
                                         2,
                                         {
-                                            "Computed"
+                                            "unwrap"
                                         }
                                     },
                                     {
@@ -6551,17 +6554,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        42,
+                                        41,
                                         2,
                                         {
-                                            "ForKeys"
+                                            "Computed"
                                         }
                                     },
                                     {
-                                        47,
+                                        44,
                                         2,
                                         {
-                                            "unwrap"
+                                            "ForValues"
                                         }
                                     },
                                     {
@@ -6572,98 +6575,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        44,
+                                        42,
                                         2,
                                         {
-                                            "ForValues"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                16,
-                                1,
-                                {
-                                    "Dependencies"
-                                },
-                                {
-                                    {
-                                        17,
-                                        2,
-                                        {
-                                            "captureDependencies"
-                                        }
-                                    },
-                                    {
-                                        19,
-                                        2,
-                                        {
-                                            "sharedState"
-                                        }
-                                    },
-                                    {
-                                        18,
-                                        2,
-                                        {
-                                            "initDependency"
-                                        }
-                                    },
-                                    {
-                                        20,
-                                        2,
-                                        {
-                                            "updateAll"
-                                        }
-                                    },
-                                    {
-                                        21,
-                                        2,
-                                        {
-                                            "useDependency"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                33,
-                                1,
-                                {
-                                    "Logging"
-                                },
-                                {
-                                    {
-                                        36,
-                                        2,
-                                        {
-                                            "logWarn"
-                                        }
-                                    },
-                                    {
-                                        34,
-                                        2,
-                                        {
-                                            "logError"
-                                        }
-                                    },
-                                    {
-                                        35,
-                                        2,
-                                        {
-                                            "logErrorNonFatal"
-                                        }
-                                    },
-                                    {
-                                        37,
-                                        2,
-                                        {
-                                            "messages"
-                                        }
-                                    },
-                                    {
-                                        38,
-                                        2,
-                                        {
-                                            "parseError"
+                                            "ForKeys"
                                         }
                                     }
                                 }
@@ -6676,24 +6591,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        53,
-                                        2,
-                                        {
-                                            "isSimilar"
-                                        }
-                                    },
-                                    {
                                         52,
                                         2,
                                         {
                                             "doNothing"
-                                        }
-                                    },
-                                    {
-                                        56,
-                                        2,
-                                        {
-                                            "xtypeof"
                                         }
                                     },
                                     {
@@ -6718,6 +6619,20 @@ local ObjectTree = {
                                         }
                                     },
                                     {
+                                        56,
+                                        2,
+                                        {
+                                            "xtypeof"
+                                        }
+                                    },
+                                    {
+                                        53,
+                                        2,
+                                        {
+                                            "isSimilar"
+                                        }
+                                    },
+                                    {
                                         50,
                                         2,
                                         {
@@ -6727,10 +6642,142 @@ local ObjectTree = {
                                 }
                             },
                             {
-                                48,
+                                39,
                                 2,
                                 {
-                                    "Types"
+                                    "PubTypes"
+                                }
+                            },
+                            {
+                                4,
+                                1,
+                                {
+                                    "Animation"
+                                },
+                                {
+                                    {
+                                        12,
+                                        2,
+                                        {
+                                            "springCoefficients"
+                                        }
+                                    },
+                                    {
+                                        8,
+                                        2,
+                                        {
+                                            "TweenScheduler"
+                                        }
+                                    },
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
+                                    {
+                                        11,
+                                        2,
+                                        {
+                                            "packType"
+                                        }
+                                    },
+                                    {
+                                        5,
+                                        2,
+                                        {
+                                            "Spring"
+                                        }
+                                    },
+                                    {
+                                        10,
+                                        2,
+                                        {
+                                            "lerpType"
+                                        }
+                                    },
+                                    {
+                                        6,
+                                        2,
+                                        {
+                                            "SpringScheduler"
+                                        }
+                                    },
+                                    {
+                                        13,
+                                        2,
+                                        {
+                                            "unpackType"
+                                        }
+                                    },
+                                    {
+                                        7,
+                                        2,
+                                        {
+                                            "Tween"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                14,
+                                1,
+                                {
+                                    "Colour"
+                                },
+                                {
+                                    {
+                                        15,
+                                        2,
+                                        {
+                                            "Oklab"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                16,
+                                1,
+                                {
+                                    "Dependencies"
+                                },
+                                {
+                                    {
+                                        17,
+                                        2,
+                                        {
+                                            "captureDependencies"
+                                        }
+                                    },
+                                    {
+                                        18,
+                                        2,
+                                        {
+                                            "initDependency"
+                                        }
+                                    },
+                                    {
+                                        19,
+                                        2,
+                                        {
+                                            "sharedState"
+                                        }
+                                    },
+                                    {
+                                        21,
+                                        2,
+                                        {
+                                            "useDependency"
+                                        }
+                                    },
+                                    {
+                                        20,
+                                        2,
+                                        {
+                                            "updateAll"
+                                        }
+                                    }
                                 }
                             },
                             {
@@ -6741,10 +6788,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        24,
+                                        32,
                                         2,
                                         {
-                                            "Cleanup"
+                                            "defaultProps"
                                         }
                                     },
                                     {
@@ -6752,6 +6799,13 @@ local ObjectTree = {
                                         2,
                                         {
                                             "Ref"
+                                        }
+                                    },
+                                    {
+                                        28,
+                                        2,
+                                        {
+                                            "OnEvent"
                                         }
                                     },
                                     {
@@ -6776,17 +6830,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        32,
+                                        24,
                                         2,
                                         {
-                                            "defaultProps"
-                                        }
-                                    },
-                                    {
-                                        25,
-                                        2,
-                                        {
-                                            "Hydrate"
+                                            "Cleanup"
                                         }
                                     },
                                     {
@@ -6804,100 +6851,65 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        28,
+                                        25,
                                         2,
                                         {
-                                            "OnEvent"
+                                            "Hydrate"
                                         }
                                     }
                                 }
                             },
                             {
-                                4,
+                                33,
                                 1,
                                 {
-                                    "Animation"
+                                    "Logging"
                                 },
                                 {
                                     {
-                                        13,
+                                        38,
                                         2,
                                         {
-                                            "unpackType"
+                                            "parseError"
                                         }
                                     },
                                     {
-                                        8,
+                                        36,
                                         2,
                                         {
-                                            "TweenScheduler"
+                                            "logWarn"
                                         }
                                     },
                                     {
-                                        9,
+                                        35,
                                         2,
                                         {
-                                            "getTweenRatio"
+                                            "logErrorNonFatal"
                                         }
                                     },
                                     {
-                                        12,
+                                        34,
                                         2,
                                         {
-                                            "springCoefficients"
+                                            "logError"
                                         }
                                     },
                                     {
-                                        5,
+                                        37,
                                         2,
                                         {
-                                            "Spring"
-                                        }
-                                    },
-                                    {
-                                        11,
-                                        2,
-                                        {
-                                            "packType"
-                                        }
-                                    },
-                                    {
-                                        6,
-                                        2,
-                                        {
-                                            "SpringScheduler"
-                                        }
-                                    },
-                                    {
-                                        7,
-                                        2,
-                                        {
-                                            "Tween"
-                                        }
-                                    },
-                                    {
-                                        10,
-                                        2,
-                                        {
-                                            "lerpType"
+                                            "messages"
                                         }
                                     }
                                 }
                             },
                             {
-                                39,
+                                48,
                                 2,
                                 {
-                                    "PubTypes"
+                                    "Types"
                                 }
                             }
-                        }
-                    },
-                    {
-                        57,
-                        2,
-                        {
-                            "lucide"
                         }
                     },
                     {
@@ -6908,13 +6920,6 @@ local ObjectTree = {
                         }
                     }
                 }
-            },
-            {
-                69,
-                2,
-                {
-                    "config"
-                }
             }
         }
     }
@@ -6923,67 +6928,67 @@ local ObjectTree = {
 -- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
     6,
-    [3] = 573,
-    [5] = 3285,
-    [6] = 3095,
-    [7] = 2959,
-    [8] = 3623,
-    [9] = 3533,
-    [10] = 2757,
-    [11] = 5040,
-    [12] = 1643,
-    [13] = 3698,
-    [15] = 4950,
-    [17] = 3946,
-    [18] = 2930,
-    [19] = 4299,
-    [20] = 677,
-    [21] = 647,
-    [23] = 4464,
-    [24] = 1622,
-    [25] = 3258,
-    [26] = 4003,
-    [27] = 6353,
-    [28] = 4039,
-    [29] = 4906,
-    [30] = 3503,
-    [31] = 4323,
-    [32] = 4096,
-    [34] = 3590,
-    [35] = 5005,
-    [36] = 737,
-    [37] = 5854,
-    [38] = 3787,
-    [39] = 2553,
-    [41] = 1508,
-    [42] = 5605,
-    [43] = 773,
-    [44] = 5139,
-    [45] = 5521,
-    [46] = 6261,
-    [47] = 3188,
-    [48] = 4759,
-    [50] = 4450,
-    [51] = 3204,
-    [52] = 2919,
-    [53] = 1300,
-    [54] = 1318,
-    [55] = 6324,
-    [56] = 4076,
-    [57] = 1729,
-    [58] = 4613,
-    [60] = 5900,
-    [61] = 5386,
-    [62] = 4207,
-    [63] = 2700,
-    [64] = 1083,
-    [65] = 3810,
-    [66] = 1331,
-    [67] = 1450,
-    [68] = 6137,
-    [69] = 761,
-    [71] = 3278,
-    [72] = 3576
+    [10] = 961,
+    [21] = 653,
+    [20] = 683,
+    [36] = 2430,
+    [51] = 2639,
+    [43] = 1123,
+    [60] = 1433,
+    [69] = 1670,
+    [54] = 1682,
+    [66] = 1695,
+    [67] = 1814,
+    [41] = 1872,
+    [55] = 6330,
+    [12] = 2133,
+    [47] = 2720,
+    [68] = 6143,
+    [63] = 2298,
+    [64] = 5926,
+    [52] = 2390,
+    [18] = 2401,
+    [53] = 5908,
+    [34] = 2265,
+    [3] = 579,
+    [23] = 2454,
+    [25] = 2693,
+    [26] = 2603,
+    [57] = 2971,
+    [30] = 2736,
+    [44] = 5193,
+    [72] = 2787,
+    [9] = 2801,
+    [8] = 3954,
+    [39] = 4947,
+    [38] = 3795,
+    [65] = 3818,
+    [15] = 4892,
+    [17] = 4197,
+    [28] = 4140,
+    [56] = 4177,
+    [50] = 4834,
+    [35] = 2355,
+    [19] = 4346,
+    [7] = 4370,
+    [6] = 4595,
+    [13] = 4506,
+    [58] = 4688,
+    [62] = 4254,
+    [29] = 4848,
+    [48] = 1986,
+    [32] = 4029,
+    [11] = 5094,
+    [37] = 2219,
+    [61] = 5440,
+    [45] = 5575,
+    [42] = 5659,
+    [71] = 2713,
+    [5] = 743,
+    [24] = 2766,
+    [46] = 6267,
+    [31] = 2844,
+    [27] = 6359
 }
 
 -- Misc AOT variable imports
