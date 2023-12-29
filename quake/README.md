@@ -1,4 +1,4 @@
-# quake
+ # quake
 
 this is quake ui library i will fix things eventually
 
@@ -100,6 +100,19 @@ local dropdown = tab:Dropdown({
 -- has returned functions
 
 dropdown:SetItems({}) -- table
+```
+### new slider
+```lua
+local slider = tab:Slider({
+    Name = "", -- string
+    Min = 0, -- number
+    Max = 100, -- number
+    Step = 1, -- number
+    InitialValue = 1, -- number
+    Callback = function(value)
+        print(value)
+    end
+})
 ```
 
 ## everything has
