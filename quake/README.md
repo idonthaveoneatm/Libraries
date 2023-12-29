@@ -113,8 +113,39 @@ local slider = tab:Slider({
         print(value)
     end
 })
-```
 
+-- has returned functions
+
+slider:SetValue(50) -- number
+```
+### new section
+```lua
+local section = tab:Section("") -- string
+
+-- has returned functions
+
+section:SetText("") -- string
+```
+### new paragraph
+```lua
+local paragraph = tab:Paragraph({
+    Title = "", -- string
+    Body = "", -- string
+})
+
+-- has returned functions
+
+paragraph:SetTitle("") -- string
+paragraph:SetBody("") -- string
+```
+### new label
+```lua
+local label = tab:Label("") -- string
+
+-- has returned functions
+
+label:SetText("") -- string
+```
 ## everything has
 ```lua
 <object>:Remove() -- ?? i think i added this for all
