@@ -31,14 +31,13 @@ local button = tab:Button({
         print("quake")
     end
 })
-```
-has returned functions
-```lua
+
+-- has returned functions
+
 button:SetText("") -- string
 button:SetCallback(function()
     print("new quake")
 end)
-button:Remove() -- ?? i think i added this for all
 ```
 ### new toggle
 ```lua
@@ -49,9 +48,9 @@ local toggle = tab:Toggle({
         print(value)
     end
 })
-```
-has returned functions
-```lua
+
+-- has returned functions
+
 toggle:SetValue(true) -- boolean
 ```
 ### new textbox
@@ -63,9 +62,9 @@ local textbox = tab:TextBox({
         print(value)
     end
 })
-```
-has returned functions
-```lua
+
+-- has returned functions
+
 textbox:SetInput("") -- string
 ```
 ### new keybind
@@ -77,9 +76,9 @@ local keybind = tab:Keybind({
         print("quake")
     end
 })
-```
-has returned functions
-```lua
+
+-- has returned functions
+
 keybind:SetBind("") -- string but a LETTER
 ```
 ### new dropdown
@@ -97,8 +96,13 @@ local dropdown = tab:Dropdown({
         print(value)
     end
 })
-```
-has returned functions
-```lua
+
+-- has returned functions
+
 dropdown:SetItems({}) -- table
+```
+
+## everything has
+```lua
+<object>:Remove() -- ?? i think i added this for all
 ```
