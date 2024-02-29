@@ -6726,7 +6726,7 @@ local Color,SelectedTab = value(Color3.fromRGB(220,221,225)),value("ajgnsiubgaku
 local lib = {}
 function lib:CreateMobileLibary(prop)
 
-    local isOpen = value(true)
+    local isOpen = value(false)
 
     local mobileQuake = new "ScreenGui" {
         Name = prop.Title,
