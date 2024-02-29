@@ -15,6 +15,13 @@ local window = quake:Window({
     Title = "" -- string
 })
 ```
+### new mobile window
+will operate with all the lower command js a mobile oriented UI
+```lua
+local window = quake:MobileWindow({
+    Title = "" -- string
+})
+```
 ### new tab
 ```lua
 local tab = window:Tab({
@@ -87,6 +94,7 @@ local dropdown = tab:Dropdown({
     Name = "", -- string
     Items = {}, -- table
     Multiselect = false, -- boolean
+    Default = "", -- if multiselect its a table: {}
     Callback = function(value)
         -- if multiselect
         for i,v in ipairs(value) do
