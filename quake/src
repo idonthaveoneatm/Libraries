@@ -5001,7 +5001,7 @@ return function(prop)
 							for _,item in ipairs(items:GetChildren()) do
 								if item:IsA("TextButton") and string.match(item.Name,get(searchText)) then
 									item.Visible = true
-								else
+								elseif item:IsA("TextButton") and not string.match(item.Name,get(searchText)) then
 									item.Visible = false
 								end
 							end
@@ -6034,8 +6034,13 @@ local animate = require(project.utilities.animate)
 
 return function(prop)
 	local textRef = value()
-	local defaultText = value(prop.Default or "")
+	local defaultText = value("")
 	local focused = value(false)
+	observe(defaultText):onChange(function()
+		task.spawn(function()
+			prop.Callback(get(textRef).Text)
+		end)
+	end)
 
 	local returnFunctions = {}
 
@@ -6114,7 +6119,9 @@ return function(prop)
 
 				PlaceholderColor3 = config.placeholder,
 				Text = computed(function()
-					return get(defaultText)
+					if prop.Default ~= "" then
+						return prop.Default
+					end
 				end),
 				TextColor3 = animate(function()
 					if get(focused) then
@@ -6129,6 +6136,13 @@ return function(prop)
 				end,
 				[onevent "FocusLost"] = function()
 					focused:set(false)
+				end,
+
+				[onevent "Changed"] = function(property)
+					if property == "Text" then
+						local textBox = get(textRef)
+						defaultText:set(textBox.Text)
+					end
 				end,
 
 				[ref] = textRef,
@@ -6376,13 +6390,20 @@ local new = Fusion.New
 local onevent = Fusion.OnEvent
 local children = Fusion.Children
 local value = Fusion.Value
+local observe = Fusion.Observer
 
 local get = require(project.utilities.get)
 local config = require(project.config)
 local animate = require(project.utilities.animate)
 
 return function(prop)
-	local toggled = value(prop.Default)
+	local toggled = value(false)
+	observe(toggled):onChange(function()
+		task.spawn(function()
+			prop.Callback(get(toggled))
+		end)
+	end)
+	toggled:set(prop.Default)
 
 	local returnFunctions = {}
 
@@ -6396,9 +6417,6 @@ return function(prop)
 
 		[onevent "MouseButton1Click"] = function()
 			toggled:set(not get(toggled))
-			task.spawn(function()
-				prop.Callback(get(toggled))
-			end)
 		end,
 
 		[children] = {
@@ -7276,20 +7294,6 @@ local ObjectTree = {
         },
         {
             {
-                76,
-                2,
-                {
-                    "project.story"
-                }
-            },
-            {
-                72,
-                2,
-                {
-                    "config"
-                }
-            },
-            {
                 73,
                 1,
                 {
@@ -7313,96 +7317,61 @@ local ObjectTree = {
                 }
             },
             {
-                59,
+                77,
                 1,
                 {
-                    "components"
+                    "utilities"
                 },
                 {
                     {
-                        65,
+                        79,
                         2,
                         {
-                            "newSlider"
+                            "get"
                         }
                     },
                     {
-                        63,
+                        80,
                         2,
                         {
-                            "newParagraph"
+                            "getStringBounds"
                         }
                     },
                     {
-                        60,
+                        81,
                         2,
                         {
-                            "newDropdown"
+                            "lerpColor"
                         }
                     },
                     {
-                        61,
+                        82,
                         2,
                         {
-                            "newKeybind"
+                            "tween"
                         }
                     },
                     {
-                        71,
+                        78,
                         2,
                         {
-                            "newWindow"
-                        }
-                    },
-                    {
-                        62,
-                        2,
-                        {
-                            "newNotification"
-                        }
-                    },
-                    {
-                        69,
-                        2,
-                        {
-                            "newTextLabel"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "newTextButton"
-                        }
-                    },
-                    {
-                        70,
-                        2,
-                        {
-                            "newToggle"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "newTextBox"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "newSection"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "newTab"
+                            "animate"
                         }
                     }
+                }
+            },
+            {
+                72,
+                2,
+                {
+                    "config"
+                }
+            },
+            {
+                76,
+                2,
+                {
+                    "project.story"
                 }
             },
             {
@@ -7420,45 +7389,17 @@ local ObjectTree = {
                         },
                         {
                             {
-                                33,
+                                14,
                                 1,
                                 {
-                                    "Logging"
+                                    "Colour"
                                 },
                                 {
                                     {
-                                        37,
+                                        15,
                                         2,
                                         {
-                                            "messages"
-                                        }
-                                    },
-                                    {
-                                        34,
-                                        2,
-                                        {
-                                            "logError"
-                                        }
-                                    },
-                                    {
-                                        36,
-                                        2,
-                                        {
-                                            "logWarn"
-                                        }
-                                    },
-                                    {
-                                        35,
-                                        2,
-                                        {
-                                            "logErrorNonFatal"
-                                        }
-                                    },
-                                    {
-                                        38,
-                                        2,
-                                        {
-                                            "parseError"
+                                            "Oklab"
                                         }
                                     }
                                 }
@@ -7471,10 +7412,38 @@ local ObjectTree = {
                                 },
                                 {
                                     {
+                                        50,
+                                        2,
+                                        {
+                                            "None"
+                                        }
+                                    },
+                                    {
+                                        55,
+                                        2,
+                                        {
+                                            "restrictRead"
+                                        }
+                                    },
+                                    {
+                                        56,
+                                        2,
+                                        {
+                                            "xtypeof"
+                                        }
+                                    },
+                                    {
                                         51,
                                         2,
                                         {
                                             "cleanup"
+                                        }
+                                    },
+                                    {
+                                        53,
+                                        2,
+                                        {
+                                            "isSimilar"
                                         }
                                     },
                                     {
@@ -7490,34 +7459,6 @@ local ObjectTree = {
                                         {
                                             "doNothing"
                                         }
-                                    },
-                                    {
-                                        56,
-                                        2,
-                                        {
-                                            "xtypeof"
-                                        }
-                                    },
-                                    {
-                                        55,
-                                        2,
-                                        {
-                                            "restrictRead"
-                                        }
-                                    },
-                                    {
-                                        50,
-                                        2,
-                                        {
-                                            "None"
-                                        }
-                                    },
-                                    {
-                                        53,
-                                        2,
-                                        {
-                                            "isSimilar"
-                                        }
                                     }
                                 }
                             },
@@ -7529,24 +7470,17 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        20,
-                                        2,
-                                        {
-                                            "updateAll"
-                                        }
-                                    },
-                                    {
-                                        21,
-                                        2,
-                                        {
-                                            "useDependency"
-                                        }
-                                    },
-                                    {
                                         18,
                                         2,
                                         {
                                             "initDependency"
+                                        }
+                                    },
+                                    {
+                                        19,
+                                        2,
+                                        {
+                                            "sharedState"
                                         }
                                     },
                                     {
@@ -7557,19 +7491,19 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        19,
+                                        21,
                                         2,
                                         {
-                                            "sharedState"
+                                            "useDependency"
+                                        }
+                                    },
+                                    {
+                                        20,
+                                        2,
+                                        {
+                                            "updateAll"
                                         }
                                     }
-                                }
-                            },
-                            {
-                                48,
-                                2,
-                                {
-                                    "Types"
                                 }
                             },
                             {
@@ -7579,6 +7513,20 @@ local ObjectTree = {
                                     "State"
                                 },
                                 {
+                                    {
+                                        46,
+                                        2,
+                                        {
+                                            "Value"
+                                        }
+                                    },
+                                    {
+                                        45,
+                                        2,
+                                        {
+                                            "Observer"
+                                        }
+                                    },
                                     {
                                         44,
                                         2,
@@ -7594,13 +7542,6 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        43,
-                                        2,
-                                        {
-                                            "ForPairs"
-                                        }
-                                    },
-                                    {
                                         42,
                                         2,
                                         {
@@ -7608,17 +7549,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        45,
+                                        43,
                                         2,
                                         {
-                                            "Observer"
-                                        }
-                                    },
-                                    {
-                                        46,
-                                        2,
-                                        {
-                                            "Value"
+                                            "ForPairs"
                                         }
                                     },
                                     {
@@ -7631,19 +7565,19 @@ local ObjectTree = {
                                 }
                             },
                             {
-                                39,
-                                2,
-                                {
-                                    "PubTypes"
-                                }
-                            },
-                            {
                                 4,
                                 1,
                                 {
                                     "Animation"
                                 },
                                 {
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
                                     {
                                         12,
                                         2,
@@ -7666,17 +7600,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        5,
+                                        11,
                                         2,
                                         {
-                                            "Spring"
+                                            "packType"
                                         }
                                     },
                                     {
-                                        7,
+                                        10,
                                         2,
                                         {
-                                            "Tween"
+                                            "lerpType"
                                         }
                                     },
                                     {
@@ -7687,40 +7621,68 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        11,
+                                        7,
                                         2,
                                         {
-                                            "packType"
+                                            "Tween"
                                         }
                                     },
                                     {
-                                        9,
+                                        5,
                                         2,
                                         {
-                                            "getTweenRatio"
-                                        }
-                                    },
-                                    {
-                                        10,
-                                        2,
-                                        {
-                                            "lerpType"
+                                            "Spring"
                                         }
                                     }
                                 }
                             },
                             {
-                                14,
+                                48,
+                                2,
+                                {
+                                    "Types"
+                                }
+                            },
+                            {
+                                33,
                                 1,
                                 {
-                                    "Colour"
+                                    "Logging"
                                 },
                                 {
                                     {
-                                        15,
+                                        37,
                                         2,
                                         {
-                                            "Oklab"
+                                            "messages"
+                                        }
+                                    },
+                                    {
+                                        36,
+                                        2,
+                                        {
+                                            "logWarn"
+                                        }
+                                    },
+                                    {
+                                        34,
+                                        2,
+                                        {
+                                            "logError"
+                                        }
+                                    },
+                                    {
+                                        35,
+                                        2,
+                                        {
+                                            "logErrorNonFatal"
+                                        }
+                                    },
+                                    {
+                                        38,
+                                        2,
+                                        {
+                                            "parseError"
                                         }
                                     }
                                 }
@@ -7733,24 +7695,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        26,
-                                        2,
-                                        {
-                                            "New"
-                                        }
-                                    },
-                                    {
                                         32,
                                         2,
                                         {
                                             "defaultProps"
-                                        }
-                                    },
-                                    {
-                                        25,
-                                        2,
-                                        {
-                                            "Hydrate"
                                         }
                                     },
                                     {
@@ -7761,17 +7709,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        31,
+                                        26,
                                         2,
                                         {
-                                            "applyInstanceProps"
+                                            "New"
                                         }
                                     },
                                     {
-                                        30,
+                                        25,
                                         2,
                                         {
-                                            "Ref"
+                                            "Hydrate"
                                         }
                                     },
                                     {
@@ -7782,10 +7730,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        28,
+                                        31,
                                         2,
                                         {
-                                            "OnEvent"
+                                            "applyInstanceProps"
+                                        }
+                                    },
+                                    {
+                                        29,
+                                        2,
+                                        {
+                                            "Out"
                                         }
                                     },
                                     {
@@ -7796,21 +7751,28 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        29,
+                                        30,
                                         2,
                                         {
-                                            "Out"
+                                            "Ref"
+                                        }
+                                    },
+                                    {
+                                        28,
+                                        2,
+                                        {
+                                            "OnEvent"
                                         }
                                     }
                                 }
+                            },
+                            {
+                                39,
+                                2,
+                                {
+                                    "PubTypes"
+                                }
                             }
-                        }
-                    },
-                    {
-                        57,
-                        2,
-                        {
-                            "lucide"
                         }
                     },
                     {
@@ -7819,49 +7781,105 @@ local ObjectTree = {
                         {
                             "ui-utilities"
                         }
+                    },
+                    {
+                        57,
+                        2,
+                        {
+                            "lucide"
+                        }
                     }
                 }
             },
             {
-                77,
+                59,
                 1,
                 {
-                    "utilities"
+                    "components"
                 },
                 {
                     {
-                        82,
+                        69,
                         2,
                         {
-                            "tween"
+                            "newTextLabel"
                         }
                     },
                     {
-                        78,
+                        62,
                         2,
                         {
-                            "animate"
+                            "newNotification"
                         }
                     },
                     {
-                        79,
+                        64,
                         2,
                         {
-                            "get"
+                            "newSection"
                         }
                     },
                     {
-                        80,
+                        65,
                         2,
                         {
-                            "getStringBounds"
+                            "newSlider"
                         }
                     },
                     {
-                        81,
+                        60,
                         2,
                         {
-                            "lerpColor"
+                            "newDropdown"
+                        }
+                    },
+                    {
+                        70,
+                        2,
+                        {
+                            "newToggle"
+                        }
+                    },
+                    {
+                        61,
+                        2,
+                        {
+                            "newKeybind"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "newWindow"
+                        }
+                    },
+                    {
+                        63,
+                        2,
+                        {
+                            "newParagraph"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newTextButton"
+                        }
+                    },
+                    {
+                        66,
+                        2,
+                        {
+                            "newTab"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "newTextBox"
                         }
                     }
                 }
@@ -7930,19 +7948,19 @@ local LineOffsets = {
     [65] = 5635,
     [66] = 5878,
     [67] = 6020,
-    [68] = 6180,
-    [69] = 6307,
-    [70] = 6372,
-    [71] = 6499,
-    [72] = 6547,
-    [74] = 6559,
-    [75] = 6849,
-    [76] = 7122,
-    [78] = 7221,
-    [79] = 7228,
-    [80] = 7235,
-    [81] = 7246,
-    [82] = 7260
+    [68] = 6194,
+    [69] = 6321,
+    [70] = 6386,
+    [71] = 6517,
+    [72] = 6565,
+    [74] = 6577,
+    [75] = 6867,
+    [76] = 7140,
+    [78] = 7239,
+    [79] = 7246,
+    [80] = 7253,
+    [81] = 7264,
+    [82] = 7278
 }
 
 -- Misc AOT variable imports
