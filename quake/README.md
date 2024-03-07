@@ -12,7 +12,7 @@ local quake = loadstring(game:HttpGet("https://raw.githubusercontent.com/idontha
 ### new window
 ```lua
 local window = quake:Window({
-    Title = "" -- string,
+    Title = "", -- string
     isMobile = false -- true if you want mobile library if you dont add it defaults to false
 })
 ```
