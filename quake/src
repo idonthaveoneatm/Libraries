@@ -1,4 +1,7 @@
--- I forgot the changes ngl
+-- organized code better in vs
+-- removed MobileWindow
+-- added isMobile to :Window function
+-- optimization of sorts ;)
 
 -- Will be used later for getting flattened globals
 local ImportGlobals
@@ -6,651 +9,113 @@ local ImportGlobals
 -- Holds direct closure data (defining this before the DOM tree for line debugging etc)
 local ClosureBindings = {
     function()local wax,script,require=ImportGlobals(1)local ImportGlobals return (function(...)local Fusion = require(script.Bundles.Fusion)
+local value = Fusion.Value
+local computed = Fusion.Computed
+local observe = Fusion.Observer
+
 local get = require(script.utilities.get)
-local u = require(script.Bundles["ui-utilities"])
 local config = require(script.config)
-local getStringBounds = require(script.utilities.getStringBounds)
 
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
-local function tween(callback,style)
-	return Fusion.Tween(computed(callback), style)
-end
+local Color = value(config.text)
+local SelectedTab = value("ajgnsiubgakuhfaiudf")
+local isFirstTab = value(true)
+local saltedTable = saltedTable or {}
+local isMobile = value(false)
 
-local lib,quake = {},nil
-local sideBarRef,windowsRef,uipagelayoutRef,topBarRef,notificationList = value(),value(),value(),value(),value()
-local Color,SelectedTab = value(Color3.fromRGB(220,221,225)),value("ajgnsiubgakuhfaiudf")
-
-local firstTab = value(false)
-
-local function createLibrary(prop)
-
-	local FrameRef = value()
-	local tmpRef = value()
-	local mini = value(false)
-
-
-	quake = new "ScreenGui" {
-		Name = prop.Title,
-		Parent = prop.Parent,
-
-		[ref] = tmpRef,
-		[children] = {
-			new "Frame" {
-				BackgroundTransparency = 1,
-				AnchorPoint = Vector2.new(0.5,0),
-				Position = UDim2.new(0.5,0,0.5,-200),
-				Size = UDim2.fromOffset(550,45),
-
-				[ref] = FrameRef,
-				[children] = {
-					new "Frame" {
-						AnchorPoint = Vector2.new(0.5,0),
-						Position = UDim2.fromScale(0.5,0),
-						Size = animate(function()
-							if get(mini) then
-								return UDim2.fromOffset(550,45)
-							else
-								return UDim2.fromOffset(550,400)
-							end
-						end,20,1),
-						BackgroundColor3 = config.background,
-						ClipsDescendants = true,
-						[children] = {
-							new "UICorner" {CornerRadius = UDim.new(0,6)},
-							new "Frame" {
-								ZIndex = 5,
-								AnchorPoint = Vector2.new(0,0),
-								Position = UDim2.fromOffset(10,50),
-								Size = UDim2.new(1,0,0,466),
-								ClipsDescendants = true,
-								BackgroundTransparency = 1,
-
-								[children] = {
-									new "ScrollingFrame" {
-										Name = "sideBar",
-										AnchorPoint = Vector2.new(0,0),
-										Position = UDim2.fromScale(0,0),
-										Size = UDim2.new(0,40,1,0),
-										BackgroundTransparency = 1,
-										ScrollBarThickness = 0,
-										ClipsDescendants = false,
-										ZIndex = 0,
-										CanvasSize = UDim2.new(0,0,0,0),
-										AutomaticCanvasSize = Enum.AutomaticSize.Y,
-
-										[ref] = sideBarRef,
-										[children] = {
-											new "UIListLayout" {
-												Padding = UDim.new(0,5),
-												SortOrder = Enum.SortOrder.LayoutOrder,
-												FillDirection = Enum.FillDirection.Vertical,
-												HorizontalAlignment = Enum.HorizontalAlignment.Left,
-											},
-										}
-									}
-								}
-							},
-							new "Frame" {
-								Name = "topBar",
-								AnchorPoint = Vector2.new(0.5,0),
-								Position = UDim2.new(0.5,0,0,0),
-								Size = UDim2.new(1,0,0,45),
-								BackgroundTransparency = 1,
-								BackgroundColor3 = config.tertiaryBackground,
-
-								[ref] = topBarRef,
-								[children] = {
-									new "UICorner" {CornerRadius = UDim.new(0,6)},
-									new "Frame" {
-										AnchorPoint = Vector2.new(0.5,1),
-										Position = UDim2.fromScale(0.5,1),
-										Size = UDim2.new(1,0,0,1),
-										BackgroundColor3 = config.tertiaryBackground,
-										BackgroundTransparency = animate(function()
-											if get(mini) then
-												return 1
-											else
-												return 0
-											end
-										end,20,1)
-									},
-									new "Frame" {
-										Name = "taskManage",
-										BackgroundTransparency = 1,
-										AnchorPoint = Vector2.new(1,0.5),
-										Position = UDim2.new(1,0,0.5,0),
-										Size = UDim2.new(0,70,1,0),
-
-										[children] = {
-											new "UIListLayout"{
-												FillDirection = Enum.FillDirection.Horizontal,
-												HorizontalAlignment = Enum.HorizontalAlignment.Center,
-												VerticalAlignment = Enum.VerticalAlignment.Center
-											},
-											new "Frame" {
-												Size = UDim2.fromOffset(30,30),
-												BackgroundTransparency = 1,
-
-												[children] = {
-													new "TextButton" {
-														Name = "toggleMini",
-														AnchorPoint = Vector2.new(0.5,0.5),
-														BackgroundTransparency = 1,
-														Position = UDim2.fromScale(0.5,0.5),
-														Size = UDim2.fromOffset(30,30),
-
-														[onevent "MouseButton1Click"] = function()
-															mini:set(not get(mini))
-														end,
-
-														[children] = {
-															new "ImageLabel" {
-																Name = "maximizeIcon",
-																AnchorPoint = Vector2.new(0.5,0.5),
-																BackgroundTransparency = 1,
-																Position = UDim2.fromScale(0.5,0.5),
-																Size = UDim2.fromOffset(26,26),
-																ImageColor3 = config.image,
-																Image = "rbxassetid://15556636376",
-																ImageTransparency = animate(function() 
-																	if get(mini) then
-																		return 0
-																	else
-																		return 1
-																	end
-																end,25,1)
-															},
-															new "ImageLabel" {
-																Name = "minimizeIcon",
-																AnchorPoint = Vector2.new(0.5,0.5),
-																BackgroundTransparency = 1,
-																Position = UDim2.fromScale(0.5,0.5),
-																Size = UDim2.fromOffset(26,26),
-																ImageColor3 = config.image,
-																Image = "rbxassetid://15556637715",
-																ImageTransparency = animate(function() 
-																	if get(mini) then
-																		return 1
-																	else
-																		return 0
-																	end
-																end,25,1)
-															}
-														}
-													}
-												}
-											},
-											new "TextButton" {
-												Size = UDim2.fromOffset(30,30),
-												BackgroundTransparency = 1,
-												Text = "",
-
-												[onevent "MouseButton1Click"] = function()
-													get(tmpRef):Destroy()
-												end,
-
-												[children] = {
-													new "ImageLabel" {
-														AnchorPoint = Vector2.new(0.5,0.5),
-														Position = UDim2.fromScale(0.5,0.5),
-														Size = UDim2.fromScale(1,1),
-														Rotation = 45,
-														BackgroundTransparency = 1,
-														Image = "rbxassetid://15556635005",
-														ImageTransparency = 0,
-														ImageColor3 = config.close
-													}
-												}
-											}
-										}
-									},
-									new "TextLabel" {
-										AnchorPoint = Vector2.new(0,0.5),
-										Position = UDim2.fromScale(0,0.55),
-										Size = UDim2.fromOffset(350,25),
-										BackgroundTransparency = 1,
-										Font = Enum.Font.GothamBold,
-										Text = prop.Title,
-										TextScaled = true,
-										TextColor3 = animate(function()
-											return get(Color)
-										end,15,1),
-										TextSize = 25,
-										TextXAlignment = Enum.TextXAlignment.Left,
-										[children] = {
-											new "UIPadding" {PaddingLeft = UDim.new(0,15)},
-											new "UITextSizeConstraint" {
-												MaxTextSize = 25,
-												MinTextSize = 1
-											}
-										}
-									}
-								}
-							},
-							new "Frame" {
-								AnchorPoint = Vector2.new(0,0),
-								Size = UDim2.new(0,480,0,340),
-								Position = UDim2.new(0,60,0,50),
-								BackgroundTransparency = 1,
-								ClipsDescendants = true,
-
-								[ref] = windowsRef,
-								[children] = {
-									new "UIPageLayout" {
-										EasingDirection = Enum.EasingDirection.In,
-										EasingStyle = Enum.EasingStyle.Sine,
-										TweenTime = 0.2,
-										FillDirection = Enum.FillDirection.Vertical,
-										SortOrder = Enum.SortOrder.LayoutOrder,
-										Padding = UDim.new(0,20),
-
-										[ref] = uipagelayoutRef
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			new "ScrollingFrame" {
-				ZIndex = 0,
-				AnchorPoint = Vector2.new(1,1),
-				Position = UDim2.new(1,0,1,-10),
-				Size = UDim2.new(0,240,1,-10),
-				BackgroundTransparency = 1,
-				ScrollBarThickness = 0,
-				AutomaticCanvasSize = Enum.AutomaticSize.Y,
-
-				[ref] = notificationList,
-
-				[children] = {
-					new "UIListLayout" {
-						Padding = UDim.new(0,5),
-						SortOrder = Enum.SortOrder.LayoutOrder,
-						HorizontalAlignment = Enum.HorizontalAlignment.Left,
-						VerticalAlignment = Enum.VerticalAlignment.Bottom
-					}
-				}
-			}
-		}
-	}
-	u.drag(get(FrameRef),15)
-	return quake
-end
-local function createTab(prop)
-
-	local identifier = ""
+local function saltName(string: string)
+	local unsaltedName = string
+	local salt = ""
 	for i = 1, 5 do
-		identifier = identifier..tostring(math.abs(math.random(0,9)))
+		salt = salt..tostring(math.abs(math.random(0,9)))
 	end
-	identifier = prop.Name..identifier
-	local hover = value(false)
-	local xSize = value(0)
-	local textRef = value()
+	local saltedName = unsaltedName..salt
+	saltedTable[unsaltedName] = saltedName
 
-	if not get(firstTab) then
-		firstTab:set(true)
-		SelectedTab:set(identifier)
-		prop.Callback()
+	return saltedTable[unsaltedName]
+end
+
+local quake = {}
+function quake:Window(prop)
+	prop.Title = prop.Title or "Title"
+	saltName(prop.Title)
+	prop.isMobile = prop.isMobile or false
+	isMobile:set(prop.isMobile)
+
+	if game.CoreGui:FindFirstChild(prop.Title) then
+		game.CoreGui:FindFirstChild(prop.Title):Destroy()
 	end
 
-	do
-		local xySize = getStringBounds(prop.Name, {
-			TextSize = 14,
-			Font = Enum.Font.GothamMedium,
-			VectorSize = Vector2.new(10000,14)
+	local library, updateColor
+	if prop.isMobile then
+		local mobile = require(script.platforms.mobile)
+		library, updateColor = mobile({
+			Title = prop.Title,
+			Parent = game.CoreGui,
+			saltedTable = saltedTable,
 		})
-		if xySize.X < 449 then
-			xSize:set(math.abs(xySize.X))
-		else
-			for i=1,14 do
-				local tmpXY = getStringBounds(prop.Name, {
-					TextSize = 14-i,
-					Font = Enum.Font.GothamMedium,
-					VectorSize = Vector2.new(450,40)
-				})
-				if tmpXY.X < 450 and tmpXY.Y < 14 then
-					xSize:set(math.abs(tmpXY.X+1))
-					break
-				end
-			end
-		end
+	else
+		local computer = require(script.platforms.computer)
+		library, updateColor = computer({
+			Title = prop.Title,
+			Parent = game.CoreGui,
+			saltedTable = saltedTable
+		})
 	end
 
-	new "TextButton" {
-		ZIndex = 5,
-		Name = prop.Name,
-		Parent = prop.Parent,
-		AnchorPoint = Vector2.new(0,0.5),
-		Position = UDim2.fromOffset(30,30),
-		BackgroundColor3 = config.secondaryBackground,
-		ClipsDescendants = true,
-		Text = "",
-		Size = animate(function()
-
-			if get(hover) then
-				return UDim2.fromOffset(get(xSize) +50,40)
-			else
-				return UDim2.fromOffset(40,40)
-			end
-
-		end,20,1),
-
-		[onevent "MouseEnter"] = function()
-			hover:set(true)
-		end,
-		[onevent "MouseLeave"] = function()
-			hover:set(false)
-		end,
-		[onevent "MouseButton1Click"] = function()
-			prop.Callback()
-			SelectedTab:set(identifier)
-		end,
-
-		[children] = {
-			new "UICorner" {
-				CornerRadius = animate(function()
-
-					if get(hover) then
-						return UDim.new(0,10)
-					else
-						return UDim.new(1,0)
-					end
-
-				end,30,1),
-			},
-			new "ImageLabel" {
-				ZIndex = 5,
-				Name = "icon",
-				AnchorPoint = Vector2.new(0,0.5),
-				Position = UDim2.new(0,6,0.5,0),
-				Size = UDim2.fromOffset(28,28),
-				BackgroundTransparency = 1,
-				Image = prop.Image,
-				ImageColor3 = animate(function()
-					if get(hover) and get(SelectedTab) ~= identifier then
-						return prop.tabColor
-					elseif not get(hover) and get(SelectedTab) ~= identifier then
-						return config.image
-					else
-						return prop.tabColor
-					end
-
-				end,30,1),
-			},
-			new "TextLabel" {
-				ZIndex = 5,
-				AnchorPoint = Vector2.new(0,0.5),
-				Position = UDim2.new(0,40,0.5,0),
-				Size = UDim2.new(0,get(xSize),0,14),
-				BackgroundTransparency = 1,
-				Text = prop.Name,
-				TextScaled = true,
-				TextTransparency = animate(function()
-
-					if get(hover) then
-						return 0
-					else
-						return 1
-					end
-
-				end,20,1),
-				Font = Enum.Font.GothamMedium,
-				TextColor3 = config.text,
-				TextXAlignment = Enum.TextXAlignment.Left,
-
-				[ref] = textRef,
-				[children] = {
-					new "UITextSizeConstraint" {
-						MaxTextSize = 14,
-						MinTextSize = 1
-					}
-				}
-			}
-		}
-	}
-end
-local function createWindow(prop)
-
-	local WindowRef = value()
-
-	local Window = new "ScrollingFrame" {
-		Name = prop.Name,
-		Parent = prop.Parent,
-		BackgroundTransparency = 1,
-		Size = UDim2.fromScale(1,1),
-		ScrollBarThickness = 0,
-		CanvasSize = UDim2.new(0,0,0,0),
-		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-
-		[ref] = WindowRef,
-		[children] = {
-			new "UIListLayout" {
-				Padding = UDim.new(0,5),
-				SortOrder = Enum.SortOrder.LayoutOrder,
-				FillDirection = Enum.FillDirection.Vertical,
-				HorizontalAlignment = Enum.HorizontalAlignment.Center,
-			},
-			new "TextLabel" {
-				Size = UDim2.new(1,0,0,30),
-				Text = prop.Name,
-				BackgroundTransparency = 1,
-				TextScaled = true,
-				TextColor3 = config.text,
-				Font = Enum.Font.GothamMedium,
-				TextXAlignment = Enum.TextXAlignment.Left,
-
-				[children] = {
-					new "UITextSizeConstraint" {
-						MaxTextSize = 15,
-						MinTextSize = 1
-					},
-					new "UIPadding" {
-						PaddingLeft = UDim.new(0,5)
-					}
-				}
-			}
-		}
-	}
-	return Window
-end
-local function createNotification(prop)
-	if not prop.Title or not prop.Body or not prop.Duration then
-		return error("Missing Arguments: Title or Body or Duration")
-	end
-
-	local title = value(prop.Title)
-	local body = value(prop.Body)
-	local bodySize = value(getStringBounds(prop.Body, {
-		TextSize = 13,
-		Font = Enum.Font.Gotham,
-		VectorSize = Vector2.new(230,1000)
-	}).Y)
-	local loaded = value(false)
-	local resized = value(false)
-
-	local notification = value()
-
-	local newNotification = new "Frame" {
-		Parent = get(notificationList),
-		AnchorPoint = Vector2.new(0,0.5),
-		BackgroundTransparency = 1,
-
-		Size = animate(function()
-			if get(loaded) then
-				task.delay(0.5,function()
-					resized:set(true)
-				end)
-				return UDim2.fromOffset(230,25 + get(bodySize) + 15)
-			end
-			return UDim2.new(1,-10,0,0)
-		end,20,1),
-
-		[children] = {
-			new "TextButton" {
-				Parent = get(notificationList),
-				AnchorPoint = Vector2.new(0,0.5),
-
-				BackgroundColor3 = config.background,
-				BackgroundTransparency = 0,
-				Size = computed(function()
-					return UDim2.fromOffset(230,25 + get(bodySize) + 15)
-				end),
-				Position = animate(function()
-					if get(resized) then
-						return UDim2.fromScale(0,0.5)
-					end
-					return UDim2.fromScale(2,0.5)
-				end,30,1),
-
-				[ref] = notification,
-
-				[onevent "MouseButton1Click"] = function()
-					get(notification):Destroy()
-				end,
-
-				[children] = {
-					new "UICorner" {CornerRadius = UDim.new(0,4)},
-					new "TextLabel" {
-						Name = "Title",
-						Size = UDim2.new(1,-5,0,18),
-						Position = UDim2.new(0,5,0,5),
-						BackgroundTransparency = 1,
-						Font = Enum.Font.GothamMedium,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						TextSize = 18,
-
-						TextColor3 = config.text,
-						Text = get(title)
-					},
-					new "TextLabel" {
-						Name = "Body",
-						Size = computed(function()
-							return UDim2.new(1,-8,0,get(bodySize))
-						end),
-						Position = UDim2.fromOffset(8,25),
-						BackgroundTransparency = 1,
-						Font = Enum.Font.Gotham,
-						TextSize = 13,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						TextYAlignment = Enum.TextYAlignment.Top,
-						TextTransparency = 0.2,
-						TextWrapped = true,
-
-						TextColor3 = config.text,
-						Text = get(body)
-					},
-					new "Frame" {
-						Name = "timer",
-						ZIndex = 0,
-						AnchorPoint = Vector2.new(0,1),
-						Position = UDim2.fromScale(0,1),
-						Size = tween(function()
-							if get(resized) then
-								return UDim2.new(1,0,0,10)
-							end
-							return UDim2.new(0,0,0,10)
-						end,TweenInfo.new(prop.Duration, Enum.EasingStyle.Linear)),
-
-						BackgroundColor3 = config.text,
-
-						[children] = {
-							new "UICorner" {
-								CornerRadius = UDim.new(0,4)
-							},
-							new "Frame" {
-								AnchorPoint = Vector2.new(0.5,0),
-								Size = UDim2.fromScale(1,0.6),
-								Position = UDim2.fromScale(0.5,0),
-								BackgroundColor3 = config.background
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	task.spawn(function()
-		task.wait()
-		loaded:set(true)
-		repeat task.wait() until get(resized)
-		task.wait(prop.Duration)
-		task.wait()
-		newNotification:Destroy()
+	observe(Color):onChange(function()
+		updateColor(get(Color))
 	end)
-end
 
-function lib:MobileWindow(prop)
-	prop.Title = prop.Title or "Title"
-
-	if game.CoreGui:FindFirstChild(prop.Title) then
-		game.CoreGui:FindFirstChild(prop.Title):Destroy()
-	end
-
-	function lib:Destroy()
-		game.CoreGui:FindFirstChild(prop.Title):Destroy()
-	end
-
-	local mobile = require(script.mobile)
-
-	local library = mobile:CreateMobileLibary({
-		Title = prop.Title,
-		Parent = prop.Parent
-	})
-	return library
-end
-
-function lib:Window(prop)
-	prop.Title = prop.Title or "Title"
-
-	if game.CoreGui:FindFirstChild(prop.Title) then
-		game.CoreGui:FindFirstChild(prop.Title):Destroy()
-	end
-
-	createLibrary({
-		Title = prop.Title,
-
-		Parent = game.CoreGui
-	})
-	function lib:Destroy()
-		game.CoreGui:FindFirstChild(prop.Title):Destroy()
-	end
-
-	lib.Windows = {}
-	function lib.Windows:Tab(prop)
-
+	quake.Windows = {}
+	function quake.Windows:Tab(prop)
 		local tabColor = prop.tabColor or config.tab
+		saltName(prop.Name)
 
-		local newWindow = createWindow({
+		local newWindow = require(script.components.newWindow)
+		local tabPage = newWindow({
 			Name = prop.Name,
-
-			Parent = get(windowsRef),
-			tabColor = tabColor
+			Parent = get(library.windowsRef),
+			saltedTable = saltedTable
 		})
 
-		createTab({
+		local newTab = require(script.components.newTab)
+		local isSelectedTab, setSelected
+		isSelectedTab, setSelected = newTab({
+			-- User Set
 			Name = prop.Name,
 			tabColor = tabColor,
 			Image = prop.Image,
-			Parent = get(sideBarRef),
-
+			-- Dev Set
+			Parent = get(library.sideBarRef),
+			saltedTable = saltedTable,
+			isMobile = get(isMobile),
 			Callback = function()
-				get(uipagelayoutRef):JumpTo(newWindow)
+				get(library.uipagelayoutRef):JumpTo(tabPage)
 				Color:set(tabColor)
-			end,
+				SelectedTab:set(saltedTable[prop.Name])
+			end
 		})
 
-		lib.Windows.Component = {}
-		function lib.Windows.Component:Button(prop)
+		observe(SelectedTab):onChange(function()
+			if get(SelectedTab) == saltedTable[prop.Name] then
+				isSelectedTab(true)
+			else
+				isSelectedTab(false)
+			end
+		end)
+
+		if get(isFirstTab) then
+			isFirstTab:set(false)
+			setSelected()
+		end
+
+		quake.Windows.Component = {}
+		function quake.Windows.Component:Button(prop)
 
 			local newTextButton = require(script.components.newTextButton)
 			return newTextButton({
 				Name = prop.Name,
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Callback = function()
 					prop.Callback()
@@ -658,11 +123,11 @@ function lib:Window(prop)
 			})
 
 		end
-		function lib.Windows.Component:Toggle(prop)
+		function quake.Windows.Component:Toggle(prop)
 
 			local newToggle = require(script.components.newToggle)
 			return newToggle({
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Name = prop.Name,
 				Default = prop.Default,
@@ -672,11 +137,11 @@ function lib:Window(prop)
 			})
 
 		end
-		function lib.Windows.Component:TextBox(prop)
+		function quake.Windows.Component:TextBox(prop)
 
 			local newTextBox = require(script.components.newTextBox)
 			return newTextBox({
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Name = prop.Name,
 				Default = prop.Default,
@@ -686,12 +151,12 @@ function lib:Window(prop)
 			})
 
 		end
-		function lib.Windows.Component:Keybind(prop)
+		function quake.Windows.Component:Keybind(prop)
 
 			local newKeybind = require(script.components.newKeybind)
 			return newKeybind({
 				Name = prop.Name,
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Default = prop.Default,
 				Callback = function()
@@ -700,12 +165,12 @@ function lib:Window(prop)
 			})
 
 		end
-		function lib.Windows.Component:Dropdown(prop)
+		function quake.Windows.Component:Dropdown(prop)
 
 			local newDropdown = require(script.components.newDropdown)
 			return newDropdown({
 				Name = prop.Name,
-				Parent = newWindow,
+				Parent = tabPage,
 				Items = prop.Items,
 				Default = prop.Default,
 				Multiselect = prop.Multiselect,
@@ -716,11 +181,11 @@ function lib:Window(prop)
 			})
 
 		end
-		function lib.Windows.Component:Slider(prop)
+		function quake.Windows.Component:Slider(prop)
 			local newSlider = require(script.components.newSlider)
 			return newSlider({
 				Name = prop.Name,
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Min = prop.Min,
 				Max = prop.Max,
@@ -728,46 +193,49 @@ function lib:Window(prop)
 				InitialValue = prop.InitialValue,
 				Callback = function(variable)
 					prop.Callback(variable)
-				end,
+				end
 			})
 		end
-		function lib.Windows.Component:Section(text: string)
+		function quake.Windows.Component:Section(text: string)
 			local newSection = require(script.components.newSection)
 			return newSection({
-				Parent = newWindow,
+				Parent = tabPage,
 				Text = text
 			})
 		end
-		function lib.Windows.Component:Paragraph(prop)
+		function quake.Windows.Component:Paragraph(prop)
 			local newParagraph = require(script.components.newParagraph)
 			return newParagraph({
-				Parent = newWindow,
+				Parent = tabPage,
 				Title = prop.Title,
 				Body = prop.Body
 			})
 		end
-		function lib.Windows.Component:Label(text: string)
+		function quake.Windows.Component:Label(text: string)
 			local newTextLabel = require(script.components.newTextLabel)
 			return newTextLabel({
-				Parent = newWindow,
+				Parent = tabPage,
 				tabColor = tabColor,
 				Text = text
 			})
 		end
-		return lib.Windows.Component
+		return quake.Windows.Component
 	end
-	function lib.Windows:Notify(prop)
+	function quake.Windows:Notify(prop)
 		local newNotification = require(script.components.newNotification)
 		newNotification({
-            Parent = get(notificationList),
+            Parent = get(library.notificationListRef),
 			Title = prop.Title,
 			Duration = prop.Duration,
 			Body = prop.Body
 		})
 	end
-	return lib.Windows
+	function quake:Destroy()
+		game.CoreGui:FindFirstChild(prop.Title):Destroy()
+	end
+	return quake.Windows
 end
-return lib, quake
+return quake
 end)() end,
     [3] = function()local wax,script,require=ImportGlobals(3)local ImportGlobals return (function(...)--!strict
 
@@ -5376,15 +4844,20 @@ end
 
 return u
 end)() end,
-    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local lerpColor = require(script.Parent.Parent.utilities.lerpColor)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+    [60] = function()local wax,script,require=ImportGlobals(60)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
+
 
 return function(prop)
 	local multiselect = value(prop.Multiselect)
@@ -5467,14 +4940,13 @@ return function(prop)
 					BackgroundTransparency = 1,
 					Image = "rbxassetid://15555233897",
 
+					ImageColor3 = config.image,
 					ImageTransparency = animate(function()
 						if get(down) then
 							return 0.35
 						end
 						return 0
 					end,50,1),
-
-					ImageColor3 = config.image
 				}
 			},
 			new "TextButton" {
@@ -5532,11 +5004,10 @@ return function(prop)
 
 						if get(searchText) ~= "" then
 							for _,item in ipairs(items:GetChildren()) do
-								if item:IsA("TextButton") and not string.match(item.Name,get(searchText)) then
-									item.Visible = false
-								end
 								if item:IsA("TextButton") and string.match(item.Name,get(searchText)) then
 									item.Visible = true
+								else
+									item.Visible = false
 								end
 							end
 						else
@@ -5595,6 +5066,7 @@ return function(prop)
 			end
 			table.clear(multiTable)
 		end
+
 		for _,item in ipairs(get(itemTable)) do
 			local hover = value(false)
 			local selected = value(false)
@@ -5628,11 +5100,15 @@ return function(prop)
 							table.insert(multiTable,item)
 						end
 						dropdownName:set(prop.Name..": "..tostring(#multiTable).."/"..tostring(#prop.Items))
-						prop.Callback(multiTable)
+						task.spawn(function()
+							prop.Callback(multiTable)
+						end)
 					else
 						open:set(false)
 						dropdownName:set(prop.Name..": "..item)
-						prop.Callback(item)
+						task.spawn(function()
+							prop.Callback(item)
+						end)
 					end
 				end,
 				[children] = {
@@ -5690,7 +5166,7 @@ return function(prop)
 				end
 			end
 		end
-		if get(multiselect) and typeof(get(defaultSelected)) == "table" and #multiTable >0 then
+		if get(multiselect) and typeof(get(defaultSelected)) == "table" and #multiTable > 0 then
 			task.spawn(function()
 				prop.Callback(multiTable)
 			end)
@@ -5703,6 +5179,8 @@ return function(prop)
 	function returnFunctions:SetItems(newTable)
 		if typeof(newTable) == "table" then
 			itemTable:set(newTable)
+			prop.Items = newTable
+			table.clear(multiTable)
 		else
 			error("you didnt give "..prop.Name.." a table for SetItems!")
 		end
@@ -5711,26 +5189,33 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
+
 
 local UIS = game:GetService("UserInputService")
 
 return function(prop)
 	local textRef = value()
-	local bind = value(prop.Default)
+	local bind = value(string.upper(prop.Default))
 	local focused = value(false)
 
 	local returnFunctions = {}
 
 	local newKeybind = new "Frame" {
 		Size = UDim2.new(1,0,0,40),
+
 		BackgroundColor3 = config.secondaryBackground,
 		Parent = prop.Parent,
 		Name = prop.Name,
@@ -5743,8 +5228,9 @@ return function(prop)
 					Size = UDim2.new(1,0,1,0),
 					AnchorPoint = Vector2.new(0.5,0.5),
 					Position = UDim2.new(0.5,0,0.5,0),
-					BackgroundColor3 = prop.tabColor,
 					BackgroundTransparency = 0.85,
+
+					BackgroundColor3 = prop.tabColor,
 
 					[children] = {
 						new "UICorner" {
@@ -5760,8 +5246,9 @@ return function(prop)
 					Font = Enum.Font.Gotham,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
-					Text = prop.Name,
 					TextTransparency = 0,
+
+					Text = prop.Name,
 					TextColor3 = config.text,
 
 					[children] = {
@@ -5772,11 +5259,12 @@ return function(prop)
 				},
 				new "Frame" {
 					ZIndex = 3,
-					BackgroundColor3 = config.secondaryBackground,
 					Size = UDim2.new(0,30,0,24),
 					AnchorPoint = Vector2.new(1,0.5),
 					Position = UDim2.new(1,-10,0.5,0),
 					BackgroundTransparency = 0.25,
+
+					BackgroundColor3 = config.secondaryBackground,
 
 					[children] = {
 						new "UICorner" {
@@ -5791,23 +5279,21 @@ return function(prop)
 				Position = UDim2.new(1,-10,0.5,0),
 				Size = UDim2.new(0,30,0,12),
 				BackgroundTransparency = 1,
+				TextXAlignment = Enum.TextXAlignment.Center,
+				PlaceholderText = ". . .",
+				Font = Enum.Font.Gotham,
+				TextSize = 12,
+
+				PlaceholderColor3 = config.placeholder,
 				TextColor3 = animate(function()
 					if get(focused) then
 						return config.text
-					else
-						return prop.tabColor
 					end
+					return prop.tabColor
 				end,50,1),
 				Text = computed(function()
-
 					return get(bind)
-
 				end),
-				TextXAlignment = Enum.TextXAlignment.Center,
-				PlaceholderText = ". . .",
-				PlaceholderColor3 = config.placeholder,
-				Font = Enum.Font.Gotham,
-				TextSize = 12,
 
 				[onevent "Focused"] = function()
 					focused:set(true)
@@ -5817,7 +5303,7 @@ return function(prop)
 					focused:set(false)
 				end,
 
-				[ref] = textRef,
+				[ref] = textRef
 			}
 		}
 	}
@@ -5828,8 +5314,10 @@ return function(prop)
 				bind:set(tmp[3])
 				get(textRef):ReleaseFocus()
 			end
-		elseif (get(bind) ~= "") and (input.KeyCode == Enum.KeyCode[get(bind)]) then
-			prop.Callback()
+		elseif (get(bind) ~= "") and (input.KeyCode == Enum.KeyCode[get(bind)]) and newKeybind then
+			task.spawn(function()
+				prop.Callback()
+			end)
 		end
 	end)
 
@@ -5849,18 +5337,18 @@ end)() end,
     [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+
 local get = require(project.utilities.get)
 local config = require(project.config)
+local animate = require(project.utilities.animate)
+local tween = require(project.utilities.tween)
 local getStringBounds = require(project.utilities.getStringBounds)
 
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
-local function tween(callback,style)
-	return Fusion.Tween(computed(callback), style)
-end
 return function(prop)
     if not prop.Title or not prop.Body or not prop.Duration then
         return error("Missing Arguments: Title or Body or Duration")
@@ -5896,9 +5384,9 @@ return function(prop)
         [children] = {
             new "TextButton" {
                 AnchorPoint = Vector2.new(0,0.5),
+                BackgroundTransparency = 0,
 
                 BackgroundColor3 = config.background,
-                BackgroundTransparency = 0,
                 Size = computed(function()
                     return UDim2.fromOffset(230,25 + get(bodySize) + 15)
                 end),
@@ -5933,9 +5421,7 @@ return function(prop)
                     },
                     new "TextLabel" {
                         Name = "Body",
-                        Size = computed(function()
-                            return UDim2.new(1,-8,0,get(bodySize))
-                        end),
+                        Size = UDim2.new(1,-8,0,get(bodySize)),
                         Position = UDim2.fromOffset(8,25),
                         BackgroundTransparency = 1,
                         Font = Enum.Font.Gotham,
@@ -5953,6 +5439,8 @@ return function(prop)
                         ZIndex = 0,
                         AnchorPoint = Vector2.new(0,1),
                         Position = UDim2.fromScale(0,1),
+
+                        BackgroundColor3 = config.text,
                         Size = tween(function()
                             if get(resized) then
                                 return UDim2.new(1,0,0,10)
@@ -5960,12 +5448,8 @@ return function(prop)
                             return UDim2.new(0,0,0,10)
                         end,TweenInfo.new(prop.Duration, Enum.EasingStyle.Linear)),
 
-                        BackgroundColor3 = config.text,
-
                         [children] = {
-                            new "UICorner" {
-                                CornerRadius = UDim.new(0,4)
-                            },
+                            new "UICorner" {CornerRadius = UDim.new(0,4)},
                             new "Frame" {
                                 AnchorPoint = Vector2.new(0.5,0),
                                 Size = UDim2.fromScale(1,0.6),
@@ -5991,32 +5475,38 @@ return function(prop)
     end)
 end
 end)() end,
-    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local lerpColor = require(script.Parent.Parent.utilities.lerpColor)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
+    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local getStringBounds = require(project.utilities.getStringBounds)
+local lerpColor = require(project.utilities.lerpColor)
 
 return function(prop)
-	local ySize = value(0)
 	local titleValue = value(prop.Title)
 	local bodyValue = value(prop.Body)
-	local TextService = game:GetService("TextService")
+	local ySize = computed(function()
+		return getStringBounds(get(bodyValue),{
+			Font = Enum.Font.Gotham,
+			VectorSize = Vector2.new(466,1000),
+			TextSize = 12
+		}).Y
+	end)
 
 	local returnFunctions = {}
 
-	computed(function()
-		local xySize = TextService:GetTextSize(get(bodyValue),12,Enum.Font.Gotham,Vector2.new(466,1000))
-		ySize:set(xySize.Y)
-	end)
-
 	local newParagraph = new  "Frame" {
+		BackgroundColor3 = config.secondaryBackground,
+		Parent = prop.Parent,
 		Size = computed(function()
 			return UDim2.new(1,0,0,36 + get(ySize))
 		end),
-		BackgroundColor3 = config.secondaryBackground,
-		Parent = prop.Parent,
 
 		[children] = {
 			new "UICorner" {
@@ -6029,9 +5519,6 @@ return function(prop)
 			},
 			new "TextLabel" {
 				Name = "Title",
-				Text = computed(function()
-					return get(titleValue)
-				end),
 				RichText = true,
 				Position = UDim2.fromScale(0,0),
 				Size = UDim2.new(1,0,0,16),
@@ -6039,27 +5526,31 @@ return function(prop)
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
 				TextSize = 16,
-				TextColor3 = config.text,
 				Font = Enum.Font.GothamMedium,
 
+				TextColor3 = config.text,
+				Text = computed(function()
+					return get(titleValue)
+				end)
 			},
 			new "TextLabel" {
 				Name = "Body",
-				Text = computed(function()
-					return get(bodyValue)
-				end),
 				TextWrapped = true,
 				RichText = true,
 				Position = UDim2.fromOffset(4,16),
-				Size = computed(function()
-					return UDim2.new(1,-4,0,get(ySize))
-				end),
 				BackgroundTransparency = 1,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
 				TextSize = 12,
-				TextColor3 = lerpColor(config.text,"black",0.1),
 				Font = Enum.Font.Gotham,
+
+				TextColor3 = lerpColor(config.text,"black",0.1),
+				Text = computed(function()
+					return get(bodyValue)
+				end),
+				Size = computed(function()
+					return UDim2.new(1,-4,0,get(ySize))
+				end),
 			}
 		}
 	}
@@ -6085,35 +5576,40 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
+    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+
+local get = require(project.utilities.get)
+local config = require(project.config)
 
 return function(prop)
 	local textValue = value(prop.Text)
-	
 	local returnFunctions = {}
-	
+
 	local newSection = new "Frame" {
 		Size = UDim2.new(1,0,0,30),
 		BackgroundTransparency = 1,
 		Parent = prop.Parent,
-		
+
 		[children] = {
 			new "TextLabel" {
 				Size = UDim2.new(1,0,0,30),
 				AnchorPoint = Vector2.new(0,0.5),
 				Position = UDim2.fromScale(0,0.5),
-				Text = computed(function() 
-					return get(textValue)
-				end),
 				BackgroundTransparency = 1,
 				TextScaled = true,
-				TextColor3 = config.text,
 				Font = Enum.Font.GothamMedium,
 				TextXAlignment = Enum.TextXAlignment.Left,
+
+				TextColor3 = config.text,
+				Text = computed(function()
+					return get(textValue)
+				end),
 
 				[children] = {
 					new "UITextSizeConstraint" {
@@ -6138,33 +5634,37 @@ return function(prop)
 			error("you didnt give "..prop.Name.." a string for SetText!")
 		end
 	end
-
 	return returnFunctions
 end
 end)() end,
-    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+local observe = Fusion.Observer
 
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
 return function(prop)
 	prop.Name = prop.Name or "Slider"
+	prop.InitialValue = prop.InitialValue or prop.Min
+	prop.Step = prop.Step or 1
+
 	if not prop.Max then
 		error("You have no max set for "..prop.Name)
 	end
 	if not prop.Min then
 		error("You have no min set for "..prop.Name)
 	end
-	prop.InitialValue = prop.InitialValue or prop.Min
-	prop.Step = prop.Step or 1
-
 	if typeof(prop.Max) ~= "number" then
 		error("Your max value isn't a number for "..prop.Name)
 	end
@@ -6178,33 +5678,34 @@ return function(prop)
 	local sliderRef = value()
 	local buttonRef = value()
 
-	local returnFunctions = {}
-
 	local mouseEntered = value(false)
-	local db = value(false)
+	local button1Down = value(false)
 
 	local percentage = value(0)
 	local percentageOf = value(0)
+	observe(percentageOf):onChange(function()
+		task.spawn(function()
+			prop.Callback(get(percentageOf))
+		end)
+	end)
 
 	local min = tonumber(prop.Min)
 	local max = tonumber(prop.Max)
 	local step = tonumber(prop.Step) / (min + max)
-
 	local initialValue = tonumber(prop.InitialValue)
+
+	local returnFunctions = {}
+
 	if initialValue < min or initialValue > max then
 		error("InitialValue for "..prop.Name.." is either too big or too small! InitialValue = "..tostring(min))
 		initialValue = min
+	end
+
+	if not initialValue == min then
 		local tmpVal = initialValue - min
 		tmpVal = tmpVal / (max - min)
 		percentage:set(tmpVal)
 		percentageOf:set(initialValue)
-		prop.Callback(get(percentageOf))
-	else
-		local tmpVal = initialValue - min
-		tmpVal = tmpVal / (max - min)
-		percentage:set(tmpVal)
-		percentageOf:set(initialValue)
-		prop.Callback(get(percentageOf))
 	end
 
 	local function snap(number,factor)
@@ -6215,22 +5716,18 @@ return function(prop)
 	end
 
 	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			if get(db) then
-				db:set(false)
-
-				prop.Callback(get(percentageOf))
-
-			end
+		if input.UserInputType == Enum.UserInputType.MouseButton1 and get(button1Down) then
+			button1Down:set(false)
 		end
 	end)
 
 	local newSlider = new "Frame" {
 		Size = UDim2.new(1,0,0,40),
+		ClipsDescendants = true,
+
 		BackgroundColor3 = config.secondaryBackground,
 		Parent = prop.Parent,
 		Name = prop.Name,
-		ClipsDescendants = true,
 
 		[onevent "MouseEnter"] = function()
 			mouseEntered:set(true)
@@ -6249,8 +5746,9 @@ return function(prop)
 					Size = UDim2.fromScale(1,1),
 					AnchorPoint = Vector2.new(0.5,0),
 					Position = UDim2.fromScale(0.5,0),
-					BackgroundColor3 = prop.tabColor,
 					BackgroundTransparency = 0.85,
+
+					BackgroundColor3 = prop.tabColor,
 
 					[children] = {
 						new "UICorner" {
@@ -6268,6 +5766,7 @@ return function(prop)
 					TextXAlignment = Enum.TextXAlignment.Left,
 					Text = prop.Name,
 					TextTransparency = 0,
+
 					TextColor3 = config.text,
 
 					[children] = {
@@ -6279,24 +5778,23 @@ return function(prop)
 			},
 			new "CanvasGroup" {
 				AnchorPoint = Vector2.new(1,0.5),
+				Position = UDim2.new(1,-10,0.5,0),
+
+				BackgroundColor3 = config.image,
 				Size = animate(function()
 					if get(mouseEntered) then
 						return UDim2.fromOffset(180,16)
-					else
-						return UDim2.fromOffset(180,4)
 					end
+					return UDim2.fromOffset(180,4)
 				end,40,1),
-				Position = UDim2.new(1,-10,0.5,0),
-				BackgroundColor3 = config.image,
 
 				[children] = {
 					new "UICorner" {
 						CornerRadius = animate(function()
 							if get(mouseEntered) then
 								return UDim.new(0,4)
-							else
-								return UDim.new(0,6)
 							end
+							return UDim.new(0,6)
 						end,40,1),
 					},
 					new "TextButton" {
@@ -6305,21 +5803,23 @@ return function(prop)
 						Position = UDim2.fromScale(0.5,0.5),
 						BackgroundTransparency = 1,
 
-						[onevent "MouseButton1Down"] = function() 
-							db:set(true)
+						[onevent "MouseButton1Down"] = function()
+							button1Down:set(true)
 						end,
 
 						[ref] = buttonRef,
 						[children] = {
 							new "Frame" {
 								AnchorPoint = Vector2.new(0,0.5),
+								Position = UDim2.fromScale(0,0.5),
+
+								BackgroundColor3 = prop.tabColor,
 								Size = animate(function()
 									return UDim2.fromScale(get(percentage),1)
 								end,60,1),
-								Position = UDim2.fromScale(0,0.5),
-								BackgroundColor3 = prop.tabColor,
 
 								[ref] = sliderRef,
+								
 								[onevent "Changed"] = function()
 									local c = get(sliderRef).Size.X.Scale
 									local pos = ((max - min) * c) + min
@@ -6347,9 +5847,10 @@ return function(prop)
 			}
 		}
 	}
+
 	task.spawn(function()
 		RunService.RenderStepped:Connect(function()
-			if get(db) then
+			if get(button1Down) then
 				local mousePositon = UserInputService:GetMouseLocation().X
 				local frameSizeX = get(buttonRef).AbsoluteSize.X
 				local framePositionX = get(buttonRef).AbsolutePosition.X
@@ -6369,7 +5870,6 @@ return function(prop)
 			tmpVal = tmpVal / (max - min)
 			percentage:set(tmpVal)
 			percentageOf:set(newValue)
-			prop.Callback(get(percentageOf))
 		elseif typeof(newValue) ~= "number" then
 			error("you didnt give "..prop.Name.." a number for SetValue!")
 		else
@@ -6380,14 +5880,162 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
+    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value,ref = Fusion.Value,Fusion.Ref
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local getStringBounds = require(project.utilities.getStringBounds)
+local animate = require(project.utilities.animate)
+
+return function(prop)
+	local hover = value(false)
+	local xSize = value(0)
+	local textRef = value()
+    local isTabSelected = value(false)
+
+	do
+		local xySize = getStringBounds(prop.Name, {
+			TextSize = 14,
+			Font = Enum.Font.GothamMedium,
+			VectorSize = Vector2.new(10000,14)
+		})
+		if xySize.X < 449 then
+			xSize:set(math.abs(xySize.X))
+		else
+			for i=1,14 do
+				local tmpXY = getStringBounds(prop.Name, {
+					TextSize = 14-i,
+					Font = Enum.Font.GothamMedium,
+					VectorSize = Vector2.new(450,40)
+				})
+				if tmpXY.X < 450 and tmpXY.Y < 14 then
+					xSize:set(math.abs(tmpXY.X+1))
+					break
+				end
+			end
+		end
+	end
+
+	new "TextButton" {
+		ZIndex = 5,
+		Name = prop.saltedTable[prop.Name],
+		Parent = prop.Parent,
+		AnchorPoint = Vector2.new(0,0.5),
+		Position = UDim2.fromOffset(30,30),
+		BackgroundColor3 = config.secondaryBackground,
+		ClipsDescendants = true,
+		Text = "",
+		Size = animate(function()
+
+			if get(hover) then
+				return UDim2.fromOffset(get(xSize) +50,40)
+			else
+				return UDim2.fromOffset(40,40)
+			end
+
+		end,20,1),
+
+		[onevent "MouseEnter"] = function()
+			hover:set(true)
+		end,
+		[onevent "MouseLeave"] = function()
+			hover:set(false)
+		end,
+		[onevent "MouseButton1Click"] = function()
+			prop.Callback()
+            if get(hover) then
+                task.wait(0.3)
+                hover:set(false)
+            end
+		end,
+
+		[children] = {
+			new "UICorner" {
+				CornerRadius = animate(function()
+
+					if get(hover) then
+						return UDim.new(0,10)
+					else
+						return UDim.new(1,0)
+					end
+
+				end,30,1),
+			},
+			new "ImageLabel" {
+				ZIndex = 5,
+				Name = "icon",
+				AnchorPoint = Vector2.new(0,0.5),
+				Position = UDim2.new(0,6,0.5,0),
+				Size = UDim2.fromOffset(28,28),
+				BackgroundTransparency = 1,
+				Image = prop.Image,
+				ImageColor3 = animate(function()
+					if get(hover) and not get(isTabSelected) then
+						return prop.tabColor
+					elseif not get(hover) and not get(isTabSelected) then
+						return config.image
+					else
+						return prop.tabColor
+					end
+				end,30,1),
+			},
+			new "TextLabel" {
+				ZIndex = 5,
+				AnchorPoint = Vector2.new(0,0.5),
+				Position = UDim2.new(0,40,0.5,0),
+				Size = UDim2.new(0,get(xSize),0,14),
+				BackgroundTransparency = 1,
+				Text = prop.Name,
+				TextScaled = true,
+				TextTransparency = animate(function()
+					if get(hover) then
+						return 0
+					end
+					return 1
+				end,20,1),
+				Font = Enum.Font.GothamMedium,
+				TextColor3 = config.text,
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				[ref] = textRef,
+				[children] = {
+					new "UITextSizeConstraint" {
+						MaxTextSize = 14,
+						MinTextSize = 1
+					}
+				}
+			}
+		}
+	}
+
+    return function(var)
+        isTabSelected:set(var)
+    end, function()
+		isTabSelected:set(true)
+		prop.Callback()
+	end
 end
+end)() end,
+    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+local observe = Fusion.Observer
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
 
 return function(prop)
 	local textRef = value()
@@ -6412,8 +6060,9 @@ return function(prop)
 					Size = UDim2.new(1,0,1,0),
 					AnchorPoint = Vector2.new(0.5,0.5),
 					Position = UDim2.new(0.5,0,0.5,0),
-					BackgroundColor3 = prop.tabColor,
 					BackgroundTransparency = 0.85,
+
+					BackgroundColor3 = prop.tabColor,
 
 					[children] = {
 						new "UICorner" {
@@ -6429,8 +6078,9 @@ return function(prop)
 					Font = Enum.Font.Gotham,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
-					Text = prop.Name,
 					TextTransparency = 0,
+
+					Text = prop.Name,
 					TextColor3 = config.text,
 
 					[children] = {
@@ -6441,11 +6091,12 @@ return function(prop)
 				},
 				new "Frame" {
 					ZIndex = 3,
-					BackgroundColor3 = config.secondaryBackground,
 					Size = UDim2.new(0,160,0,24),
 					AnchorPoint = Vector2.new(1,0.5),
 					Position = UDim2.new(1,-10,0.5,0),
 					BackgroundTransparency = 0.25,
+
+					BackgroundColor3 = config.secondaryBackground,
 
 					[children] = {
 						new "UICorner" {
@@ -6466,10 +6117,10 @@ return function(prop)
 				Font = Enum.Font.Gotham,
 				TextSize = 12,
 
+				PlaceholderColor3 = config.placeholder,
 				Text = computed(function()
 					return get(defaultText)
 				end),
-				PlaceholderColor3 = config.placeholder,
 				TextColor3 = animate(function()
 					if get(focused) then
 						return config.text
@@ -6486,6 +6137,7 @@ return function(prop)
 				end,
 
 				[ref] = textRef,
+
 				[children] = {
 					new "UIPadding" {
 						PaddingLeft = UDim.new(0,5),
@@ -6499,11 +6151,12 @@ return function(prop)
 			}
 		}
 	}
-	local textWatch = observer(focused)
 
-	textWatch:onChange(function()
+	observe(focused):onChange(function()
 		if not get(focused) then
-			prop.Callback(get(textRef).Text)
+			task.spawn(function()
+				prop.Callback(get(textRef).Text)
+			end)
 		end
 	end)
 
@@ -6529,14 +6182,19 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
 
 return function(prop)
 	local down = value(false)
@@ -6549,11 +6207,12 @@ return function(prop)
 
 	local newTextButton = new "TextButton" {
 		ZIndex = 2,
-		Name = prop.Name,
-		Parent = prop.Parent,
 		Size = UDim2.new(1,0,0,40),
 		AutoButtonColor = false,
 		Text = "",
+
+		Name = prop.Name,
+		Parent = prop.Parent,
 		BackgroundColor3 = config.secondaryBackground,
 
 		[onevent "MouseButton1Down"] = function()
@@ -6566,7 +6225,9 @@ return function(prop)
 			down:set(false)
 		end,
 		[onevent "MouseButton1Click"] = function()
-			get(callbackValue)()
+			task.spawn(function()
+				get(callbackValue)()
+			end)
 		end,
 
 
@@ -6579,15 +6240,13 @@ return function(prop)
 				Size = UDim2.new(1,0,1,0),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.new(0.5,0,0.5,0),
+
 				BackgroundColor3 = prop.tabColor,
 				BackgroundTransparency = animate(function()
-
 					if get(down) then
 						return 0.95
-					else
-						return 0.85
 					end
-
+					return 0.85
 				end,50,1),
 
 				[children] = {
@@ -6604,7 +6263,9 @@ return function(prop)
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
-				Text = computed(function() 
+
+				TextColor3 = config.text,
+				Text = computed(function()
 					return get(textValue)
 				end),
 				TextTransparency = animate(function()
@@ -6616,9 +6277,9 @@ return function(prop)
 					end
 
 				end,50,1),
-				TextColor3 = config.text,
 
 				[ref] = textRef,
+
 				[children] = {
 					new "UIPadding" {
 						PaddingLeft = UDim.new(0,10)
@@ -6648,30 +6309,32 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local lerpColor = require(script.Parent.Parent.utilities.lerpColor)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring,observer = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring,Fusion.Observer
+    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local lerpColor = require(project.utilities.lerpColor)
+
 return function(prop)
 	local textValue = value(prop.Text)
-	
+
 	local returnFunctions = {}
-	
+
 	local newTextLabel = new "Frame" {
-		Parent = prop.Parent,
 		Size = UDim2.new(1,0,0,30),
+		Parent = prop.Parent,
 		BackgroundColor3 = config.secondaryBackground,
-		
+
 		[children] = {
 			new "UICorner" {CornerRadius = UDim.new(0,4)},
 			new "TextLabel" {
 				ZIndex = 2,
-				Text = computed(function()
-					return get(textValue)
-				end),
-				TextColor3 = lerpColor(prop.tabColor, "white", 0.5),
 				Font = Enum.Font.GothamMedium,
 				TextSize = 14,
 				RichText = true,
@@ -6679,15 +6342,19 @@ return function(prop)
 				Size = UDim2.new(1,0,0,14),
 				Position = UDim2.new(0,10,0.5,0),
 				AnchorPoint = Vector2.new(0,0.5),
-				TextXAlignment = Enum.TextXAlignment.Left
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				TextColor3 = lerpColor(prop.tabColor, "white", 0.5),
+				Text = computed(function()
+					return get(textValue)
+				end)
 			},
 			new "Frame" {
 				Size = UDim2.fromScale(1,1),
 				Position = UDim2.fromScale(0.5,0.5),
 				AnchorPoint = Vector2.new(0.5,0.5),
-				BackgroundColor3 = config.secondaryBackground,--prop.tabColor,
+				BackgroundColor3 = config.secondaryBackground,
 
-				
 				[children] = {new "UICorner" {CornerRadius = UDim.new(0,6)}}
 			}
 		}
@@ -6707,28 +6374,30 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
-local get = require(script.Parent.Parent.utilities.get)
-local config = require(script.Parent.Parent.config)
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
 
 return function(prop)
 	local toggled = value(prop.Default)
-	local textValue = value(prop.Name)
+
 	local returnFunctions = {}
 
 	local newToggle = new "TextButton" {
 		Size = UDim2.new(1,0,0,40),
+		AutoButtonColor = false,
+
 		BackgroundColor3 = config.secondaryBackground,
 		Parent = prop.Parent,
-		Name = computed(function()
-			return get(textValue)
-		end),
-		AutoButtonColor = false,
+		Name = prop.Name,
 
 		[onevent "MouseButton1Click"] = function()
 			toggled:set(not get(toggled))
@@ -6746,8 +6415,9 @@ return function(prop)
 				Size = UDim2.new(1,0,1,0),
 				AnchorPoint = Vector2.new(0.5,0.5),
 				Position = UDim2.new(0.5,0,0.5,0),
-				BackgroundColor3 = prop.tabColor,
 				BackgroundTransparency = 0.85,
+
+				BackgroundColor3 = prop.tabColor,
 
 				[children] = {
 					new "UICorner" {
@@ -6763,11 +6433,10 @@ return function(prop)
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
-				Text = computed(function()
-					return get(textValue)
-				end),
 				TextTransparency = 0,
+
 				TextColor3 = config.text,
+				Text = prop.Name,
 
 				[children] = {
 					new "UIPadding" {
@@ -6781,6 +6450,7 @@ return function(prop)
 				Size = UDim2.fromOffset(28,28),
 				BackgroundTransparency = 1,
 				Image = "rbxassetid://15555208034", -- rbxassetid://15555208034
+				
 				ImageColor3 = config.image,
 
 				[children] = {
@@ -6793,13 +6463,13 @@ return function(prop)
 						Size = UDim2.new(1,0,1,0),
 						BackgroundTransparency = 1,
 						Image = "rbxassetid://15555206993", -- rbxassetid://15555206993
+						
 						ImageColor3 = config.image,
 						ImageTransparency = animate(function()
 							if get(toggled) then
 								return 0
-							else
-								return 1
 							end
+							return 1
 						end,30,1),
 
 						[children] = {
@@ -6813,11 +6483,6 @@ return function(prop)
 			}
 		}
 	}
-	if get(toggled) then
-		task.spawn(function()
-			prop.Callback(get(toggled))
-		end)
-	end
 
 	function returnFunctions:Remove()
 		newToggle:Destroy()
@@ -6836,7 +6501,55 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)return {
+    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local children = Fusion.Children
+
+local config = require(project.config)
+
+return function(prop)
+    return new "ScrollingFrame" {
+		Name = prop.saltedTable[prop.Name],
+		Parent = prop.Parent,
+		BackgroundTransparency = 1,
+		Size = UDim2.fromScale(1,1),
+		ScrollBarThickness = 0,
+		CanvasSize = UDim2.new(0,0,0,0),
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+
+		[children] = {
+			new "UIListLayout" {
+				Padding = UDim.new(0,5),
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				FillDirection = Enum.FillDirection.Vertical,
+				HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			},
+			new "TextLabel" {
+				Size = UDim2.new(1,0,0,30),
+				Text = prop.Name,
+				BackgroundTransparency = 1,
+				TextScaled = true,
+				TextColor3 = config.text,
+				Font = Enum.Font.GothamMedium,
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				[children] = {
+					new "UITextSizeConstraint" {
+						MaxTextSize = 15,
+						MinTextSize = 1
+					},
+					new "UIPadding" {
+						PaddingLeft = UDim.new(0,5)
+					}
+				}
+			}
+		}
+	}
+end
+end)() end,
+    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)return {
 	tab = Color3.fromHex("#a49ae6"),
 	background = Color3.fromRGB(40, 44, 50),
 	secondaryBackground = Color3.fromRGB(49, 56, 66),
@@ -6848,30 +6561,321 @@ end)() end,
 	close = Color3.fromRGB(190, 100, 105)
 }
 end)() end,
-    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)local project = script.Parent
+    [74] = function()local wax,script,require=ImportGlobals(74)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
+local u = require(project.Bundles["ui-utilities"])
 local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local ref = Fusion.Ref
+
 local get = require(project.utilities.get)
 local config = require(project.config)
-local getStringBounds = require(project.utilities.getStringBounds)
+local animate = require(project.utilities.animate)
 
-local new,onevent,children = Fusion.New,Fusion.OnEvent,Fusion.Children
-local value,computed,ref,spring = Fusion.Value,Fusion.Computed,Fusion.Ref,Fusion.Spring
-local function animate(callback, speed, damping)
-	return spring(computed(callback), speed, damping)
-end
+return function(prop)
+    local computerQuake
 
-local firstTab = value(false)
-local Color,SelectedTab = value(Color3.fromRGB(220,221,225)),value("ajgnsiubgakuhfaiudf")
-
-local lib = {}
-function lib:CreateMobileLibary(prop)
-
+    local Color = value(config.text)
+    local draggingFrameRef = value()
     local isOpen = value(false)
+
+	local refTable = {}
+	refTable.sideBarRef = value()
+	refTable.windowsRef = value()
+	refTable.uipagelayoutRef = value()
+	refTable.notificationListRef = value()
+
+	computerQuake = new "ScreenGui" {
+		Name = prop.saltedTable[prop.Title],
+		Parent = prop.Parent,
+
+		[children] = {
+			new "Frame" {
+                Name = "containter",
+				BackgroundTransparency = 1,
+				AnchorPoint = Vector2.new(0.5,0),
+				Position = UDim2.new(0.5,0,0.5,-200),
+				Size = UDim2.fromOffset(550,45),
+
+				[ref] = draggingFrameRef,
+
+				[children] = {
+					new "Frame" {
+						AnchorPoint = Vector2.new(0.5,0),
+						Position = UDim2.fromScale(0.5,0),
+						ClipsDescendants = true,
+
+						BackgroundColor3 = config.background,
+						Size = animate(function()
+							if get(isOpen) then
+								return UDim2.fromOffset(550,45)
+							else
+								return UDim2.fromOffset(550,400)
+							end
+						end,20,1),
+
+						[children] = {
+							new "UICorner" {CornerRadius = UDim.new(0,6)},
+							new "Frame" {
+								ZIndex = 5,
+								AnchorPoint = Vector2.new(0,0),
+								Position = UDim2.fromOffset(10,50),
+								Size = UDim2.new(1,0,0,466),
+								ClipsDescendants = true,
+								BackgroundTransparency = 1,
+
+								[children] = {
+									new "ScrollingFrame" {
+										Name = "sideBar",
+										AnchorPoint = Vector2.new(0,0),
+										Position = UDim2.fromScale(0,0),
+										Size = UDim2.new(0,40,1,0),
+										BackgroundTransparency = 1,
+										ScrollBarThickness = 0,
+										ClipsDescendants = false,
+										ZIndex = 0,
+										CanvasSize = UDim2.new(0,0,0,0),
+										AutomaticCanvasSize = Enum.AutomaticSize.Y,
+
+										[ref] = refTable.sideBarRef,
+										[children] = {
+											new "UIListLayout" {
+												Padding = UDim.new(0,5),
+												SortOrder = Enum.SortOrder.LayoutOrder,
+												FillDirection = Enum.FillDirection.Vertical,
+												HorizontalAlignment = Enum.HorizontalAlignment.Left,
+											},
+										}
+									}
+								}
+							},
+							new "Frame" {
+								Name = "topBar",
+								AnchorPoint = Vector2.new(0.5,0),
+								Position = UDim2.new(0.5,0,0,0),
+								Size = UDim2.new(1,0,0,45),
+								BackgroundTransparency = 1,
+
+								BackgroundColor3 = config.tertiaryBackground,
+
+								[children] = {
+									new "UICorner" {CornerRadius = UDim.new(0,6)},
+									new "Frame" {
+										AnchorPoint = Vector2.new(0.5,1),
+										Position = UDim2.fromScale(0.5,1),
+										Size = UDim2.new(1,0,0,1),
+
+										BackgroundColor3 = config.tertiaryBackground,
+										BackgroundTransparency = animate(function()
+											if get(isOpen) then
+												return 1
+											else
+												return 0
+											end
+										end,20,1)
+									},
+									new "Frame" {
+										Name = "taskManage",
+										BackgroundTransparency = 1,
+										AnchorPoint = Vector2.new(1,0.5),
+										Position = UDim2.new(1,0,0.5,0),
+										Size = UDim2.new(0,70,1,0),
+
+										[children] = {
+											new "UIListLayout"{
+												FillDirection = Enum.FillDirection.Horizontal,
+												HorizontalAlignment = Enum.HorizontalAlignment.Center,
+												VerticalAlignment = Enum.VerticalAlignment.Center
+											},
+											new "Frame" {
+												Size = UDim2.fromOffset(30,30),
+												BackgroundTransparency = 1,
+
+												[children] = {
+													new "TextButton" {
+														Name = "toggleMini",
+														AnchorPoint = Vector2.new(0.5,0.5),
+														BackgroundTransparency = 1,
+														Position = UDim2.fromScale(0.5,0.5),
+														Size = UDim2.fromOffset(30,30),
+
+														[onevent "MouseButton1Click"] = function()
+															isOpen:set(not get(isOpen))
+														end,
+
+														[children] = {
+															new "ImageLabel" {
+																Name = "maximizeIcon",
+																AnchorPoint = Vector2.new(0.5,0.5),
+																BackgroundTransparency = 1,
+																Position = UDim2.fromScale(0.5,0.5),
+																Size = UDim2.fromOffset(26,26),
+																Image = "rbxassetid://15556636376",
+
+																ImageColor3 = config.image,
+																ImageTransparency = animate(function()
+																	if get(isOpen) then
+																		return 0
+																	else
+																		return 1
+																	end
+																end,25,1)
+															},
+															new "ImageLabel" {
+																Name = "minimizeIcon",
+																AnchorPoint = Vector2.new(0.5,0.5),
+																BackgroundTransparency = 1,
+																Position = UDim2.fromScale(0.5,0.5),
+																Size = UDim2.fromOffset(26,26),
+																Image = "rbxassetid://15556637715",
+
+																ImageColor3 = config.image,
+																ImageTransparency = animate(function()
+																	if get(isOpen) then
+																		return 1
+																	else
+																		return 0
+																	end
+																end,25,1)
+															}
+														}
+													}
+												}
+											},
+											new "TextButton" {
+												Size = UDim2.fromOffset(30,30),
+												BackgroundTransparency = 1,
+												Text = "",
+
+												[onevent "MouseButton1Click"] = function()
+													computerQuake:Destroy()
+												end,
+
+												[children] = {
+													new "ImageLabel" {
+														AnchorPoint = Vector2.new(0.5,0.5),
+														Position = UDim2.fromScale(0.5,0.5),
+														Size = UDim2.fromScale(1,1),
+														Rotation = 45,
+														BackgroundTransparency = 1,
+														Image = "rbxassetid://15556635005",
+														ImageTransparency = 0,
+
+														ImageColor3 = config.close
+													}
+												}
+											}
+										}
+									},
+									new "TextLabel" {
+										AnchorPoint = Vector2.new(0,0.5),
+										Position = UDim2.fromScale(0,0.55),
+										Size = UDim2.fromOffset(350,25),
+										BackgroundTransparency = 1,
+										Font = Enum.Font.GothamBold,
+										TextScaled = true,
+										TextSize = 25,
+										TextXAlignment = Enum.TextXAlignment.Left,
+
+										Text = prop.Title,
+										TextColor3 = animate(function()
+											return get(Color)
+										end,15,1),
+
+										[children] = {
+											new "UIPadding" {PaddingLeft = UDim.new(0,15)},
+											new "UITextSizeConstraint" {
+												MaxTextSize = 25,
+												MinTextSize = 1
+											}
+										}
+									}
+								}
+							},
+							new "Frame" {
+								AnchorPoint = Vector2.new(0,0),
+								Size = UDim2.new(0,480,0,340),
+								Position = UDim2.new(0,60,0,50),
+								BackgroundTransparency = 1,
+								ClipsDescendants = true,
+
+								[ref] = refTable.windowsRef,
+								[children] = {
+									new "UIPageLayout" {
+										EasingDirection = Enum.EasingDirection.In,
+										EasingStyle = Enum.EasingStyle.Sine,
+										TweenTime = 0.2,
+										FillDirection = Enum.FillDirection.Vertical,
+										SortOrder = Enum.SortOrder.LayoutOrder,
+										Padding = UDim.new(0,20),
+
+										[ref] = refTable.uipagelayoutRef
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			new "ScrollingFrame" {
+				ZIndex = 0,
+				AnchorPoint = Vector2.new(1,1),
+				Position = UDim2.new(1,0,1,-10),
+				Size = UDim2.new(0,240,1,-10),
+				BackgroundTransparency = 1,
+				ScrollBarThickness = 0,
+				AutomaticCanvasSize = Enum.AutomaticSize.Y,
+
+				[ref] = refTable.notificationListRef,
+
+				[children] = {
+					new "UIListLayout" {
+						Padding = UDim.new(0,5),
+						SortOrder = Enum.SortOrder.LayoutOrder,
+						HorizontalAlignment = Enum.HorizontalAlignment.Left,
+						VerticalAlignment = Enum.VerticalAlignment.Bottom
+					}
+				}
+			}
+		}
+	}
+	u.drag(get(draggingFrameRef),15)
+
+    return refTable, function(var)
+        Color:set(var)
+    end
+end
+end)() end,
+    [75] = function()local wax,script,require=ImportGlobals(75)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local ref = Fusion.Ref
+
+local get = require(project.utilities.get)
+local config = require(project.config)
+local animate = require(project.utilities.animate)
+
+return function(prop)
     local mobileQuake
 
+    local isOpen = value(false)
+    local Color = value(config.text)
+
+    local refTable = {}
+	refTable.sideBarRef = value()
+	refTable.windowsRef = value()
+	refTable.uipagelayoutRef = value()
+	refTable.notificationListRef = value()
+
     mobileQuake = new "ScreenGui" {
-        Name = prop.Title,
+        Name = prop.saltedTable[prop.Title],
         Parent = prop.Parent,
 
         [children] = {
@@ -6970,6 +6974,8 @@ function lib:CreateMobileLibary(prop)
                             CanvasSize = UDim2.new(0,0,0,0),
                             AutomaticCanvasSize = Enum.AutomaticSize.Y,
 
+                            [ref] = refTable.sideBarRef,
+
                             [children] = {
                                 new "UIListLayout" {
                                     Padding = UDim.new(0,5),
@@ -7058,6 +7064,9 @@ function lib:CreateMobileLibary(prop)
                             Position = UDim2.fromOffset(50,40),
                             Size = UDim2.new(1,-50,1,-40),
                             BackgroundTransparency = 1,
+                            ClipsDescendants = true,
+
+                            [ref] = refTable.windowsRef,
 
                             [children] = {
                                 new "UIPadding" {
@@ -7074,13 +7083,15 @@ function lib:CreateMobileLibary(prop)
                                     FillDirection = Enum.FillDirection.Vertical,
                                     SortOrder = Enum.SortOrder.LayoutOrder,
                                     Padding = UDim.new(0,20),
+
+                                    [ref] = refTable.uipagelayoutRef
                                 },
                             }
                         }
                     }
                 }
             },
-            new "ScrollingFrame" {
+            new "ScrollingFrame" { -- notifications
                 Name = "notifications",
 				ZIndex = 0,
 				AnchorPoint = Vector2.new(1,1),
@@ -7089,6 +7100,8 @@ function lib:CreateMobileLibary(prop)
 				BackgroundTransparency = 1,
 				ScrollBarThickness = 0,
 				AutomaticCanvasSize = Enum.AutomaticSize.Y,
+
+                [ref] = refTable.notificationListRef,
 
 				[children] = {
 					new "UIListLayout" {
@@ -7100,393 +7113,127 @@ function lib:CreateMobileLibary(prop)
 				}
 			}
         }
-
     }
 
-    local notifications = mobileQuake.notifications
-    local tabsList = mobileQuake.container.tabsList
-    local windowsList = mobileQuake.container.windowsList
-    local uipagelayout = windowsList.UIPageLayout
-
-    local function addWindow(prop)
-
-        local Window = new "ScrollingFrame" {
-            Name = prop.Name,
-            Parent = windowsList,
-            BackgroundTransparency = 1,
-            Size = UDim2.fromScale(1,1),
-            ScrollBarThickness = 0,
-            CanvasSize = UDim2.new(0,0,0,0),
-            AutomaticCanvasSize = Enum.AutomaticSize.Y,
-
-            [children] = {
-                new "UIListLayout" {
-                    Padding = UDim.new(0,5),
-                    SortOrder = Enum.SortOrder.LayoutOrder,
-                    FillDirection = Enum.FillDirection.Vertical,
-                    HorizontalAlignment = Enum.HorizontalAlignment.Center,
-                },
-                new "TextLabel" {
-                    Size = UDim2.new(1,0,0,30),
-                    Text = prop.Name,
-                    BackgroundTransparency = 1,
-                    TextScaled = true,
-                    TextColor3 = config.text,
-                    Font = Enum.Font.GothamMedium,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-
-                    [children] = {
-                        new "UITextSizeConstraint" {
-                            MaxTextSize = 15,
-                            MinTextSize = 1
-                        },
-                        new "UIPadding" {
-                            PaddingLeft = UDim.new(0,5)
-                        }
-                    }
-                }
-            }
-        }
-        return Window
+    return refTable, function(var)
+        Color:set(var)
     end
-    local function addTab(prop)
-        local identifier = ""
-        for i = 1, 5 do
-            identifier = identifier..tostring(math.abs(math.random(0,9)))
-        end
-        identifier = prop.Name..identifier
-        local hover = value(false)
-        local xSize = value(0)
-        local textRef = value()
-
-        if not get(firstTab) then
-            firstTab:set(true)
-            SelectedTab:set(identifier)
-            prop.Callback()
-        end
-
-        do
-            local xySize = getStringBounds(prop.Name, {
-                TextSize = 14,
-                Font = Enum.Font.GothamMedium,
-                VectorSize = Vector2.new(10000,14)
-            })
-            if xySize.X < 449 then
-                xSize:set(math.abs(xySize.X))
-            else
-                for i=1,14 do
-                    local tmpXY = getStringBounds(prop.Name, {
-                        TextSize = 14-i,
-                        Font = Enum.Font.GothamMedium,
-                        VectorSize = Vector2.new(450,40)
-                    })
-                    if tmpXY.X < 450 and tmpXY.Y < 14 then
-                        xSize:set(math.abs(tmpXY.X+1))
-                        break
-                    end
-                end
-            end
-        end
-
-        new "TextButton" {
-            ZIndex = 2,
-            Name = prop.Name,
-            Parent = tabsList,
-            AnchorPoint = Vector2.new(0,0.5),
-            Position = UDim2.fromOffset(30,30),
-            BackgroundColor3 = config.secondaryBackground,
-            ClipsDescendants = true,
-            Text = "",
-            Size = animate(function()
-
-                if get(hover) then
-                    return UDim2.fromOffset(get(xSize) +50,40)
-                else
-                    return UDim2.fromOffset(40,40)
-                end
-
-            end,20,1),
-
-            [onevent "MouseButton1Click"] = function()
-                prop.Callback()
-                SelectedTab:set(identifier)
-                hover:set(true)
-                task.wait(0.5)
-                hover:set(false)
-            end,
-
-            [children] = {
-                new "UICorner" {
-                    CornerRadius = animate(function()
-
-                        if get(hover) then
-                            return UDim.new(0,10)
-                        else
-                            return UDim.new(1,0)
-                        end
-
-                    end,30,1),
-                },
-                new "ImageLabel" {
-                    ZIndex = 5,
-                    Name = "icon",
-                    AnchorPoint = Vector2.new(0,0.5),
-                    Position = UDim2.new(0,6,0.5,0),
-                    Size = UDim2.fromOffset(28,28),
-                    BackgroundTransparency = 1,
-                    Image = prop.Image,
-                    ImageColor3 = animate(function()
-                        if get(hover) and get(SelectedTab) ~= identifier then
-                            return prop.tabColor
-                        elseif not get(hover) and get(SelectedTab) ~= identifier then
-                            return config.image
-                        else
-                            return prop.tabColor
-                        end
-
-                    end,30,1),
-                },
-                new "TextLabel" {
-                    ZIndex = 5,
-                    AnchorPoint = Vector2.new(0,0.5),
-                    Position = UDim2.new(0,40,0.5,0),
-                    Size = UDim2.new(0,get(xSize),0,14),
-                    BackgroundTransparency = 1,
-                    Text = prop.Name,
-                    TextScaled = true,
-                    TextTransparency = animate(function()
-
-                        if get(hover) then
-                            return 0
-                        else
-                            return 1
-                        end
-
-                    end,20,1),
-                    Font = Enum.Font.GothamMedium,
-                    TextColor3 = config.text,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-
-                    [ref] = textRef,
-                    [children] = {
-                        new "UITextSizeConstraint" {
-                            MaxTextSize = 14,
-                            MinTextSize = 1
-                        }
-                    }
-                }
-            }
-        }
-    end
-
-    lib.Windows = {}
-    function lib.Windows:Tab(prop)
-
-        local tabColor = prop.tabColor or config.tab
-        local newWindow = addWindow({
-			Name = prop.Name,
-			tabColor = tabColor
-		})
-
-		addTab({
-			Name = prop.Name,
-			tabColor = tabColor,
-			Image = prop.Image,
-			Parent = newWindow,
-
-			Callback = function()
-				uipagelayout:JumpTo(newWindow)
-				Color:set(tabColor)
-			end
-		})
-
-        lib.Windows.Component = {}
-        function lib.Windows.Component:Button(prop)
-
-			local newTextButton = require(project.components.newTextButton)
-			return newTextButton({
-				Name = prop.Name,
-				Parent = newWindow,
-				tabColor = tabColor,
-				Callback = function()
-					prop.Callback()
-				end,
-			})
-
-		end
-		function lib.Windows.Component:Toggle(prop)
-
-			local newToggle = require(project.components.newToggle)
-			return newToggle({
-				Parent = newWindow,
-				tabColor = tabColor,
-				Name = prop.Name,
-				Default = prop.Default,
-				Callback = function(variable)
-					prop.Callback(variable)
-				end,
-			})
-
-		end
-		function lib.Windows.Component:TextBox(prop)
-
-			local newTextBox = require(project.components.newTextBox)
-			return newTextBox({
-				Parent = newWindow,
-				tabColor = tabColor,
-				Name = prop.Name,
-				Default = prop.Default,
-				Callback = function(variable)
-					prop.Callback(variable)
-				end,
-			})
-
-		end
-		function lib.Windows.Component:Keybind(prop)
-
-			local newKeybind = require(project.components.newKeybind)
-			return newKeybind({
-				Name = prop.Name,
-				Parent = newWindow,
-				tabColor = tabColor,
-				Default = prop.Default,
-				Callback = function()
-					prop.Callback()
-				end,
-			})
-
-		end
-		function lib.Windows.Component:Dropdown(prop)
-
-			local newDropdown = require(project.components.newDropdown)
-			return newDropdown({
-				Name = prop.Name,
-				Parent = newWindow,
-				Items = prop.Items,
-				Default = prop.Default,
-				Multiselect = prop.Multiselect,
-				tabColor = tabColor,
-				Callback = function(variable)
-					prop.Callback(variable)
-				end,
-			})
-
-		end
-		function lib.Windows.Component:Slider(prop)
-			local newSlider = require(project.components.newSlider)
-			return newSlider({
-				Name = prop.Name,
-				Parent = newWindow,
-				tabColor = tabColor,
-				Min = prop.Min,
-				Max = prop.Max,
-				Step = prop.Step,
-				InitialValue = prop.InitialValue,
-				Callback = function(variable)
-					prop.Callback(variable)
-				end,
-			})
-		end
-		function lib.Windows.Component:Section(text: string)
-			local newSection = require(project.components.newSection)
-			return newSection({
-				Parent = newWindow,
-				Text = text
-			})
-		end
-		function lib.Windows.Component:Paragraph(prop)
-			local newParagraph = require(project.components.newParagraph)
-			return newParagraph({
-				Parent = newWindow,
-				Title = prop.Title,
-				Body = prop.Body
-			})
-		end
-		function lib.Windows.Component:Label(text: string)
-			local newTextLabel = require(project.components.newTextLabel)
-			return newTextLabel({
-				Parent = newWindow,
-				tabColor = tabColor,
-				Text = text
-			})
-		end
-        return lib.Windows.Component
-    end
-    function lib.Windows:Notify(prop)
-        local newNotification = require(project.components.newNotification)
-		newNotification({
-            Parent = notifications,
-			Title = prop.Title,
-			Duration = prop.Duration,
-			Body = prop.Body
-		})
-	end
-    return lib.Windows
 end
-
-return lib
-
 end)() end,
-    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)local project = require(script.Parent)
+    [76] = function()local wax,script,require=ImportGlobals(76)local ImportGlobals return (function(...)local project = require(script.Parent)
 
 return function(target)
-    local mwindow = project:MobileWindow({
+    local window = project:Window({
         Title = "hey",
-        Parent = target
+        Parent = target,
+        isMobile = false
     })
 
-    local tab1 = mwindow:Tab({
+    local tab1 = window:Tab({
         Name = "test1",
         tabColor = Color3.fromRGB(255,0,0),
-        Image = ""
+        Image = "rbxassetid://10709769841"
     })
-    local tab2 = mwindow:Tab({
+    local tab2 = window:Tab({
         Name = "test2",
         tabColor = Color3.fromRGB(0,255,0),
-        Image = ""
+        Image = "rbxassetid://15555209580"
     })
-    tab1:Dropdown({
-        Name = "dropdown",
-        Items = {"apple", "banana", "carrot"},
-        Multiselect = false,
-        Default = "",
-        Callback = function(value)
-            print(value)
+    for i = 1, 2 do
+        local parent
+        if i == 1 then
+            parent = tab1
+        else
+            parent = tab2
         end
-    })
-    tab1:Button({
-        Name = "send notif",
-        Callback = function()
-            mwindow:Notify({
-                Title = "hey",
-                Body = "kerlsgkagk mfakdfkafkladskfalfkas dlkfalkdfl aslkdfklasdflk aksldfklalksdfklasdlkfkl alkfla kdlflk asldf kasdlf kalsdfk alsdkf laskdf laksdlf ka",
-                Duration = 5
-            })
-        end
-    })
-    tab1:Button({
-        Name = "send notif",
-        Callback = function()
-            mwindow:Notify({
-                Title = "hey",
-                Body = "kerlsgkagk mfakdfkafkladskfalfkas dlkfalkdfl aslkdfklasdflk aksldfklalksdfklasdlkfkl alkfla kdlflk asldf kasdlf kalsdfk alsdkf laskdf laksdlf ka",
-                Duration = 10
-            })
-        end
-    })
+        parent:Button({
+            Name = "button", -- string
+            Callback = function()
+                window:Notify({
+                    Title = "Notification",
+                    Body = "Body",
+                    Duration = math.random(5,9)
+                })
+            end
+        })
+        parent:Toggle({
+            Name = "toggle", -- string
+            Default = false, -- boolean
+            Callback = function(value)
+                print(value)
+            end
+        })
+        parent:TextBox({
+            Name = "textbox", -- string
+            Default = "texts", -- string
+            Callback = function(value)
+                print(value)
+            end
+        })
+        parent:Keybind({
+            Name = "keybind", -- string
+            Default = "E", -- string but a LETTER
+            Callback = function()
+                print("quake")
+            end
+        })
+        parent:Dropdown({
+            Name = "dropdown", -- string
+            Items = {"apple", "banana", "carrot"}, -- table
+            Multiselect = false, -- boolean
+            Default = "", -- if multiselect its a table: {}
+            Callback = function(value)
+                print(value)
+            end
+        })
+        parent:Dropdown({
+            Name = "dropdown multiselect", -- string
+            Items = {"apple", "banana", "carrot"}, -- table
+            Multiselect = true, -- boolean
+            Default = {}, -- if multiselect its a table: {}
+            Callback = function(value)
+                for i,v in ipairs(value) do
+                    print(i,v)
+                end
+            end
+        })
+        parent:Slider({
+            Name = "slider", -- string
+            Min = 0, -- number
+            Max = 100, -- number
+            Step = 1, -- number
+            InitialValue = 0, -- number
+            Callback = function(value)
+                print(value)
+            end
+        })
+        parent:Section("section")
+        parent:Paragraph({
+            Title = "title", -- string
+            Body = "body", -- string
+        })
+        parent:Label("label")
+    end
     return function()
         project:Destroy()
     end
 end
 end)() end,
-    [74] = function()local wax,script,require=ImportGlobals(74)local ImportGlobals return (function(...)return function(value, dependency)
+    [78] = function()local wax,script,require=ImportGlobals(78)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+local computed,spring = Fusion.Computed,Fusion.Spring
+
+return function(callback, speed, damping)
+	return spring(computed(callback), speed, damping)
+end
+end)() end,
+    [79] = function()local wax,script,require=ImportGlobals(79)local ImportGlobals return (function(...)return function(value, dependency)
 	if typeof(value) == "table" and value.type == "State" then
 		return value:get(dependency)
 	end
 	return value
 end
 end)() end,
-    [75] = function()local wax,script,require=ImportGlobals(75)local ImportGlobals return (function(...)return function(text:string, properties)
+    [80] = function()local wax,script,require=ImportGlobals(80)local ImportGlobals return (function(...)return function(text:string, properties)
     text = text or ""
     properties = properties or {
         TextSize = 14,
@@ -7497,7 +7244,7 @@ end)() end,
     return TextService:GetTextSize(text,properties.TextSize,properties.Font,properties.VectorSize)
 end
 end)() end,
-    [76] = function()local wax,script,require=ImportGlobals(76)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
+    [81] = function()local wax,script,require=ImportGlobals(81)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
 local white = Color3.new(1, 1, 1)
 
 return function(color: Color3, BorW: string, lerpAmount: number) 
@@ -7509,6 +7256,13 @@ return function(color: Color3, BorW: string, lerpAmount: number)
 	else
 		return error("hey its not white or black")
 	end
+end
+end)() end,
+    [82] = function()local wax,script,require=ImportGlobals(82)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+local computed = Fusion.Computed
+
+return function(callback,style)
+	return Fusion.Tween(computed(callback), style)
 end
 end)() end
 } -- [RefId] = Closure
@@ -7523,124 +7277,75 @@ local ObjectTree = {
         },
         {
             {
-                71,
+                76,
                 2,
                 {
-                    "mobile"
+                    "project.story"
                 }
             },
             {
-                59,
-                1,
-                {
-                    "components"
-                },
-                {
-                    {
-                        65,
-                        2,
-                        {
-                            "newSlider"
-                        }
-                    },
-                    {
-                        63,
-                        2,
-                        {
-                            "newParagraph"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "newTextLabel"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "newTextBox"
-                        }
-                    },
-                    {
-                        69,
-                        2,
-                        {
-                            "newToggle"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "newSection"
-                        }
-                    },
-                    {
-                        62,
-                        2,
-                        {
-                            "newNotification"
-                        }
-                    },
-                    {
-                        61,
-                        2,
-                        {
-                            "newKeybind"
-                        }
-                    },
-                    {
-                        60,
-                        2,
-                        {
-                            "newDropdown"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "newTextButton"
-                        }
-                    }
-                }
-            },
-            {
-                70,
-                2,
-                {
-                    "config"
-                }
-            },
-            {
-                73,
+                77,
                 1,
                 {
                     "utilities"
                 },
                 {
                     {
-                        75,
+                        82,
+                        2,
+                        {
+                            "tween"
+                        }
+                    },
+                    {
+                        80,
                         2,
                         {
                             "getStringBounds"
                         }
                     },
                     {
-                        76,
+                        78,
+                        2,
+                        {
+                            "animate"
+                        }
+                    },
+                    {
+                        81,
                         2,
                         {
                             "lerpColor"
                         }
                     },
                     {
-                        74,
+                        79,
                         2,
                         {
                             "get"
+                        }
+                    }
+                }
+            },
+            {
+                73,
+                1,
+                {
+                    "platforms"
+                },
+                {
+                    {
+                        74,
+                        2,
+                        {
+                            "computer"
+                        }
+                    },
+                    {
+                        75,
+                        2,
+                        {
+                            "mobile"
                         }
                     }
                 }
@@ -7674,122 +7379,6 @@ local ObjectTree = {
                         },
                         {
                             {
-                                4,
-                                1,
-                                {
-                                    "Animation"
-                                },
-                                {
-                                    {
-                                        8,
-                                        2,
-                                        {
-                                            "TweenScheduler"
-                                        }
-                                    },
-                                    {
-                                        10,
-                                        2,
-                                        {
-                                            "lerpType"
-                                        }
-                                    },
-                                    {
-                                        6,
-                                        2,
-                                        {
-                                            "SpringScheduler"
-                                        }
-                                    },
-                                    {
-                                        12,
-                                        2,
-                                        {
-                                            "springCoefficients"
-                                        }
-                                    },
-                                    {
-                                        9,
-                                        2,
-                                        {
-                                            "getTweenRatio"
-                                        }
-                                    },
-                                    {
-                                        5,
-                                        2,
-                                        {
-                                            "Spring"
-                                        }
-                                    },
-                                    {
-                                        13,
-                                        2,
-                                        {
-                                            "unpackType"
-                                        }
-                                    },
-                                    {
-                                        11,
-                                        2,
-                                        {
-                                            "packType"
-                                        }
-                                    },
-                                    {
-                                        7,
-                                        2,
-                                        {
-                                            "Tween"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                16,
-                                1,
-                                {
-                                    "Dependencies"
-                                },
-                                {
-                                    {
-                                        18,
-                                        2,
-                                        {
-                                            "initDependency"
-                                        }
-                                    },
-                                    {
-                                        17,
-                                        2,
-                                        {
-                                            "captureDependencies"
-                                        }
-                                    },
-                                    {
-                                        19,
-                                        2,
-                                        {
-                                            "sharedState"
-                                        }
-                                    },
-                                    {
-                                        20,
-                                        2,
-                                        {
-                                            "updateAll"
-                                        }
-                                    },
-                                    {
-                                        21,
-                                        2,
-                                        {
-                                            "useDependency"
-                                        }
-                                    }
-                                }
-                            },
-                            {
                                 22,
                                 1,
                                 {
@@ -7818,10 +7407,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        24,
+                                        30,
                                         2,
                                         {
-                                            "Cleanup"
+                                            "Ref"
                                         }
                                     },
                                     {
@@ -7839,13 +7428,6 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        27,
-                                        2,
-                                        {
-                                            "OnChange"
-                                        }
-                                    },
-                                    {
                                         32,
                                         2,
                                         {
@@ -7853,10 +7435,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        30,
+                                        27,
                                         2,
                                         {
-                                            "Ref"
+                                            "OnChange"
+                                        }
+                                    },
+                                    {
+                                        24,
+                                        2,
+                                        {
+                                            "Cleanup"
                                         }
                                     },
                                     {
@@ -7876,24 +7465,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        43,
+                                        46,
                                         2,
                                         {
-                                            "ForPairs"
-                                        }
-                                    },
-                                    {
-                                        41,
-                                        2,
-                                        {
-                                            "Computed"
-                                        }
-                                    },
-                                    {
-                                        45,
-                                        2,
-                                        {
-                                            "Observer"
+                                            "Value"
                                         }
                                     },
                                     {
@@ -7911,10 +7486,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        46,
+                                        45,
                                         2,
                                         {
-                                            "Value"
+                                            "Observer"
                                         }
                                     },
                                     {
@@ -7923,37 +7498,21 @@ local ObjectTree = {
                                         {
                                             "ForValues"
                                         }
-                                    }
-                                }
-                            },
-                            {
-                                39,
-                                2,
-                                {
-                                    "PubTypes"
-                                }
-                            },
-                            {
-                                14,
-                                1,
-                                {
-                                    "Colour"
-                                },
-                                {
+                                    },
                                     {
-                                        15,
+                                        41,
                                         2,
                                         {
-                                            "Oklab"
+                                            "Computed"
+                                        }
+                                    },
+                                    {
+                                        43,
+                                        2,
+                                        {
+                                            "ForPairs"
                                         }
                                     }
-                                }
-                            },
-                            {
-                                48,
-                                2,
-                                {
-                                    "Types"
                                 }
                             },
                             {
@@ -7963,20 +7522,6 @@ local ObjectTree = {
                                     "Utility"
                                 },
                                 {
-                                    {
-                                        50,
-                                        2,
-                                        {
-                                            "None"
-                                        }
-                                    },
-                                    {
-                                        54,
-                                        2,
-                                        {
-                                            "needsDestruction"
-                                        }
-                                    },
                                     {
                                         56,
                                         2,
@@ -7992,6 +7537,13 @@ local ObjectTree = {
                                         }
                                     },
                                     {
+                                        51,
+                                        2,
+                                        {
+                                            "cleanup"
+                                        }
+                                    },
+                                    {
                                         55,
                                         2,
                                         {
@@ -7999,10 +7551,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        51,
+                                        50,
                                         2,
                                         {
-                                            "cleanup"
+                                            "None"
+                                        }
+                                    },
+                                    {
+                                        54,
+                                        2,
+                                        {
+                                            "needsDestruction"
                                         }
                                     },
                                     {
@@ -8022,17 +7581,10 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        34,
+                                        36,
                                         2,
                                         {
-                                            "logError"
-                                        }
-                                    },
-                                    {
-                                        38,
-                                        2,
-                                        {
-                                            "parseError"
+                                            "logWarn"
                                         }
                                     },
                                     {
@@ -8050,12 +7602,165 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        36,
+                                        38,
                                         2,
                                         {
-                                            "logWarn"
+                                            "parseError"
+                                        }
+                                    },
+                                    {
+                                        34,
+                                        2,
+                                        {
+                                            "logError"
                                         }
                                     }
+                                }
+                            },
+                            {
+                                14,
+                                1,
+                                {
+                                    "Colour"
+                                },
+                                {
+                                    {
+                                        15,
+                                        2,
+                                        {
+                                            "Oklab"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                16,
+                                1,
+                                {
+                                    "Dependencies"
+                                },
+                                {
+                                    {
+                                        20,
+                                        2,
+                                        {
+                                            "updateAll"
+                                        }
+                                    },
+                                    {
+                                        18,
+                                        2,
+                                        {
+                                            "initDependency"
+                                        }
+                                    },
+                                    {
+                                        19,
+                                        2,
+                                        {
+                                            "sharedState"
+                                        }
+                                    },
+                                    {
+                                        17,
+                                        2,
+                                        {
+                                            "captureDependencies"
+                                        }
+                                    },
+                                    {
+                                        21,
+                                        2,
+                                        {
+                                            "useDependency"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                39,
+                                2,
+                                {
+                                    "PubTypes"
+                                }
+                            },
+                            {
+                                4,
+                                1,
+                                {
+                                    "Animation"
+                                },
+                                {
+                                    {
+                                        13,
+                                        2,
+                                        {
+                                            "unpackType"
+                                        }
+                                    },
+                                    {
+                                        6,
+                                        2,
+                                        {
+                                            "SpringScheduler"
+                                        }
+                                    },
+                                    {
+                                        12,
+                                        2,
+                                        {
+                                            "springCoefficients"
+                                        }
+                                    },
+                                    {
+                                        5,
+                                        2,
+                                        {
+                                            "Spring"
+                                        }
+                                    },
+                                    {
+                                        10,
+                                        2,
+                                        {
+                                            "lerpType"
+                                        }
+                                    },
+                                    {
+                                        11,
+                                        2,
+                                        {
+                                            "packType"
+                                        }
+                                    },
+                                    {
+                                        8,
+                                        2,
+                                        {
+                                            "TweenScheduler"
+                                        }
+                                    },
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
+                                    {
+                                        7,
+                                        2,
+                                        {
+                                            "Tween"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                48,
+                                2,
+                                {
+                                    "Types"
                                 }
                             }
                         }
@@ -8066,7 +7771,100 @@ local ObjectTree = {
                 72,
                 2,
                 {
-                    "project.story"
+                    "config"
+                }
+            },
+            {
+                59,
+                1,
+                {
+                    "components"
+                },
+                {
+                    {
+                        64,
+                        2,
+                        {
+                            "newSection"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "newTextBox"
+                        }
+                    },
+                    {
+                        65,
+                        2,
+                        {
+                            "newSlider"
+                        }
+                    },
+                    {
+                        70,
+                        2,
+                        {
+                            "newToggle"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newTextButton"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "newWindow"
+                        }
+                    },
+                    {
+                        61,
+                        2,
+                        {
+                            "newKeybind"
+                        }
+                    },
+                    {
+                        66,
+                        2,
+                        {
+                            "newTab"
+                        }
+                    },
+                    {
+                        69,
+                        2,
+                        {
+                            "newTextLabel"
+                        }
+                    },
+                    {
+                        60,
+                        2,
+                        {
+                            "newDropdown"
+                        }
+                    },
+                    {
+                        62,
+                        2,
+                        {
+                            "newNotification"
+                        }
+                    },
+                    {
+                        63,
+                        2,
+                        {
+                            "newParagraph"
+                        }
+                    }
                 }
             }
         }
@@ -8076,71 +7874,76 @@ local ObjectTree = {
 -- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
     8,
-    [3] = 772,
-    [5] = 846,
-    [6] = 1064,
-    [7] = 1157,
-    [8] = 1293,
-    [9] = 1368,
-    [10] = 1411,
-    [11] = 1573,
-    [12] = 1672,
-    [13] = 1758,
-    [15] = 1847,
-    [17] = 1902,
-    [18] = 1959,
-    [19] = 1988,
-    [20] = 2012,
-    [21] = 2072,
-    [23] = 2102,
-    [24] = 2251,
-    [25] = 2272,
-    [26] = 2292,
-    [27] = 2328,
-    [28] = 2363,
-    [29] = 2400,
-    [30] = 2444,
-    [31] = 2474,
-    [32] = 2601,
-    [34] = 2712,
-    [35] = 2745,
-    [36] = 2780,
-    [37] = 2804,
-    [38] = 2850,
-    [39] = 2873,
-    [41] = 3020,
-    [42] = 3134,
-    [43] = 3383,
-    [44] = 3693,
-    [45] = 3940,
-    [46] = 4024,
-    [47] = 4087,
-    [48] = 4103,
-    [50] = 4250,
-    [51] = 4264,
-    [52] = 4318,
-    [53] = 4329,
-    [54] = 4347,
-    [55] = 4360,
-    [56] = 4389,
-    [57] = 4409,
-    [58] = 5233,
-    [60] = 5379,
-    [61] = 5714,
-    [62] = 5849,
-    [63] = 5994,
-    [64] = 6088,
-    [65] = 6145,
-    [66] = 6383,
-    [67] = 6532,
-    [68] = 6651,
-    [69] = 6710,
-    [70] = 6839,
-    [71] = 6851,
-    [72] = 7430,
-    [74] = 7482,
-    [75] = 7489,
-    [76] = 7500
+    [3] = 237,
+    [5] = 311,
+    [6] = 529,
+    [7] = 622,
+    [8] = 758,
+    [9] = 833,
+    [10] = 876,
+    [11] = 1038,
+    [12] = 1137,
+    [13] = 1223,
+    [15] = 1312,
+    [17] = 1367,
+    [18] = 1424,
+    [19] = 1453,
+    [20] = 1477,
+    [21] = 1537,
+    [23] = 1567,
+    [24] = 1716,
+    [25] = 1737,
+    [26] = 1757,
+    [27] = 1793,
+    [28] = 1828,
+    [29] = 1865,
+    [30] = 1909,
+    [31] = 1939,
+    [32] = 2066,
+    [34] = 2177,
+    [35] = 2210,
+    [36] = 2245,
+    [37] = 2269,
+    [38] = 2315,
+    [39] = 2338,
+    [41] = 2485,
+    [42] = 2599,
+    [43] = 2848,
+    [44] = 3158,
+    [45] = 3405,
+    [46] = 3489,
+    [47] = 3552,
+    [48] = 3568,
+    [50] = 3715,
+    [51] = 3729,
+    [52] = 3783,
+    [53] = 3794,
+    [54] = 3812,
+    [55] = 3825,
+    [56] = 3854,
+    [57] = 3874,
+    [58] = 4698,
+    [60] = 4844,
+    [61] = 5189,
+    [62] = 5334,
+    [63] = 5475,
+    [64] = 5576,
+    [65] = 5637,
+    [66] = 5880,
+    [67] = 6022,
+    [68] = 6182,
+    [69] = 6309,
+    [70] = 6374,
+    [71] = 6501,
+    [72] = 6549,
+    [74] = 6561,
+    [75] = 6849,
+    [76] = 7120,
+    [78] = 7219,
+    [79] = 7226,
+    [80] = 7233,
+    [81] = 7244,
+    [82] = 7258
 }
 
 -- Misc AOT variable imports
