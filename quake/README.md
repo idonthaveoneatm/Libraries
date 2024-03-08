@@ -16,6 +16,14 @@ local window = quake:Window({
     isMobile = false -- true if you want mobile library if you dont add it defaults to false
 })
 ```
+### Notify
+```lua
+local notification = window:Notify({
+    Title = "", -- string
+    Body = "", -- string
+    Duration = 0 -- number
+})
+```
 ### new tab
 ```lua
 local tab = window:Tab({
