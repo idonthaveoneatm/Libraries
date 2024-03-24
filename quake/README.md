@@ -2,14 +2,14 @@
 
 this is quake ui library i will fix things eventually
 
-## calling library
+## Calling Library
 ```lua
 -- quake
 local quake = loadstring(game:HttpGet("https://raw.githubusercontent.com/idonthaveoneatm/Libraries/normal/quake/src"))()
 -- quake
 ```
 
-### new window
+### New Window
 ```lua
 local window = quake:Window({
     Title = "", -- string
@@ -30,6 +30,23 @@ local window = quake:Window({
     }
 })
 ```
+### Setting Theme
+```lua
+quake:SetCustomTheme({
+    defaultTab = Color3.fromHex("#a49ae6"),
+    background = Color3.fromRGB(40, 44, 50),
+    secondaryBackground = Color3.fromRGB(49, 56, 66),
+    tertiaryBackground = Color3.fromRGB(57, 63, 75),
+    text = Color3.fromRGB(220,221,225),
+    image = Color3.fromRGB(220,221,225),
+    placeholder = Color3.fromRGB(165,166,169),
+    close = Color3.fromRGB(190, 100, 105)
+})
+-- you dont need to input all aka you can js change background if you want
+quake:SetCustomTheme({
+    background = Color3.fromRGB(255, 44, 50) -- if you really wanted to
+})
+```
 ### Notify
 ```lua
 local notification = window:Notify({
@@ -38,7 +55,7 @@ local notification = window:Notify({
     Duration = 0 -- number
 })
 ```
-### new tab
+### New Tab
 ```lua
 local tab = window:Tab({
     Name = "", -- string
@@ -46,7 +63,7 @@ local tab = window:Tab({
     Image = "" -- rbxassetid
 })
 ```
-### new button
+### new Button
 ```lua
 local button = tab:Button({
     Name = "", -- string
@@ -62,7 +79,7 @@ button:SetCallback(function()
     print("new quake")
 end)
 ```
-### new toggle
+### new Toggle
 ```lua
 local toggle = tab:Toggle({
     Name = "", -- string
@@ -76,7 +93,7 @@ local toggle = tab:Toggle({
 
 toggle:SetValue(true) -- boolean
 ```
-### new textbox
+### New TextBox
 ```lua
 local textbox = tab:TextBox({
     Name = "", -- string
@@ -90,7 +107,7 @@ local textbox = tab:TextBox({
 
 textbox:SetInput("") -- string
 ```
-### new keybind
+### New Keybind
 ```lua
 local keybind = tab:Keybind({
     Name = "", -- string
@@ -104,7 +121,7 @@ local keybind = tab:Keybind({
 
 keybind:SetBind("") -- string but a LETTER
 ```
-### new dropdown
+### New Dropdown
 ```lua
 local dropdown = tab:Dropdown({
     Name = "", -- string
@@ -125,7 +142,7 @@ local dropdown = tab:Dropdown({
 
 dropdown:SetItems({}) -- table
 ```
-### new slider
+### New Slider
 ```lua
 local slider = tab:Slider({
     Name = "", -- string
@@ -142,7 +159,7 @@ local slider = tab:Slider({
 
 slider:SetValue(50) -- number
 ```
-### new section
+### New Section
 ```lua
 local section = tab:Section("") -- string
 
@@ -150,7 +167,7 @@ local section = tab:Section("") -- string
 
 section:SetText("") -- string
 ```
-### new paragraph
+### New Paragraph
 ```lua
 local paragraph = tab:Paragraph({
     Title = "", -- string
@@ -162,7 +179,7 @@ local paragraph = tab:Paragraph({
 paragraph:SetTitle("") -- string
 paragraph:SetBody("") -- string
 ```
-### new label
+### New Label
 ```lua
 local label = tab:Label("") -- string
 
@@ -170,7 +187,7 @@ local label = tab:Label("") -- string
 
 label:SetText("") -- string
 ```
-## everything has
+## Miscellaneous
 ```lua
 <object>:Remove() -- ?? i think i added this for all
 ```
