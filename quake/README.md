@@ -59,7 +59,7 @@ local notification = window:Notify({
 ```lua
 local tab = window:Tab({
     Name = "", -- string
-    tabColor = Color3, -- fromHex fromRGB fromHSV
+    tabColor = Color3, -- fromHex fromRGB fromHSV NOT REQUIRED HAS A DEFAULT COLOR
     Image = "" -- rbxassetid
 })
 ```
