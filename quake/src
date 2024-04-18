@@ -4923,7 +4923,7 @@ return function(prop)
 	local multiTable = {}
 	local down = value(false)
 	local open = value(false)
-	local itemTable = value(prop.Items)
+	local itemTable = value({})
 	local itemsRef,searchBoxRef = value(), value()
 	local searchText = value("")
 	local tabColor = value(prop.tabColor)
@@ -4935,7 +4935,7 @@ return function(prop)
 
 	local defaultSelected = value(prop.Default)
 
-	local dropdownName = value(prop.Name.."")
+	local dropdownName = value(prop.Name)
 
 	local returnFunctions = {}
 
@@ -4964,8 +4964,8 @@ return function(prop)
 					Position = UDim2.fromScale(0.5,0),
 
 					BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+						return get(tabColor)
+					end,40,1),
 					BackgroundTransparency = animate(function()
 						if get(down) then
 							return 0.95
@@ -5054,8 +5054,8 @@ end,40,1),
 				TextXAlignment = Enum.TextXAlignment.Left,
 
 				BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+					return get(tabColor)
+				end,40,1),
 				TextColor3 = animate(function()
 					return get(config).text
 				end,40,1),
@@ -5123,8 +5123,8 @@ end,40,1),
 				AutomaticCanvasSize = Enum.AutomaticSize.Y,
 
 				ScrollBarImageColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+					return get(tabColor)
+				end,40,1),
 
 				[ref] = itemsRef,
 
@@ -5138,7 +5138,8 @@ end,40,1),
 			}
 		}
 	}
-	computed(function()
+	observe(itemTable):onChange(function()
+		dropdownName:set(prop.Name)
 		if newDropdown:FindFirstChild("Items", true) then
 			for _,old in ipairs(newDropdown:FindFirstChild("Items", true):GetChildren()) do
 				if old:IsA("TextButton") then
@@ -5255,20 +5256,19 @@ end,40,1),
 			end)
 		end
 	end)
+	itemTable:set(prop.Items)
 
 	function returnFunctions:Remove()
 		newDropdown:Destroy()
 	end
-	function returnFunctions:SetItems(newTable)
+	function returnFunctions:SetSelectedItems(newTable)
 		if typeof(newTable) == "table" then
 			itemTable:set(newTable)
-			prop.Items = newTable
 			table.clear(multiTable)
 		else
 			error("you didnt give "..prop.Name.." a table for SetItems!")
 		end
 	end
-
 	return returnFunctions
 end
 end)() end,
@@ -5311,7 +5311,6 @@ return function(prop)
 
 	local newKeybind = new "Frame" {
 		Size = UDim2.new(1,0,0,40),
-
 		BackgroundColor3 = animate(function()
 			return get(config).secondaryBackground
 		end,40,1),
@@ -5329,8 +5328,8 @@ return function(prop)
 					BackgroundTransparency = 0.85,
 
 					BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+						return get(tabColor)
+					end,40,1),
 
 					[children] = {
 						new "UICorner" {
@@ -5413,7 +5412,8 @@ end,40,1),
 			}
 		}
 	}
-	UIS.InputBegan:Connect(function(input)
+	local connectedFunction
+	connectedFunction = UIS.InputBegan:Connect(function(input)
 		if get(focused) then
 			if input.KeyCode ~= Enum.KeyCode.Unknown then
 				local tmp = string.split(tostring(input.KeyCode), ".")
@@ -5425,6 +5425,9 @@ end,40,1),
 				prop.Callback()
 			end)
 		end
+	end)
+	newKeybind.Destroying:Connect(function()
+		connectedFunction:Disconnect()
 	end)
 
 	function returnFunctions:Remove()
@@ -6869,6 +6872,8 @@ local onevent = Fusion.OnEvent
 local children = Fusion.Children
 local value = Fusion.Value
 local ref = Fusion.Ref
+local observe = Fusion.Observer
+local computed = Fusion.Computed
 
 local get = require(project.utilities.get)
 local config = value(require(project.config))
@@ -6881,18 +6886,37 @@ task.spawn(function()
 	end
 end)
 
+local UserInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+
 return function(prop)
     local computerQuake
 
     local Color = value(get(config).text)
     local draggingFrameRef = value()
-    local isOpen = value(false)
+    local isClosed = value(false)
+	local isResizing = value(false)
+	local isResizeLocked = value(false)
+	local isResizeXLocked = value(false)
+	local isResizeYLocked = value(false)
+	local oldMousePosition = value(UserInputService:GetMouseLocation())
+	local containerX = value(prop.Size.X)
+	local containerY = value(prop.Size.Y)
+	local containerSpeed = value(20)
+	local heartbeat = nil
+	observe(isResizing):onChange(function()
+		if not get(isResizing) and heartbeat ~= nil then
+			heartbeat:Disconnect()
+			heartbeat = nil
+		end
+	end)
 
 	local refTable = {}
 	refTable.sideBarRef = value()
 	refTable.windowsRef = value()
 	refTable.uipagelayoutRef = value()
 	refTable.notificationListRef = value()
+	local resizerREF = value()
 
 	computerQuake = new "ScreenGui" {
 		Name = prop.saltedTable[prop.Title],
@@ -6902,29 +6926,28 @@ return function(prop)
 
 		[children] = {
 			new "Frame" {
-                Name = "containter",
+                Name = "container",
 				BackgroundTransparency = 1,
-				AnchorPoint = Vector2.new(0.5,0),
-				Position = UDim2.new(0.5,0,0.5,-prop.Size.Y/2),
-				Size = UDim2.fromOffset(prop.Size.X,45),
+				AnchorPoint = Vector2.new(0,0),
+				Position = UDim2.new(0.5,-get(containerX)/2,0.5,-get(containerY)/2),
+				Size = UDim2.fromOffset(get(containerX),45),
 
 				[ref] = draggingFrameRef,
 
 				[children] = {
 					new "Frame" {
-						AnchorPoint = Vector2.new(0.5,0),
-						Position = UDim2.fromScale(0.5,0),
+						AnchorPoint = Vector2.new(0,0),
+						Position = UDim2.fromScale(0,0),
 						ClipsDescendants = true,
 
 						BackgroundColor3 = animate(function()
 							return get(config).background
 						end,40,1),
 						Size = animate(function()
-							if get(isOpen) then
-								return UDim2.fromOffset(prop.Size.X,45)
-							else
-								return UDim2.fromOffset(prop.Size.X,prop.Size.Y)
+							if get(isClosed) then
+								return UDim2.fromOffset(get(containerX),45)
 							end
+							return UDim2.fromOffset(get(containerX),get(containerY))
 						end,20,1),
 
 						[children] = {
@@ -6984,7 +7007,7 @@ return function(prop)
 											return get(config).tertiaryBackground
 										end,40,1),
 										BackgroundTransparency = animate(function()
-											if get(isOpen) then
+											if get(isClosed) then
 												return 1
 											else
 												return 0
@@ -7017,7 +7040,7 @@ return function(prop)
 														Size = UDim2.fromOffset(30,30),
 
 														[onevent "MouseButton1Click"] = function()
-															isOpen:set(not get(isOpen))
+															isClosed:set(not get(isClosed))
 														end,
 
 														[children] = {
@@ -7033,7 +7056,7 @@ return function(prop)
 																	return get(config).image
 																end,40,1),
 																ImageTransparency = animate(function()
-																	if get(isOpen) then
+																	if get(isClosed) then
 																		return 0
 																	else
 																		return 1
@@ -7052,7 +7075,7 @@ return function(prop)
 																	return get(config).image
 																end,40,1),
 																ImageTransparency = animate(function()
-																	if get(isOpen) then
+																	if get(isClosed) then
 																		return 1
 																	else
 																		return 0
@@ -7120,7 +7143,9 @@ return function(prop)
 							},
 							new "Frame" { -- windowsContainer
 								AnchorPoint = Vector2.new(0,0),
-								Size = UDim2.new(0,prop.Size.X - 70,0,prop.Size.Y - 60),
+								Size = animate(function()
+									return UDim2.new(0,get(containerX) - 70,0,get(containerY) - 60)
+								end, 20, 1),
 								Position = UDim2.new(0,60,0,50),
 								BackgroundTransparency = 1,
 								ClipsDescendants = true,
@@ -7138,6 +7163,98 @@ return function(prop)
 										[ref] = refTable.uipagelayoutRef
 									}
 								}
+							},
+							new "TextButton" {
+								Name = "Resizer",
+								AnchorPoint = Vector2.new(1,1),
+								Position = UDim2.fromScale(1,1),
+								Size = UDim2.fromOffset(10,10),
+								BackgroundTransparency = 1,
+								Interactable = computed(function()
+									return not get(isClosed)
+								end),
+
+								[ref] = resizerREF,
+								[onevent "InputBegan"] = function(input)
+									if not get(isClosed) and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+										local oldDistance = Vector2.new(9e9,9e9)
+										if heartbeat == nil then
+											heartbeat = runService.Heartbeat:Connect(function()
+												local resizer = get(resizerREF)
+												local behindDistance = (UserInputService:GetMouseLocation() - resizer.AbsolutePosition)
+												if not computerQuake and heartbeat ~= nil then
+													heartbeat:Disconnect()
+												end
+												if behindDistance.X > 0 then
+													isResizeXLocked:set(false)
+												elseif behindDistance.X < 0 then
+													isResizeXLocked:set(true)
+												end
+												if behindDistance.Y > 0 then
+													isResizeYLocked:set(false)
+												elseif behindDistance.Y < 0 then
+													isResizeYLocked:set(true)
+												end
+												if behindDistance.X > 0 and behindDistance.Y > 0 then
+													isResizeLocked:set(false)
+												elseif behindDistance.X < 0 and behindDistance.Y < 0 then
+													isResizeLocked:set(true)
+												end
+
+												if get(isResizing)then
+													if get(isResizeLocked) then
+														oldMousePosition:set(resizer.AbsolutePosition)
+													end
+													local distance = UserInputService:GetMouseLocation() - get(oldMousePosition)
+													if get(isResizeLocked) then
+														oldMousePosition:set(resizer.AbsolutePosition)
+													else
+														oldMousePosition:set(UserInputService:GetMouseLocation())
+													end
+													if distance ~= oldDistance then
+														oldDistance = distance
+														if get(isResizeXLocked) and distance.X < 0 then
+															if get(containerX) + distance.X < 550 then
+																containerX:set(550)
+															else
+																containerX:set(get(containerX) + distance.X)
+															end
+														elseif not get(isResizeXLocked) then
+															if get(containerX) + distance.X < 550 then
+																containerX:set(550)
+															else
+																containerX:set(get(containerX) + distance.X)
+															end
+														end
+														if get(isResizeYLocked) and distance.Y < 0 then
+															if get(containerY) + distance.Y < 400 then
+																containerY:set(400)
+															else
+																containerY:set(get(containerY) + distance.Y)
+															end
+														elseif not get(isResizeYLocked) then
+															if get(containerY) + distance.Y < 400 then
+																containerY:set(400)
+															else
+																containerY:set(get(containerY) + distance.Y)
+															end
+														end
+													end
+												end
+											end)
+										end
+										isResizing:set(true)
+										oldMousePosition:set(UserInputService:GetMouseLocation())
+
+										input.Changed:Connect(function()
+											if input.UserInputState == Enum.UserInputState.End then
+												oldMousePosition:set(UserInputService:GetMouseLocation())
+												task.wait()
+												isResizing:set(false)
+											end
+										end)
+									end
+								end
 							}
 						}
 					}
@@ -7500,104 +7617,108 @@ return function(target)
             close = Color3.fromRGB(190, 100, 105)
         }
     }
-    local window = project:Window({
-        Title = "testing",
-        Parent = target, -- defaults to game.CoreGui dw
-        isMobile = false,
-        Size = {
-            X = 700,
-            Y = 600
-        },
-        ConfigurationFile = {
-            doCreate = true,
-            Creator = "Name",
-            scriptName = "ScriptName"
-        }
-    })
-
-    local tab1 = window:Tab({
-        Name = "test1",
-        Image = "rbxassetid://10709769841"
-    })
-    local tab2 = window:Tab({
-        Name = "test2",
-        --tabColor = Color3.fromRGB(0,255,0),
-        Image = "rbxassetid://15555209580"
-    })
-    for i = 1, 2 do
-        local parent
-        if i == 1 then
-            parent = tab1
-        else
-            parent = tab2
+    for i=1,2 do
+        local ismobileToggle = false
+        if i == 2 then
+            ismobileToggle = true
         end
-        parent:Button({
-            Name = "button", -- string
-            Callback = function()
-                window:Notify({
-                    Title = "Notification",
-                    Body = "Body",
-                    Duration = math.random(5,9)
-                })
-            end
+        local window = project:Window({
+            Title = "testing",
+            Parent = target, -- defaults to game.CoreGui dw
+            isMobile = ismobileToggle,
+            Size = {
+                X = 700,
+                Y = 400
+            },
+            ConfigurationFile = {
+                doCreate = true,
+                Creator = "Name",
+                scriptName = "ScriptName"
+            }
         })
-        parent:Toggle({
-            Name = "toggle", -- string
-            Default = false, -- boolean
-            Callback = function(value)
-                print(value)
-            end
+    
+        local tab1 = window:Tab({
+            Name = "test1",
+            Image = "rbxassetid://10709769841"
         })
-        parent:TextBox({
-            Name = "textbox", -- string
-            Default = "texts", -- string
-            Callback = function(value)
-                print(value)
-            end
+        local tab2 = window:Tab({
+            Name = "test2",
+            --tabColor = Color3.fromRGB(0,255,0),
+            Image = "rbxassetid://15555209580"
         })
-        parent:Keybind({
-            Name = "keybind", -- string
-            Default = "E", -- string but a LETTER
-            Callback = function()
-                print("quake")
+        for i = 1, 2 do
+            local parent
+            if i == 1 then
+                parent = tab1
+            else
+                parent = tab2
             end
-        })
-        parent:Dropdown({
-            Name = "dropdown", -- string
-            Items = {"default", "dracula", "dark"}, -- table
-            Multiselect = false, -- boolean
-            Default = "", -- if multiselect its a table: {}
-            Callback = function(value)
-                project:SetCustomTheme(customThemes[value])
-            end
-        })
-        parent:Dropdown({
-            Name = "dropdown multiselect", -- string
-            Items = {"apple", "banana", "carrot"}, -- table
-            Multiselect = true, -- boolean
-            Default = {}, -- if multiselect its a table: {}
-            Callback = function(value)
-                for i,v in ipairs(value) do
-                    print(i,v)
+            local dd = parent:Dropdown({
+                Name = "dropdown", -- string
+                Items = {"default", "dracula", "dark"}, -- table
+                Multiselect = true, -- boolean
+                Default = "", -- if multiselect its a table: {}
+                Callback = function(value)
+                    for i,v in ipairs(value) do
+                        print(i,v)
+                    end
                 end
-            end
-        })
-        parent:Slider({
-            Name = "slider", -- string
-            Min = 0, -- number
-            Max = 100, -- number
-            Step = 1, -- number
-            InitialValue = 10, -- number
-            Callback = function(value)
-                print(value)
-            end
-        })
-        parent:Section("section")
-        parent:Paragraph({
-            Title = "title", -- string
-            Body = "body", -- string
-        })
-        parent:Label("label")
+            })
+            parent:Button({
+                Name = "button", -- string
+                Callback = function()
+                    dd:SetSelectedItems({"Hey", "New", "Table"})
+                end
+            })
+            parent:Toggle({
+                Name = "toggle", -- string
+                Default = false, -- boolean
+                Callback = function(value)
+                    print(value)
+                end
+            })
+            parent:TextBox({
+                Name = "textbox", -- string
+                Default = "texts", -- string
+                Callback = function(value)
+                    print(value)
+                end
+            })
+            parent:Keybind({
+                Name = "keybind", -- string
+                Default = "E", -- string but a LETTER
+                Callback = function()
+                    print("quake")
+                end
+            })
+            parent:Dropdown({
+                Name = "dropdown multiselect", -- string
+                Items = {"apple", "banana", "carrot"}, -- table
+                Multiselect = true, -- boolean
+                Default = {}, -- if multiselect its a table: {}
+                Callback = function(value)
+                    for i,v in ipairs(value) do
+                        print(i,v)
+                    end
+                end
+            })
+            parent:Slider({
+                Name = "slider", -- string
+                Min = 0, -- number
+                Max = 100, -- number
+                Step = 1, -- number
+                InitialValue = 10, -- number
+                Callback = function(value)
+                    print(value)
+                end
+            })
+            parent:Section("section")
+            parent:Paragraph({
+                Title = "title", -- string
+                Body = "body", -- string
+            })
+            parent:Label("label")
+        end
     end
     return function()
         project:Destroy()
@@ -7669,66 +7790,24 @@ local ObjectTree = {
         },
         {
             {
-                72,
-                2,
-                {
-                    "config"
-                }
-            },
-            {
-                77,
-                2,
-                {
-                    "project.story"
-                }
-            },
-            {
-                78,
+                73,
                 1,
                 {
-                    "utilities"
+                    "platforms"
                 },
                 {
                     {
-                        80,
+                        75,
                         2,
                         {
-                            "get"
+                            "mobile"
                         }
                     },
                     {
-                        81,
+                        74,
                         2,
                         {
-                            "getStringBounds"
-                        }
-                    },
-                    {
-                        79,
-                        2,
-                        {
-                            "animate"
-                        }
-                    },
-                    {
-                        82,
-                        2,
-                        {
-                            "lerpColor"
-                        }
-                    },
-                    {
-                        83,
-                        2,
-                        {
-                            "matchColors"
-                        }
-                    },
-                    {
-                        84,
-                        2,
-                        {
-                            "tween"
+                            "computer"
                         }
                     }
                 }
@@ -7741,12 +7820,177 @@ local ObjectTree = {
                 }
             },
             {
+                77,
+                2,
+                {
+                    "project.story"
+                }
+            },
+            {
+                59,
+                1,
+                {
+                    "components"
+                },
+                {
+                    {
+                        62,
+                        2,
+                        {
+                            "newNotification"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newTextButton"
+                        }
+                    },
+                    {
+                        60,
+                        2,
+                        {
+                            "newDropdown"
+                        }
+                    },
+                    {
+                        70,
+                        2,
+                        {
+                            "newToggle"
+                        }
+                    },
+                    {
+                        63,
+                        2,
+                        {
+                            "newParagraph"
+                        }
+                    },
+                    {
+                        64,
+                        2,
+                        {
+                            "newSection"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "newWindow"
+                        }
+                    },
+                    {
+                        69,
+                        2,
+                        {
+                            "newTextLabel"
+                        }
+                    },
+                    {
+                        65,
+                        2,
+                        {
+                            "newSlider"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "newTextBox"
+                        }
+                    },
+                    {
+                        66,
+                        2,
+                        {
+                            "newTab"
+                        }
+                    },
+                    {
+                        61,
+                        2,
+                        {
+                            "newKeybind"
+                        }
+                    }
+                }
+            },
+            {
+                78,
+                1,
+                {
+                    "utilities"
+                },
+                {
+                    {
+                        82,
+                        2,
+                        {
+                            "lerpColor"
+                        }
+                    },
+                    {
+                        81,
+                        2,
+                        {
+                            "getStringBounds"
+                        }
+                    },
+                    {
+                        84,
+                        2,
+                        {
+                            "tween"
+                        }
+                    },
+                    {
+                        79,
+                        2,
+                        {
+                            "animate"
+                        }
+                    },
+                    {
+                        83,
+                        2,
+                        {
+                            "matchColors"
+                        }
+                    },
+                    {
+                        80,
+                        2,
+                        {
+                            "get"
+                        }
+                    }
+                }
+            },
+            {
                 2,
                 1,
                 {
                     "Bundles"
                 },
                 {
+                    {
+                        57,
+                        2,
+                        {
+                            "lucide"
+                        }
+                    },
+                    {
+                        58,
+                        2,
+                        {
+                            "ui-utilities"
+                        }
+                    },
                     {
                         3,
                         2,
@@ -7755,121 +7999,19 @@ local ObjectTree = {
                         },
                         {
                             {
-                                40,
-                                1,
-                                {
-                                    "State"
-                                },
-                                {
-                                    {
-                                        41,
-                                        2,
-                                        {
-                                            "Computed"
-                                        }
-                                    },
-                                    {
-                                        43,
-                                        2,
-                                        {
-                                            "ForPairs"
-                                        }
-                                    },
-                                    {
-                                        42,
-                                        2,
-                                        {
-                                            "ForKeys"
-                                        }
-                                    },
-                                    {
-                                        45,
-                                        2,
-                                        {
-                                            "Observer"
-                                        }
-                                    },
-                                    {
-                                        47,
-                                        2,
-                                        {
-                                            "unwrap"
-                                        }
-                                    },
-                                    {
-                                        46,
-                                        2,
-                                        {
-                                            "Value"
-                                        }
-                                    },
-                                    {
-                                        44,
-                                        2,
-                                        {
-                                            "ForValues"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                16,
-                                1,
-                                {
-                                    "Dependencies"
-                                },
-                                {
-                                    {
-                                        19,
-                                        2,
-                                        {
-                                            "sharedState"
-                                        }
-                                    },
-                                    {
-                                        21,
-                                        2,
-                                        {
-                                            "useDependency"
-                                        }
-                                    },
-                                    {
-                                        20,
-                                        2,
-                                        {
-                                            "updateAll"
-                                        }
-                                    },
-                                    {
-                                        18,
-                                        2,
-                                        {
-                                            "initDependency"
-                                        }
-                                    },
-                                    {
-                                        17,
-                                        2,
-                                        {
-                                            "captureDependencies"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                48,
-                                2,
-                                {
-                                    "Types"
-                                }
-                            },
-                            {
                                 33,
                                 1,
                                 {
                                     "Logging"
                                 },
                                 {
+                                    {
+                                        34,
+                                        2,
+                                        {
+                                            "logError"
+                                        }
+                                    },
                                     {
                                         36,
                                         2,
@@ -7885,10 +8027,10 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        34,
+                                        38,
                                         2,
                                         {
-                                            "logError"
+                                            "parseError"
                                         }
                                     },
                                     {
@@ -7897,151 +8039,7 @@ local ObjectTree = {
                                         {
                                             "messages"
                                         }
-                                    },
-                                    {
-                                        38,
-                                        2,
-                                        {
-                                            "parseError"
-                                        }
                                     }
-                                }
-                            },
-                            {
-                                4,
-                                1,
-                                {
-                                    "Animation"
-                                },
-                                {
-                                    {
-                                        9,
-                                        2,
-                                        {
-                                            "getTweenRatio"
-                                        }
-                                    },
-                                    {
-                                        11,
-                                        2,
-                                        {
-                                            "packType"
-                                        }
-                                    },
-                                    {
-                                        6,
-                                        2,
-                                        {
-                                            "SpringScheduler"
-                                        }
-                                    },
-                                    {
-                                        5,
-                                        2,
-                                        {
-                                            "Spring"
-                                        }
-                                    },
-                                    {
-                                        7,
-                                        2,
-                                        {
-                                            "Tween"
-                                        }
-                                    },
-                                    {
-                                        8,
-                                        2,
-                                        {
-                                            "TweenScheduler"
-                                        }
-                                    },
-                                    {
-                                        10,
-                                        2,
-                                        {
-                                            "lerpType"
-                                        }
-                                    },
-                                    {
-                                        13,
-                                        2,
-                                        {
-                                            "unpackType"
-                                        }
-                                    },
-                                    {
-                                        12,
-                                        2,
-                                        {
-                                            "springCoefficients"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                49,
-                                1,
-                                {
-                                    "Utility"
-                                },
-                                {
-                                    {
-                                        54,
-                                        2,
-                                        {
-                                            "needsDestruction"
-                                        }
-                                    },
-                                    {
-                                        51,
-                                        2,
-                                        {
-                                            "cleanup"
-                                        }
-                                    },
-                                    {
-                                        52,
-                                        2,
-                                        {
-                                            "doNothing"
-                                        }
-                                    },
-                                    {
-                                        50,
-                                        2,
-                                        {
-                                            "None"
-                                        }
-                                    },
-                                    {
-                                        55,
-                                        2,
-                                        {
-                                            "restrictRead"
-                                        }
-                                    },
-                                    {
-                                        53,
-                                        2,
-                                        {
-                                            "isSimilar"
-                                        }
-                                    },
-                                    {
-                                        56,
-                                        2,
-                                        {
-                                            "xtypeof"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                39,
-                                2,
-                                {
-                                    "PubTypes"
                                 }
                             },
                             {
@@ -8052,31 +8050,17 @@ local ObjectTree = {
                                 },
                                 {
                                     {
-                                        25,
-                                        2,
-                                        {
-                                            "Hydrate"
-                                        }
-                                    },
-                                    {
-                                        26,
-                                        2,
-                                        {
-                                            "New"
-                                        }
-                                    },
-                                    {
-                                        29,
-                                        2,
-                                        {
-                                            "Out"
-                                        }
-                                    },
-                                    {
                                         28,
                                         2,
                                         {
                                             "OnEvent"
+                                        }
+                                    },
+                                    {
+                                        25,
+                                        2,
+                                        {
+                                            "Hydrate"
                                         }
                                     },
                                     {
@@ -8087,17 +8071,17 @@ local ObjectTree = {
                                         }
                                     },
                                     {
-                                        27,
-                                        2,
-                                        {
-                                            "OnChange"
-                                        }
-                                    },
-                                    {
                                         32,
                                         2,
                                         {
                                             "defaultProps"
+                                        }
+                                    },
+                                    {
+                                        27,
+                                        2,
+                                        {
+                                            "OnChange"
                                         }
                                     },
                                     {
@@ -8120,6 +8104,78 @@ local ObjectTree = {
                                         {
                                             "Cleanup"
                                         }
+                                    },
+                                    {
+                                        26,
+                                        2,
+                                        {
+                                            "New"
+                                        }
+                                    },
+                                    {
+                                        29,
+                                        2,
+                                        {
+                                            "Out"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                40,
+                                1,
+                                {
+                                    "State"
+                                },
+                                {
+                                    {
+                                        41,
+                                        2,
+                                        {
+                                            "Computed"
+                                        }
+                                    },
+                                    {
+                                        47,
+                                        2,
+                                        {
+                                            "unwrap"
+                                        }
+                                    },
+                                    {
+                                        42,
+                                        2,
+                                        {
+                                            "ForKeys"
+                                        }
+                                    },
+                                    {
+                                        46,
+                                        2,
+                                        {
+                                            "Value"
+                                        }
+                                    },
+                                    {
+                                        44,
+                                        2,
+                                        {
+                                            "ForValues"
+                                        }
+                                    },
+                                    {
+                                        45,
+                                        2,
+                                        {
+                                            "Observer"
+                                        }
+                                    },
+                                    {
+                                        43,
+                                        2,
+                                        {
+                                            "ForPairs"
+                                        }
                                     }
                                 }
                             },
@@ -8138,139 +8194,204 @@ local ObjectTree = {
                                         }
                                     }
                                 }
+                            },
+                            {
+                                4,
+                                1,
+                                {
+                                    "Animation"
+                                },
+                                {
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
+                                    {
+                                        12,
+                                        2,
+                                        {
+                                            "springCoefficients"
+                                        }
+                                    },
+                                    {
+                                        5,
+                                        2,
+                                        {
+                                            "Spring"
+                                        }
+                                    },
+                                    {
+                                        10,
+                                        2,
+                                        {
+                                            "lerpType"
+                                        }
+                                    },
+                                    {
+                                        13,
+                                        2,
+                                        {
+                                            "unpackType"
+                                        }
+                                    },
+                                    {
+                                        7,
+                                        2,
+                                        {
+                                            "Tween"
+                                        }
+                                    },
+                                    {
+                                        8,
+                                        2,
+                                        {
+                                            "TweenScheduler"
+                                        }
+                                    },
+                                    {
+                                        11,
+                                        2,
+                                        {
+                                            "packType"
+                                        }
+                                    },
+                                    {
+                                        6,
+                                        2,
+                                        {
+                                            "SpringScheduler"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                16,
+                                1,
+                                {
+                                    "Dependencies"
+                                },
+                                {
+                                    {
+                                        18,
+                                        2,
+                                        {
+                                            "initDependency"
+                                        }
+                                    },
+                                    {
+                                        21,
+                                        2,
+                                        {
+                                            "useDependency"
+                                        }
+                                    },
+                                    {
+                                        17,
+                                        2,
+                                        {
+                                            "captureDependencies"
+                                        }
+                                    },
+                                    {
+                                        19,
+                                        2,
+                                        {
+                                            "sharedState"
+                                        }
+                                    },
+                                    {
+                                        20,
+                                        2,
+                                        {
+                                            "updateAll"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                39,
+                                2,
+                                {
+                                    "PubTypes"
+                                }
+                            },
+                            {
+                                49,
+                                1,
+                                {
+                                    "Utility"
+                                },
+                                {
+                                    {
+                                        52,
+                                        2,
+                                        {
+                                            "doNothing"
+                                        }
+                                    },
+                                    {
+                                        56,
+                                        2,
+                                        {
+                                            "xtypeof"
+                                        }
+                                    },
+                                    {
+                                        53,
+                                        2,
+                                        {
+                                            "isSimilar"
+                                        }
+                                    },
+                                    {
+                                        54,
+                                        2,
+                                        {
+                                            "needsDestruction"
+                                        }
+                                    },
+                                    {
+                                        51,
+                                        2,
+                                        {
+                                            "cleanup"
+                                        }
+                                    },
+                                    {
+                                        55,
+                                        2,
+                                        {
+                                            "restrictRead"
+                                        }
+                                    },
+                                    {
+                                        50,
+                                        2,
+                                        {
+                                            "None"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                48,
+                                2,
+                                {
+                                    "Types"
+                                }
                             }
                         }
-                    },
-                    {
-                        58,
-                        2,
-                        {
-                            "ui-utilities"
-                        }
-                    },
-                    {
-                        57,
-                        2,
-                        {
-                            "lucide"
-                        }
                     }
                 }
             },
             {
-                59,
-                1,
+                72,
+                2,
                 {
-                    "components"
-                },
-                {
-                    {
-                        60,
-                        2,
-                        {
-                            "newDropdown"
-                        }
-                    },
-                    {
-                        65,
-                        2,
-                        {
-                            "newSlider"
-                        }
-                    },
-                    {
-                        71,
-                        2,
-                        {
-                            "newWindow"
-                        }
-                    },
-                    {
-                        63,
-                        2,
-                        {
-                            "newParagraph"
-                        }
-                    },
-                    {
-                        70,
-                        2,
-                        {
-                            "newToggle"
-                        }
-                    },
-                    {
-                        61,
-                        2,
-                        {
-                            "newKeybind"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "newTextBox"
-                        }
-                    },
-                    {
-                        69,
-                        2,
-                        {
-                            "newTextLabel"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "newTextButton"
-                        }
-                    },
-                    {
-                        62,
-                        2,
-                        {
-                            "newNotification"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "newTab"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "newSection"
-                        }
-                    }
-                }
-            },
-            {
-                73,
-                1,
-                {
-                    "platforms"
-                },
-                {
-                    {
-                        74,
-                        2,
-                        {
-                            "computer"
-                        }
-                    },
-                    {
-                        75,
-                        2,
-                        {
-                            "mobile"
-                        }
-                    }
+                    "config"
                 }
             }
         }
@@ -8331,27 +8452,27 @@ local LineOffsets = {
     [58] = 4753,
     [60] = 4899,
     [61] = 5275,
-    [62] = 5443,
-    [63] = 5600,
-    [64] = 5714,
-    [65] = 5784,
-    [66] = 6058,
-    [67] = 6221,
-    [68] = 6406,
-    [69] = 6552,
-    [70] = 6638,
-    [71] = 6792,
-    [72] = 6852,
-    [74] = 6863,
-    [75] = 7175,
-    [76] = 7466,
-    [77] = 7477,
-    [79] = 7607,
-    [80] = 7614,
-    [81] = 7621,
-    [82] = 7632,
-    [83] = 7646,
-    [84] = 7653
+    [62] = 5446,
+    [63] = 5603,
+    [64] = 5717,
+    [65] = 5787,
+    [66] = 6061,
+    [67] = 6224,
+    [68] = 6409,
+    [69] = 6555,
+    [70] = 6641,
+    [71] = 6795,
+    [72] = 6855,
+    [74] = 6866,
+    [75] = 7292,
+    [76] = 7583,
+    [77] = 7594,
+    [79] = 7728,
+    [80] = 7735,
+    [81] = 7742,
+    [82] = 7753,
+    [83] = 7767,
+    [84] = 7774
 }
 
 -- Misc AOT variable imports
