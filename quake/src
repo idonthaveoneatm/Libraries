@@ -21,18 +21,25 @@ function quake:Window(instance)
 
 	local mobile = require(script.platforms.mobile)
 	local computer = require(script.platforms.computer)
-	local newWindow = require(script.components.newWindow)
-	local newTab = require(script.components.newTab)
-	local newTextButton = require(script.components.newTextButton)
-	local newToggle = require(script.components.newToggle)
-	local newTextBox = require(script.components.newTextBox)
-	local newKeybind = require(script.components.newKeybind)
-	local newDropdown = require(script.components.newDropdown)
-	local newSlider = require(script.components.newSlider)
-	local newSection = require(script.components.newSection)
-	local newParagraph = require(script.components.newParagraph)
-	local newTextLabel = require(script.components.newTextLabel)
-	local newNotification = require(script.components.newNotification)
+	local componentTable = {
+		Window = require(script.components.newWindow),
+		Tab = require(script.components.newTab),
+		Button = require(script.components.newButton),
+		Toggle = require(script.components.newToggle),
+		TextBox = require(script.components.newTextBox),
+		Keybind = require(script.components.newKeybind),
+		Dropdown = require(script.components.newDropdown),
+		Slider = require(script.components.newSlider),
+		Section = require(script.components.newSection),
+		Paragraph = require(script.components.newParagraph),
+		Label = require(script.components.newLabel),
+		Notification = require(script.components.newNotification),
+		Group = require(script.components.newGroup)
+	}
+	local function addComponent(name, parent, properties)
+		properties.Parent = parent
+		return componentTable[name](properties)
+	end
 
 	-- Variables
 
@@ -129,20 +136,16 @@ function quake:Window(instance)
 			end)
 		end
 
-		local tabPage = newWindow({
+		local tabPage = addComponent("Window",get(library.windowsRef),{
 			Name = prop.Name,
-			Parent = get(library.windowsRef),
 			saltedTable = saltedTable
 		})
 
 		local isSelectedTab, setSelected
-		isSelectedTab, setSelected = newTab({
-			-- User Set
+		isSelectedTab, setSelected = addComponent("Tab",get(library.sideBarRef),{
 			Name = prop.Name,
 			tabColor = get(tabColor),
 			Image = prop.Image,
-			-- Dev Set
-			Parent = get(library.sideBarRef),
 			saltedTable = saltedTable,
 			isMobile = get(isMobile),
 			Callback = function(ourTab)
@@ -172,16 +175,14 @@ function quake:Window(instance)
 
 		quake.Windows.Component = {}
 		function quake.Windows.Component:Button(textbutton)
-			return newTextButton({
-				Parent = tabPage,
+			return addComponent("Button",tabPage,{
 				Name = textbutton.Name,
 				tabColor = get(tabColor),
 				Callback = textbutton.Callback
 			})
 		end
 		function quake.Windows.Component:Toggle(prop)
-			return newToggle({
-				Parent = tabPage,
+			return addComponent("Toggle",tabPage,{
 				tabColor = get(tabColor),
 				Name = prop.Name,
 				Default = prop.Default,
@@ -191,9 +192,7 @@ function quake:Window(instance)
 			})
 		end
 		function quake.Windows.Component:TextBox(prop)
-
-			return newTextBox({
-				Parent = tabPage,
+			return addComponent("TextBox",tabPage,{
 				tabColor = get(tabColor),
 				Name = prop.Name,
 				Default = prop.Default,
@@ -201,12 +200,10 @@ function quake:Window(instance)
 					prop.Callback(variable)
 				end,
 			})
-
 		end
 		function quake.Windows.Component:Keybind(prop)
-			return newKeybind({
+			return addComponent("Keybind",tabPage,{
 				Name = prop.Name,
-				Parent = tabPage,
 				tabColor = get(tabColor),
 				Default = prop.Default,
 				Callback = function()
@@ -215,9 +212,8 @@ function quake:Window(instance)
 			})
 		end
 		function quake.Windows.Component:Dropdown(prop)
-			return newDropdown({
+			return addComponent("Dropdown",tabPage,{
 				Name = prop.Name,
-				Parent = tabPage,
 				Items = prop.Items,
 				Default = prop.Default,
 				Multiselect = prop.Multiselect,
@@ -228,9 +224,8 @@ function quake:Window(instance)
 			})
 		end
 		function quake.Windows.Component:Slider(prop)
-			return newSlider({
+			return addComponent("Slider",tabPage,{
 				Name = prop.Name,
-				Parent = tabPage,
 				tabColor = get(tabColor),
 				Min = prop.Min,
 				Max = prop.Max,
@@ -242,30 +237,114 @@ function quake:Window(instance)
 			})
 		end
 		function quake.Windows.Component:Section(text: string)
-			return newSection({
-				Parent = tabPage,
+			return addComponent("Section",tabPage,{
 				Text = text
 			})
 		end
 		function quake.Windows.Component:Paragraph(prop)
-			return newParagraph({
-				Parent = tabPage,
+			return addComponent("Paragraph",tabPage,{
 				Title = prop.Title,
 				Body = prop.Body
 			})
 		end
 		function quake.Windows.Component:Label(text: string)
-			return newTextLabel({
+			return addComponent("Label",tabPage,{
 				Parent = tabPage,
 				tabColor = get(tabColor),
 				Text = text
 			})
 		end
+		function quake.Windows.Component:Group(prop)
+			local group,returnFunctions = addComponent("Group",tabPage,{
+				Name = prop.Name,
+				Icon = prop.Icon,
+				tabColor = get(tabColor),
+			})
+			function returnFunctions:Button(props)
+				return addComponent("Button",group,{
+					Name = props.Name,
+					tabColor = get(tabColor),
+					Callback = props.Callback
+				})
+			end
+			function returnFunctions:Toggle(prop)
+				return addComponent("Toggle",group,{
+					tabColor = get(tabColor),
+					Name = prop.Name,
+					Default = prop.Default,
+					Callback = function(variable)
+						prop.Callback(variable)
+					end,
+				})
+			end
+			function returnFunctions:TextBox(prop)
+				return addComponent("TextBot",group,{
+					tabColor = get(tabColor),
+					Name = prop.Name,
+					Default = prop.Default,
+					Callback = function(variable)
+						prop.Callback(variable)
+					end,
+				})
+			end
+			function returnFunctions:Keybind(prop)
+				return addComponent("Keybind",group,{
+					Name = prop.Name,
+					tabColor = get(tabColor),
+					Default = prop.Default,
+					Callback = function()
+						prop.Callback()
+					end,
+				})
+			end
+			function returnFunctions:Dropdown(prop)
+				return addComponent("Dropdown",group,{
+					Name = prop.Name,
+					Items = prop.Items,
+					Default = prop.Default,
+					Multiselect = prop.Multiselect,
+					tabColor = get(tabColor),
+					Callback = function(variable)
+						prop.Callback(variable)
+					end,
+				})
+			end
+			function returnFunctions:Slider(prop)
+				return addComponent("Slider",group,{
+					Name = prop.Name,
+					tabColor = get(tabColor),
+					Min = prop.Min,
+					Max = prop.Max,
+					Step = prop.Step,
+					InitialValue = prop.InitialValue,
+					Callback = function(variable)
+						prop.Callback(variable)
+					end
+				})
+			end
+			function returnFunctions:Section(text: string)
+				return addComponent("Section",group,{
+					Text = text
+				})
+			end
+			function returnFunctions:Paragraph(prop)
+				return addComponent("Paragraph",group,{
+					Title = prop.Title,
+					Body = prop.Body
+				})
+			end
+			function returnFunctions:Label(text: string)
+				return addComponent("Label",group,{
+					tabColor = get(tabColor),
+					Text = text
+				})
+			end
+			return returnFunctions
+		end
 		return quake.Windows.Component
 	end
 	function quake.Windows:Notify(prop)
-		newNotification({
-            Parent = get(library.notificationListRef),
+		addComponent("Notification",get(library.notificationListRef),{
 			Title = prop.Title,
 			Duration = prop.Duration,
 			Body = prop.Body
@@ -4904,13 +4983,13 @@ local onevent = Fusion.OnEvent
 local children = Fusion.Children
 local value = Fusion.Value
 local computed = Fusion.Computed
-local ref = Fusion.Ref
 local observe = Fusion.Observer
 
 local get = require(project.utilities.get)
 local config = value(require(project.config))
 local animate = require(project.utilities.animate)
 local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
 
 task.spawn(function()
 	while true and task.wait() do
@@ -4919,13 +4998,12 @@ task.spawn(function()
 end)
 
 return function(prop)
-	local multiselect = value(prop.Multiselect)
-	local multiTable = {}
+	local textValue = value(prop.Name)
+	local callbackValue = value(prop.Callback)
+
 	local down = value(false)
-	local open = value(false)
-	local itemTable = value({})
-	local itemsRef,searchBoxRef = value(), value()
-	local searchText = value("")
+	local isLocked = value(false)
+	local lockReason = value("")
 	local tabColor = value(prop.tabColor)
 	if matchColors(get(tabColor), get(config).defaultTab) then
 		observe(config):onChange(function()
@@ -4933,17 +5011,230 @@ return function(prop)
 		end)
 	end
 
-	local defaultSelected = value(prop.Default)
-
-	local dropdownName = value(prop.Name)
-
 	local returnFunctions = {}
+
+	local newTextButton = new "TextButton" {
+		Interactable = computed(function()
+			return not get(isLocked)
+		end),
+		ZIndex = 2,
+		Size = UDim2.new(1,0,0,40),
+		AutoButtonColor = false,
+
+		Name = prop.Name,
+		Parent = prop.Parent,
+		BackgroundColor3 = animate(function()
+			return get(config).secondaryBackground
+		end,40,1),
+
+		[onevent "MouseButton1Down"] = function()
+			down:set(true)
+		end,
+		[onevent "MouseButton1Up"] = function()
+			down:set(false)
+		end,
+		[onevent "MouseLeave"] = function()
+			down:set(false)
+		end,
+		[onevent "MouseButton1Click"] = function()
+			task.spawn(function()
+				get(callbackValue)()
+			end)
+		end,
+
+
+		[children] = {
+			{ -- Lock
+				new "Frame" {
+					ZIndex = 3,
+					Visible = computed(function()
+						return get(isLocked)
+					end),
+					Size = UDim2.fromScale(1,1),
+					BackgroundTransparency = 0.1,
+					BackgroundColor3 = animate(function()
+						return get(config).tertiaryBackground
+					end,40,1),
+
+					[children] = {
+						new "ImageLabel" {
+							AnchorPoint = Vector2.new(0,0.5),
+							Size = UDim2.fromOffset(24,24),
+							Position = UDim2.new(0,10,0.5),
+							BackgroundTransparency = 1,
+							ImageColor3 = animate(function()
+								return get(config).image
+							end,40,1),
+							Image = icons['lock']
+						},
+						new "TextLabel" {
+							Text = computed(function()
+								return get(lockReason)
+							end),
+							AnchorPoint = Vector2.new(0,0.5),
+							Position = UDim2.new(0,44,0.5,0),
+							Size = UDim2.new(1,-54,0,16),
+							Font = Enum.Font.GothamBold,
+							BackgroundTransparency = 1,
+							TextColor3 = animate(function()
+								return get(config).text
+							end,40,1),
+							TextSize = 16,
+							TextScaled = true,
+							TextXAlignment = Enum.TextXAlignment.Left,
+
+							[children] = {
+								new "UITextSizeConstraint" {
+									MinTextSize = 1,
+									MaxTextSize = 16
+								}
+							}
+						},
+						new "UICorner" {CornerRadius = UDim.new(0,6)},
+					}
+				}
+			},
+			new "UICorner" {
+				CornerRadius = UDim.new(0,6)
+			},
+			new "Frame" {
+				ZIndex = 2,
+				Size = UDim2.new(1,0,1,0),
+				AnchorPoint = Vector2.new(0.5,0.5),
+				Position = UDim2.new(0.5,0,0.5,0),
+
+				BackgroundColor3 = animate(function()
+					return get(tabColor)
+				end,40,1),
+				BackgroundTransparency = animate(function()
+					if get(down) then
+						return 0.95
+					end
+					return 0.85
+				end,50,1),
+
+				[children] = {
+					new "UICorner" {
+						CornerRadius = UDim.new(0,6)
+					}
+				}
+			},
+			new "TextLabel" {
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1,-20,0,14),
+				AnchorPoint = Vector2.new(0,0.5),
+				Position = UDim2.new(0,10,0.5,0),
+				Font = Enum.Font.Gotham,
+				TextScaled = true,
+				TextSize = 14,
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				TextColor3 = animate(function()
+					return get(config).text
+				end,40,1),
+				Text = computed(function()
+					return get(textValue)
+				end),
+				TextTransparency = animate(function()
+					if get(down) then
+						return 0.35
+					end
+					return 0
+				end,50,1),
+
+				[children] = {
+					new "UITextSizeConstraint"{
+						MinTextSize = 1,
+						MaxTextSize = 14
+					}
+				}
+			}
+		}
+	}
+
+	function returnFunctions:Remove()
+		newTextButton:Destroy()
+	end
+	function returnFunctions:SetName(newText)
+		if typeof(newText) == "string" then
+			textValue:set(newText)
+		else
+			error("You didnt give "..prop.Name.." a string for SetName")
+		end
+	end
+	function returnFunctions:SetCallback(newFunction)
+		if typeof(newFunction) == "function" then
+			callbackValue:set(newFunction)
+		else
+			error("You didnt give "..prop.Name.." a function for SetCallback")
+		end
+	end
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+	end
+	return returnFunctions
+end
+end)() end,
+    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local ref = Fusion.Ref
+local observe = Fusion.Observer
+
+local get = require(project.utilities.get)
+local config = value(require(project.config))
+local animate = require(project.utilities.animate)
+local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
+
+task.spawn(function()
+	while true and task.wait() do
+		config:set(require(project.config))
+	end
+end)
+
+return function(prop)
+	local itemTable = value({})
+	local defaultSelected = value(prop.Default)
+	local dropdownName = value(prop.Name)
+	local defaultName = value(get(dropdownName))
+	local multiselect = value(prop.Multiselect)
+
+	local multiTable = {}
+	local selectedAmount = value(0)
+	
+	local selectedItem = value("")
+
+	local itemsRef,searchBoxRef = value(), value()
+	local down = value(false)
+	local open = value(false)
+	local searchText = value("")
+	local itemsWithFunctions = {}
+	local isLocked = value(false)
+	local lockReason = value("")
+	local oldOpen = value(false)
+
+	local tabColor = value(prop.tabColor)
+	if matchColors(get(tabColor), get(config).defaultTab) then
+		observe(config):onChange(function()
+			tabColor:set(get(config).defaultTab)
+		end)
+	end
 
 	local newDropdown = new "Frame" {
 		ClipsDescendants = true,
 
 		Parent = prop.Parent,
-		Name = prop.Name,
+		Name = get(defaultName),
 		BackgroundColor3 = animate(function()
 			return get(config).secondaryBackground
 		end,40,1),
@@ -4979,10 +5270,11 @@ return function(prop)
 				},
 				new "TextLabel" {
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1,0,0,40),
-					AnchorPoint = Vector2.new(0.5,0),
-					Position = UDim2.fromScale(0.5,0),
+					Size = UDim2.new(1,-45,0,14),
+					AnchorPoint = Vector2.new(0,0),
+					Position = UDim2.new(0,10,0,13),
 					Font = Enum.Font.Gotham,
+					TextScaled = true,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 
@@ -5000,7 +5292,10 @@ return function(prop)
 					end,50,1),
 
 					[children] = {
-						new "UIPadding" {PaddingLeft = UDim.new(0,10)}
+						new "UITextSizeConstraint" {
+							MinTextSize = 1,
+							MaxTextSize = 14
+						}
 					}
 				},
 				new "ImageLabel" {
@@ -5020,9 +5315,62 @@ return function(prop)
 						end
 						return 0
 					end,50,1),
+				},
+				{ -- Lock
+					new "Frame" {
+						ZIndex = 3,
+						Visible = computed(function()
+							return get(isLocked)
+						end),
+						Size = UDim2.fromScale(1,1),
+						BackgroundTransparency = 0.1,
+						BackgroundColor3 = animate(function()
+							return get(config).tertiaryBackground
+						end,40,1),
+	
+						[children] = {
+							new "ImageLabel" {
+								AnchorPoint = Vector2.new(0,0.5),
+								Size = UDim2.fromOffset(24,24),
+								Position = UDim2.new(0,10,0.5),
+								BackgroundTransparency = 1,
+								ImageColor3 = animate(function()
+									return get(config).image
+								end,40,1),
+								Image = icons['lock']
+							},
+							new "TextLabel" {
+								Text = computed(function()
+									return get(lockReason)
+								end),
+								AnchorPoint = Vector2.new(0,0.5),
+								Position = UDim2.new(0,44,0.5,0),
+								Size = UDim2.new(1,-54,0,16),
+								Font = Enum.Font.GothamBold,
+								BackgroundTransparency = 1,
+								TextColor3 = animate(function()
+									return get(config).text
+								end,40,1),
+								TextSize = 16,
+								TextScaled = true,
+								TextXAlignment = Enum.TextXAlignment.Left,
+	
+								[children] = {
+									new "UITextSizeConstraint" {
+										MinTextSize = 1,
+										MaxTextSize = 16
+									}
+								}
+							},
+							new "UICorner" {CornerRadius = UDim.new(0,6)},
+						}
+					}
 				}
 			},
 			new "TextButton" {
+				Interactable = computed(function()
+					return not get(isLocked)
+				end),
 				Size = UDim2.new(1,0,0,40),
 				Text = "",
 				BackgroundTransparency = 1,
@@ -5139,7 +5487,10 @@ return function(prop)
 		}
 	}
 	observe(itemTable):onChange(function()
-		dropdownName:set(prop.Name)
+		dropdownName:set(get(defaultName))
+		selectedAmount:set(0)
+		table.clear(itemsWithFunctions)
+		table.clear(multiTable)
 		if newDropdown:FindFirstChild("Items", true) then
 			for _,old in ipairs(newDropdown:FindFirstChild("Items", true):GetChildren()) do
 				if old:IsA("TextButton") then
@@ -5151,7 +5502,28 @@ return function(prop)
 
 		for _,item in ipairs(get(itemTable)) do
 			local hover = value(false)
-			local selected = value(false)
+			local isSelected = value(false)
+			observe(isSelected):onChange(function()
+				if get(multiselect) then
+					if get(isSelected) then
+						selectedAmount:set(get(selectedAmount) + 1)
+					else
+						selectedAmount:set(get(selectedAmount) - 1)
+					end
+					dropdownName:set(get(defaultName)..": "..tostring(get(selectedAmount)).."/"..tostring(#prop.Items))
+				else
+					dropdownName:set(get(defaultName)..": "..get(selectedItem))
+				end
+			end)
+			observe(selectedItem):onChange(function()
+				if not get(multiselect) then
+					if get(selectedItem) == item then
+						isSelected:set(true)
+					else
+						isSelected:set(false)
+					end
+				end
+			end)
 
 			new "TextButton" {
 				Size = UDim2.new(0.95,0,0,30),
@@ -5176,22 +5548,21 @@ return function(prop)
 				end,
 				[onevent "MouseButton1Click"] = function()
 					if get(multiselect) then
-						if get(selected) then
-							selected:set(false)
+						if get(isSelected) then
+							isSelected:set(false)
 							table.remove(multiTable,table.find(multiTable,item))
 						else
-							selected:set(true)
+							isSelected:set(true)
 							table.insert(multiTable,item)
 						end
-						dropdownName:set(prop.Name..": "..tostring(#multiTable).."/"..tostring(#prop.Items))
 						task.spawn(function()
 							prop.Callback(multiTable)
 						end)
 					else
 						open:set(false)
-						dropdownName:set(prop.Name..": "..item)
+						selectedItem:set(item)
 						task.spawn(function()
-							prop.Callback(item)
+							prop.Callback(get(selectedItem))
 						end)
 					end
 				end,
@@ -5209,9 +5580,9 @@ return function(prop)
 						Text = item,
 						TextColor3 = animate(function()
 							if get(multiselect) then
-								if get(selected) and not get(hover) then
+								if get(isSelected) and not get(hover) then
 									return Color3.fromRGB(85, 220, 135)
-								elseif get(selected) and get(hover) then
+								elseif get(isSelected) and get(hover) then
 									return Color3.fromRGB(190, 100, 105)
 								else
 									return get(config).text
@@ -5234,20 +5605,22 @@ return function(prop)
 			}
 
 			if get(multiselect) and typeof(get(defaultSelected)) == "table" then
-				for _,selectedItem in ipairs(get(defaultSelected)) do
-					if selectedItem == item then
-						selected:set(true)
+				for _,s in ipairs(get(defaultSelected)) do
+					if s == item then
+						isSelected:set(true)
 						table.insert(multiTable,item)
-						dropdownName:set(prop.Name..": "..tostring(#multiTable).."/"..tostring(#prop.Items))
 					end
 				end
 			elseif not get(multiselect) and typeof(get(defaultSelected)) == "string" then
 				if get(defaultSelected) == item then
-					dropdownName:set(prop.Name..": "..item)
+					selectedItem:set(get(defaultSelected))
 					task.spawn(function()
-						prop.Callback(item)
+						prop.Callback(get(selectedItem))
 					end)
 				end
+			end
+			itemsWithFunctions[item] = function(selectValue)
+				isSelected:set(selectValue)
 			end
 		end
 		if get(multiselect) and typeof(get(defaultSelected)) == "table" and #multiTable > 0 then
@@ -5258,21 +5631,313 @@ return function(prop)
 	end)
 	itemTable:set(prop.Items)
 
+	local returnFunctions = {}
 	function returnFunctions:Remove()
 		newDropdown:Destroy()
 	end
-	function returnFunctions:SetSelectedItems(newTable)
+	function returnFunctions:SetItems(newTable)
 		if typeof(newTable) == "table" then
 			itemTable:set(newTable)
-			table.clear(multiTable)
 		else
-			error("you didnt give "..prop.Name.." a table for SetItems!")
+			error("You didn't give "..get(defaultName).." a table for SetItems")
 		end
+	end
+	function returnFunctions:SelectItem(item)
+		if not get(multiselect) then
+			if typeof(item) == "string" then
+				local isInTable = false
+				for _,v in ipairs(get(itemTable)) do
+					if v == item then
+						isInTable = true
+					end
+				end
+				if isInTable then
+					selectedItem:set(item)
+					for _,v in ipairs(itemsWithFunctions) do
+						v(false)
+					end
+					itemsWithFunctions[item](true)
+					task.spawn(function()
+						prop.Callback(get(selectedItem))
+					end)
+				else
+					error(item.." isn't in your Item table")
+				end
+			else
+				error("You tried to pass a "..typeof(item).." as a string for SelectItem")
+			end
+		else
+			error(get(defaultName).." is multiselectable. Use SelectItems")
+		end
+	end
+	function returnFunctions:SelectItems(newSelecteds)
+		if get(multiselect) then
+			if typeof(newSelecteds) == "table" then
+				local areInTable = {}
+				for _,v in ipairs(newSelecteds) do
+					if table.find(get(itemTable), v) then
+						table.insert(areInTable, v)
+					else
+						warn(v.." isn't in the Items table")
+					end
+				end
+				task.wait()
+				for _,v in ipairs(areInTable) do
+					itemsWithFunctions[v](true)
+				end
+				task.spawn(function()
+					prop.Callback(areInTable)
+				end)
+				multiTable = areInTable
+			else
+				error("You tried to pass a "..typeof(newSelecteds).." as a table for SelectItems")
+			end
+		else
+			error(get(defaultName).." isn't multiselectable. Use SelectItems")
+		end
+	end
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		oldOpen:set(get(open))
+		lockReason:set(reason or "Locked")
+		open:set(false)
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+		open:set(get(oldOpen))
 	end
 	return returnFunctions
 end
 end)() end,
-    [61] = function()local wax,script,require=ImportGlobals(61)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local onevent = Fusion.OnEvent
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local observe = Fusion.Observer
+
+local get = require(project.utilities.get)
+local config = value(require(project.config))
+local animate = require(project.utilities.animate)
+local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
+
+task.spawn(function()
+	while true and task.wait() do
+		config:set(require(project.config))
+	end
+end)
+
+return function(prop)
+    local name = value(prop.Name)
+    local icon = value(prop.Icon)
+    
+    local size = value(40)
+    local isClosed = value(false)
+    local isLocked = value(false)
+    local oldisClosed = value(false)
+    local lockReason = value("")
+    local tabColor = value(prop.tabColor)
+	if matchColors(get(tabColor), get(config).defaultTab) then
+		observe(config):onChange(function()
+			tabColor:set(get(config).defaultTab)
+		end)
+	end
+    local hasImage = value(false)
+
+    local newGroup = new "TextButton" {
+        ZIndex = 2,
+        Parent = prop.Parent,
+        ClipsDescendants = true,
+        Size = animate(function()
+            if get(isClosed) then
+                return UDim2.new(1,0,0,40)
+            end
+            return UDim2.new(1,0,0,get(size))
+        end,50,1),
+        BackgroundColor3 = animate(function()
+			return get(config).secondaryBackground
+		end,40,1),
+
+        [onevent "MouseButton1Click"] = function()
+            isClosed:set(not get(isClosed))
+        end,
+
+        [children] = {
+            { -- Lock
+				new "Frame" {
+					ZIndex = 3,
+					Visible = computed(function()
+						return get(isLocked)
+					end),
+					Size = UDim2.fromScale(1,1),
+					BackgroundTransparency = 0.1,
+					BackgroundColor3 = animate(function()
+						return get(config).tertiaryBackground
+					end,40,1),
+
+					[children] = {
+						new "ImageLabel" {
+							AnchorPoint = Vector2.new(0,0.5),
+							Size = UDim2.fromOffset(24,24),
+							Position = UDim2.new(0,10,0.5),
+							BackgroundTransparency = 1,
+							ImageColor3 = animate(function()
+								return get(config).image
+							end,40,1),
+							Image = icons['lock']
+						},
+						new "TextLabel" {
+							Text = computed(function()
+								return get(lockReason)
+							end),
+							AnchorPoint = Vector2.new(0,0.5),
+							Position = UDim2.new(0,44,0.5,0),
+							Size = UDim2.new(1,-54,0,16),
+							Font = Enum.Font.GothamBold,
+							BackgroundTransparency = 1,
+							TextColor3 = animate(function()
+								return get(config).text
+							end,40,1),
+							TextSize = 16,
+							TextScaled = true,
+							TextXAlignment = Enum.TextXAlignment.Left,
+
+							[children] = {
+								new "UITextSizeConstraint" {
+									MinTextSize = 1,
+									MaxTextSize = 16
+								}
+							}
+						},
+						new "UICorner" {CornerRadius = UDim.new(0,6)},
+					}
+				}
+			},
+            new "UICorner" {CornerRadius = UDim.new(0,4)},
+            new "TextLabel" {
+                Text =  computed(function()
+                    return get(name)
+                end),
+                TextColor3 = animate(function()
+                    return get(config).text
+                end,40,1),
+                BackgroundTransparency = 1,
+                Font = Enum.Font.GothamMedium,
+                Size = computed(function()
+                    if get(hasImage) then
+                        return UDim2.new(1,-54,0,16)
+                    end
+                    return UDim2.new(1,-20,0,16)
+                end),
+                TextSize = 16,
+                Position = computed(function()
+                    if get(hasImage) then
+                        return UDim2.fromOffset(44,12)
+                    end
+                    return UDim2.fromOffset(10,12)
+                end),
+                AnchorPoint = Vector2.new(0,0),
+                TextXAlignment = Enum.TextXAlignment.Left
+            },
+            new "ImageLabel" {
+                Visible = computed(function()
+                    if get(hasImage) then
+                        return true
+                    end
+                    return false
+                end),
+                BackgroundTransparency = 1,
+                ImageColor3 = animate(function()
+                    return get(config).image
+                end,40,1),
+                Image = computed(function()
+                    if get(hasImage) then
+                        return get(icon)
+                    end
+                    return ""
+                end),
+                Size = UDim2.fromOffset(24,24),
+                Position = UDim2.fromOffset(10,8)
+            },
+            new "Frame" {
+                Name = "componentHolder",
+                Size = computed(function()
+                    return UDim2.new(1,0,0,get(size) - 40)
+                end),
+                Position = UDim2.fromOffset(0,40),
+                BackgroundTransparency = 1,
+
+                [onevent "ChildAdded"] = function(child)
+                    if typeof(child) == "Instance" and not child:IsA("UIListLayout") then
+                        size:set(get(size) + child.AbsoluteSize.Y + 5)
+                        local wasAbove = false
+                        child.Changed:Connect(function(property)
+                            if property:lower() == "absolutesize" then
+                                if not wasAbove and child.AbsoluteSize.Y > 40 then
+                                    wasAbove = true
+                                    size:set(get(size) + 134)
+                                elseif wasAbove and child.AbsoluteSize.Y < 173 then
+                                    wasAbove = false
+                                    size:set(get(size) - 134)
+                                end
+                            end
+                        end)
+                    end
+                end,
+
+                [children] = {
+                    new "UIListLayout" {
+                        Padding = UDim.new(0,5),
+                        SortOrder = Enum.SortOrder.LayoutOrder,
+                        FillDirection = Enum.FillDirection.Vertical,
+                        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+                        VerticalAlignment = Enum.VerticalAlignment.Top
+                    },
+                    new "UIPadding" {
+                        PaddingLeft = UDim.new(0,5),
+                        PaddingRight = UDim.new(0,5),
+                    }
+                }
+            }
+        }
+    }
+    if prop.Icon then
+        hasImage:set(true)
+    end
+
+    local returnFunctions = {}
+    function returnFunctions:SetName(n)
+        if typeof(n) == "string" then
+            name:set(n)
+        else
+            error("You entered a "..typeof(n).." instead of a string")
+        end
+    end
+    function returnFunctions:SetIcon(n)
+        if typeof(n) == "string" then
+            icon:set(n)
+        else
+            error("You entered a "..typeof(n).." instead of a string")
+        end
+    end
+    function returnFunctions:Lock(reason)
+		isLocked:set(true)
+        oldisClosed:set(get(isClosed))
+        isClosed:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+        isClosed:set(get(oldisClosed))
+	end
+    return newGroup.componentHolder,returnFunctions
+end
+end)() end,
+    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -5287,6 +5952,7 @@ local get = require(project.utilities.get)
 local config = value(require(project.config))
 local animate = require(project.utilities.animate)
 local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
 
 task.spawn(function()
 	while true and task.wait() do
@@ -5297,9 +5963,12 @@ end)
 local UIS = game:GetService("UserInputService")
 
 return function(prop)
-	local textRef = value()
 	local bind = value(string.upper(prop.Default))
+
+	local textRef = value()
 	local focused = value(false)
+	local isLocked = value(false)
+	local lockReason = value("")
 	local tabColor = value(prop.tabColor)
 	if matchColors(get(tabColor), get(config).defaultTab) then
 		observe(config):onChange(function()
@@ -5309,7 +5978,10 @@ return function(prop)
 
 	local returnFunctions = {}
 
-	local newKeybind = new "Frame" {
+	local newKeybind = new "TextButton" {
+		Interactable = computed(function()
+			return not get(isLocked)
+		end),
 		Size = UDim2.new(1,0,0,40),
 		BackgroundColor3 = animate(function()
 			return get(config).secondaryBackground
@@ -5317,8 +5989,63 @@ return function(prop)
 		Parent = prop.Parent,
 		Name = prop.Name,
 
+		[onevent "MouseButton1Click"] = function()
+			local textBox = get(textRef)
+			textBox:CaptureFocus()
+		end,
+
 		[children] = {
 			{
+				{ -- Lock
+					new "Frame" {
+						ZIndex = 4,
+						Visible = computed(function()
+							return get(isLocked)
+						end),
+						Size = UDim2.fromScale(1,1),
+						BackgroundTransparency = 0.1,
+						BackgroundColor3 = animate(function()
+							return get(config).tertiaryBackground
+						end,40,1),
+
+						[children] = {
+							new "ImageLabel" {
+								AnchorPoint = Vector2.new(0,0.5),
+								Size = UDim2.fromOffset(24,24),
+								Position = UDim2.new(0,10,0.5),
+								BackgroundTransparency = 1,
+								ImageColor3 = animate(function()
+									return get(config).image
+								end,40,1),
+								Image = icons['lock']
+							},
+							new "TextLabel" {
+								Text = computed(function()
+									return get(lockReason)
+								end),
+								AnchorPoint = Vector2.new(0,0.5),
+								Position = UDim2.new(0,44,0.5,0),
+								Size = UDim2.new(1,-54,0,16),
+								Font = Enum.Font.GothamBold,
+								BackgroundTransparency = 1,
+								TextColor3 = animate(function()
+									return get(config).text
+								end,40,1),
+								TextSize = 16,
+								TextScaled = true,
+								TextXAlignment = Enum.TextXAlignment.Left,
+
+								[children] = {
+									new "UITextSizeConstraint" {
+										MinTextSize = 1,
+										MaxTextSize = 16
+									}
+								}
+							},
+							new "UICorner" {CornerRadius = UDim.new(0,6)},
+						}
+					}
+				},
 				new "UICorner" {CornerRadius = UDim.new(0,6)},
 				new "Frame" {
 					ZIndex = 2,
@@ -5339,10 +6066,11 @@ return function(prop)
 				},
 				new "TextLabel" {
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1,0,1,0),
-					AnchorPoint = Vector2.new(0.5,0.5),
-					Position = UDim2.new(0.5,0,0.5,0),
+					Size = UDim2.new(1,-60,0,14),
+					AnchorPoint = Vector2.new(0,0.5),
+					Position = UDim2.new(0,10,0.5,0),
 					Font = Enum.Font.Gotham,
+					TextScaled = true,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextTransparency = 0,
@@ -5353,8 +6081,9 @@ return function(prop)
 					end,40,1),
 
 					[children] = {
-						new "UIPadding" {
-							PaddingLeft = UDim.new(0,10)
+						new "UITextSizeConstraint" {
+							MinTextSize = 1,
+							MaxTextSize = 14
 						},
 					}
 				},
@@ -5377,6 +6106,9 @@ return function(prop)
 				}
 			},
 			new "TextBox" {
+				Interactable = computed(function()
+					return not get(isLocked)
+				end),
 				ZIndex = 3,
 				AnchorPoint = Vector2.new(1,0.5),
 				Position = UDim2.new(1,-10,0.5,0),
@@ -5421,9 +6153,11 @@ return function(prop)
 				get(textRef):ReleaseFocus()
 			end
 		elseif (get(bind) ~= "") and (input.KeyCode == Enum.KeyCode[get(bind)]) and newKeybind then
-			task.spawn(function()
-				prop.Callback()
-			end)
+			if not get(isLocked) then
+				task.spawn(function()
+					prop.Callback()
+				end)
+			end
 		end
 	end)
 	newKeybind.Destroying:Connect(function()
@@ -5440,10 +6174,111 @@ return function(prop)
 			error("you didnt give "..prop.Name.." a string for SetBind!")
 		end
 	end
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+	end
 	return returnFunctions
 end
 end)() end,
-    [62] = function()local wax,script,require=ImportGlobals(62)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local project = script.Parent.Parent
+
+local Fusion = require(project.Bundles.Fusion)
+local new = Fusion.New
+local children = Fusion.Children
+local value = Fusion.Value
+local computed = Fusion.Computed
+local observe = Fusion.Observer
+
+local get = require(project.utilities.get)
+local animate = require(project.utilities.animate)
+local config = value(require(project.config))
+local lerpColor = require(project.utilities.lerpColor)
+local matchColors = require(project.utilities.matchColors)
+
+task.spawn(function()
+	while true and task.wait() do
+		config:set(require(project.config))
+	end
+end)
+
+return function(prop)
+	local textValue = value(prop.Text)
+	local tabColor = value(prop.tabColor)
+	if matchColors(get(tabColor), get(config).defaultTab) then
+		observe(config):onChange(function()
+			tabColor:set(get(config).defaultTab)
+		end)
+	end
+
+	local returnFunctions = {}
+
+	local newTextLabel = new "Frame" {
+		Size = UDim2.new(1,0,0,30),
+		Parent = prop.Parent,
+		BackgroundColor3 = animate(function()
+			return get(config).secondaryBackground
+		end,40,1),
+
+		[children] = {
+			new "UICorner" {CornerRadius = UDim.new(0,4)},
+			new "TextLabel" {
+				ZIndex = 2,
+				Font = Enum.Font.GothamMedium,
+				TextSize = 14,
+				RichText = true,
+				TextScaled = true,
+				BackgroundTransparency = 1,
+				Size = UDim2.new(1,-20,0,14),
+				Position = UDim2.new(0,10,0.5,0),
+				AnchorPoint = Vector2.new(0,0.5),
+				TextXAlignment = Enum.TextXAlignment.Left,
+
+				TextColor3 = animate(function()
+					return lerpColor(get(tabColor), "white", 0.5)
+				end,40,1),
+				Text = computed(function()
+					return get(textValue)
+				end),
+
+				[children] = {
+					new "UITextSizeConstraint" {
+						MinTextSize = 1,
+						MaxTextSize = 14
+					}
+				}
+			},
+			new "Frame" {
+				Size = UDim2.fromScale(1,1),
+				Position = UDim2.fromScale(0.5,0.5),
+				AnchorPoint = Vector2.new(0.5,0.5),
+				BackgroundColor3 = animate(function()
+					return get(config).secondaryBackground
+				end,40,1),
+
+				[children] = {new "UICorner" {CornerRadius = UDim.new(0,6)}}
+			}
+		}
+	}
+
+	function returnFunctions:Remove()
+		newTextLabel:Destroy()
+	end
+	function returnFunctions:SetText(newText)
+		if typeof(newText) == "string" then
+			textValue:set(newText)
+		else
+			error("you didnt give "..prop.Name.." a string for SetText!")
+		end
+	end
+
+	return returnFunctions
+end
+end)() end,
+    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -5600,13 +6435,15 @@ return function(prop)
     end)
 end
 end)() end,
-    [63] = function()local wax,script,require=ImportGlobals(63)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
 local children = Fusion.Children
 local value = Fusion.Value
 local computed = Fusion.Computed
+local onevent = Fusion.OnEvent
+local observe = Fusion.Observer
 
 local get = require(project.utilities.get)
 local config = value(require(project.config))
@@ -5623,12 +6460,17 @@ end)
 return function(prop)
 	local titleValue = value(prop.Title)
 	local bodyValue = value(prop.Body)
-	local ySize = computed(function()
-		return getStringBounds(get(bodyValue),{
+	local ySize = value(getStringBounds(get(bodyValue),{
+		Font = Enum.Font.Gotham,
+		VectorSize = Vector2.new(math.round(prop.Parent.AbsoluteSize.X),1000),
+		TextSize = 12
+	}).Y)
+	observe(bodyValue):onChange(function()
+		ySize:set(getStringBounds(get(bodyValue),{
 			Font = Enum.Font.Gotham,
-			VectorSize = Vector2.new(466,1000),
+			VectorSize = Vector2.new(math.round(prop.Parent.AbsoluteSize.X),1000),
 			TextSize = 12
-		}).Y
+		}).Y)
 	end)
 
 	local returnFunctions = {}
@@ -5641,6 +6483,16 @@ return function(prop)
 		Size = computed(function()
 			return UDim2.new(1,0,0,36 + get(ySize))
 		end),
+
+		[onevent "Changed"] = function(property)
+			if property:lower() == "absolutesize" then
+				ySize:set(getStringBounds(get(bodyValue),{
+					Font = Enum.Font.Gotham,
+					VectorSize = Vector2.new(math.round(prop.Parent.AbsoluteSize.X),1000),
+					TextSize = 12
+				}).Y)
+			end
+		end,
 
 		[children] = {
 			new "UICorner" {
@@ -5659,6 +6511,7 @@ return function(prop)
 				BackgroundTransparency = 1,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextYAlignment = Enum.TextYAlignment.Top,
+				TextScaled = true,
 				TextSize = 16,
 				Font = Enum.Font.GothamMedium,
 
@@ -5667,7 +6520,14 @@ return function(prop)
 				end,40,1),
 				Text = computed(function()
 					return get(titleValue)
-				end)
+				end),
+
+				[children] = {
+					new "UITextSizeConstraint" {
+						MinTextSize = 1,
+						MaxTextSize = 16
+					}
+				}
 			},
 			new "TextLabel" {
 				Name = "Body",
@@ -5714,7 +6574,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [64] = function()local wax,script,require=ImportGlobals(64)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -5743,9 +6603,9 @@ return function(prop)
 
 		[children] = {
 			new "TextLabel" {
-				Size = UDim2.new(1,0,0,30),
+				Size = UDim2.new(1,0,0,15),
 				AnchorPoint = Vector2.new(0,0.5),
-				Position = UDim2.fromScale(0,0.5),
+				Position = UDim2.new(0,5,0.5,0),
 				BackgroundTransparency = 1,
 				TextScaled = true,
 				Font = Enum.Font.GothamMedium,
@@ -5763,9 +6623,6 @@ return function(prop)
 						MaxTextSize = 15,
 						MinTextSize = 1
 					},
-					new "UIPadding" {
-						PaddingLeft = UDim.new(0,5)
-					}
 				}
 			}
 		}
@@ -5784,7 +6641,7 @@ return function(prop)
 	return returnFunctions
 end
 end)() end,
-    [65] = function()local wax,script,require=ImportGlobals(65)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -5799,6 +6656,7 @@ local get = require(project.utilities.get)
 local config = value(require(project.config))
 local animate = require(project.utilities.animate)
 local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
 
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -5846,32 +6704,38 @@ return function(prop)
 
 	local mouseEntered = value(false)
 	local button1Down = value(false)
+	local isLocked = value(false)
+	local lockReason = value("")
 
 	local percentage = value(0)
 	local percentageOf = value(0)
 	observe(percentageOf):onChange(function()
 		task.spawn(function()
-			prop.Callback(get(percentageOf))
+			if not get(isLocked) then
+				prop.Callback(get(percentageOf))
+			end
 		end)
 	end)
 
-	local min = tonumber(prop.Min)
-	local max = tonumber(prop.Max)
-	local step = tonumber(prop.Step) / (min + max)
-	local initialValue = tonumber(prop.InitialValue)
+	local min = value(tonumber(prop.Min))
+	local max = value(tonumber(prop.Max))
+	local stepValue = value(tonumber(prop.Step))
+	local step = value(get(stepValue) / (get(min) + get(max)))
+	observe(stepValue):onChange(function()
+		step:set(get(stepValue) / (get(min) + get(max)))
+	end)
+	local initialValue = value(tonumber(prop.InitialValue))
 
-	local returnFunctions = {}
-
-	if initialValue < min or initialValue > max then
-		error("InitialValue for "..prop.Name.." is either too big or too small! InitialValue = "..tostring(min))
-		initialValue = min
+	if get(initialValue) < get(min) or get(initialValue) > get(max) then
+		error("InitialValue for "..prop.Name.." is either too big or too small! InitialValue = "..tostring(get(min)))
+		initialValue:set(get(min))
 	end
 
-	if initialValue ~= min then
-		local tmpVal = initialValue - min
-		tmpVal = tmpVal / (max - min)
+	if get(initialValue) ~= get(min) then
+		local tmpVal = get(initialValue) - get(min)
+		tmpVal = tmpVal / (get(max) - get(min))
 		percentage:set(tmpVal)
-		percentageOf:set(initialValue)
+		percentageOf:set(get(initialValue))
 	end
 
 	local function snap(number,factor)
@@ -5906,6 +6770,56 @@ return function(prop)
 
 		[children] = {
 			{
+				{ -- Lock
+					new "Frame" {
+						ZIndex = 4,
+						Visible = computed(function()
+							return get(isLocked)
+						end),
+						Size = UDim2.fromScale(1,1),
+						BackgroundTransparency = 0.1,
+						BackgroundColor3 = animate(function()
+							return get(config).tertiaryBackground
+						end,40,1),
+
+						[children] = {
+							new "ImageLabel" {
+								AnchorPoint = Vector2.new(0,0.5),
+								Size = UDim2.fromOffset(24,24),
+								Position = UDim2.new(0,10,0.5),
+								BackgroundTransparency = 1,
+								ImageColor3 = animate(function()
+									return get(config).image
+								end,40,1),
+								Image = icons['lock']
+							},
+							new "TextLabel" {
+								Text = computed(function()
+									return get(lockReason)
+								end),
+								AnchorPoint = Vector2.new(0,0.5),
+								Position = UDim2.new(0,44,0.5,0),
+								Size = UDim2.new(1,-54,0,16),
+								Font = Enum.Font.GothamBold,
+								BackgroundTransparency = 1,
+								TextColor3 = animate(function()
+									return get(config).text
+								end,40,1),
+								TextSize = 16,
+								TextScaled = true,
+								TextXAlignment = Enum.TextXAlignment.Left,
+
+								[children] = {
+									new "UITextSizeConstraint" {
+										MinTextSize = 1,
+										MaxTextSize = 16
+									}
+								}
+							},
+							new "UICorner" {CornerRadius = UDim.new(0,6)},
+						}
+					}
+				},
 				new "UICorner" {
 					CornerRadius = UDim.new(0,6)
 				},
@@ -5917,8 +6831,8 @@ return function(prop)
 					BackgroundTransparency = 0.85,
 
 					BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+						return get(tabColor)
+					end,40,1),
 
 					[children] = {
 						new "UICorner" {
@@ -5928,10 +6842,11 @@ end,40,1),
 				},
 				new "TextLabel" {
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1,0,0,40),
-					AnchorPoint = Vector2.new(0.5,0),
-					Position = UDim2.fromScale(0.5,0),
+					Size = UDim2.new(1,-220,0,14),
+					AnchorPoint = Vector2.new(0,0.5),
+					Position = UDim2.new(0,10,0.5,0),
 					Font = Enum.Font.Gotham,
+					TextScaled = true,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextTransparency = 0,
@@ -5942,8 +6857,9 @@ end,40,1),
 					Text = prop.Name,
 
 					[children] = {
-						new "UIPadding" {
-							PaddingLeft = UDim.new(0,10)
+						new "UITextSizeConstraint" {
+							MinTextSize = 1,
+							MaxTextSize = 14
 						}
 					}
 				}
@@ -5956,7 +6872,7 @@ end,40,1),
 					return get(config).image
 				end,40,1),
 				Size = animate(function()
-					if get(mouseEntered) then
+					if get(mouseEntered) and not get(isLocked) then
 						return UDim2.fromOffset(180,16)
 					end
 					return UDim2.fromOffset(180,4)
@@ -5972,6 +6888,9 @@ end,40,1),
 						end,40,1),
 					},
 					new "TextButton" {
+						Interactable = computed(function()
+							return not get(isLocked)
+						end),
 						AnchorPoint = Vector2.new(0.5,0.5),
 						Size = UDim2.fromScale(1,1),
 						Position = UDim2.fromScale(0.5,0.5),
@@ -5984,12 +6903,13 @@ end,40,1),
 						[ref] = buttonRef,
 						[children] = {
 							new "Frame" {
+								Name = "ChangeThing",
 								AnchorPoint = Vector2.new(0,0.5),
 								Position = UDim2.fromScale(0,0.5),
 
 								BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+									return get(tabColor)
+								end,40,1),
 								Size = animate(function()
 									return UDim2.fromScale(get(percentage),1)
 								end,60,1),
@@ -5998,7 +6918,7 @@ end,40,1),
 								
 								[onevent "Changed"] = function()
 									local c = get(sliderRef).Size.X.Scale
-									local pos = ((max - min) * c) + min
+									local pos = ((get(max) - get(min)) * c) + get(min)
 									local pos2 = math.round(pos)
 									percentageOf:set(pos2)
 								end
@@ -6021,44 +6941,89 @@ end,40,1),
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Right,
-				TextScaled = true
+				TextScaled = true,
+
+				[children] = {
+					new "UITextSizeConstraint" {
+						MinTextSize = 1,
+						MaxTextSize = 14
+					}
+				}
 			}
 		}
 	}
 
-	task.spawn(function()
-		RunService.RenderStepped:Connect(function()
-			if get(button1Down) then
-				local mousePositon = UserInputService:GetMouseLocation().X
-				local frameSizeX = get(buttonRef).AbsoluteSize.X
-				local framePositionX = get(buttonRef).AbsolutePosition.X
-				local newPercent = snap((mousePositon - framePositionX) / frameSizeX,step)
-				newPercent = math.clamp(math.round(newPercent * 100) / 100,0,1)
-				percentage:set(newPercent)
-			end
-		end)
+	RunService.RenderStepped:Connect(function()
+		if get(button1Down) and not get(isLocked) then
+			local mousePositon = UserInputService:GetMouseLocation().X
+			local frameSizeX = get(buttonRef).AbsoluteSize.X
+			local framePositionX = get(buttonRef).AbsolutePosition.X
+			local newPercent = snap((mousePositon - framePositionX) / frameSizeX,get(step))
+			newPercent = math.clamp(math.round(newPercent * 100) / 100,0,1)
+			percentage:set(newPercent)
+		end
 	end)
 
+	local returnFunctions = {}
 	function returnFunctions:Remove()
 		newSlider:Destroy()
 	end
 	function returnFunctions:SetValue(newValue)
-		if typeof(newValue) == "number" and (newValue <= max) and (newValue >= min) then
-			local tmpVal = newValue - min
-			tmpVal = tmpVal / (max - min)
+		if typeof(newValue) == "number" and (newValue <= get(max)) and (newValue >= get(min)) then
+			local tmpVal = newValue - get(min)
+			tmpVal = tmpVal / (get(max) - get(min))
 			percentage:set(tmpVal)
 			percentageOf:set(newValue)
 		elseif typeof(newValue) ~= "number" then
-			error("you didnt give "..prop.Name.." a number for SetValue!")
+			error("You didn't give "..prop.Name.." a number for SetValue")
 		else
-			error("your SetValue for "..prop.Name.." is great or smaller than the maximum or minimum!\nMaximum: "..tostring(max).."\nMinimum: "..tostring(min).."\nAttempted Value: "..tostring(newValue))
+			error("Your SetValue for "..prop.Name.." is great or smaller than the maximum or minimum")
 		end
 	end
-
+	function returnFunctions:SetMin(newMin)
+		if typeof(newMin) == "number" and (newMin < get(max)) then
+			min:set(newMin)
+			local button = get(buttonRef)
+			button.ChangeThing.ZIndex = 2
+			button.ChangeThing.ZIndex = 1
+		elseif typeof(newMin) ~= "number" then
+			error("You didn't give "..prop.Name.." a number for SetMin")
+		else
+			error("Your SetMin for "..prop.Name.." is great than the maximum")
+		end
+	end
+	function returnFunctions:SetMax(newMax)
+		if typeof(newMax) == "number" and (newMax < get(min)) then
+			max:set(newMax)
+			local button = get(buttonRef)
+			button.ChangeThing.ZIndex = 2
+			button.ChangeThing.ZIndex = 1
+		elseif typeof(newMax) ~= "number" then
+			error("You didn't give "..prop.Name.." a number for SetMax")
+		else
+			error("Your SetMax for "..prop.Name.." is smaller than the minimum")
+		end
+	end
+	function returnFunctions:SetStep(newStep)
+		if typeof(newStep) == "number" and not (newStep > get(max)) and newStep ~= 0 then
+			stepValue:set(newStep)
+		elseif typeof(newStep) ~= "number" then
+			error("You didn't give "..prop.Name.." a number for SetStep")
+		else
+			error("Your SetStep for "..prop.Name.." is either 0 or greater than the Maximum")
+		end
+	end
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+	end
 	return returnFunctions
 end
 end)() end,
-    [66] = function()local wax,script,require=ImportGlobals(66)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -6221,7 +7186,7 @@ return function(prop)
 	end
 end
 end)() end,
-    [67] = function()local wax,script,require=ImportGlobals(67)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -6236,6 +7201,7 @@ local get = require(project.utilities.get)
 local config = value(require(project.config))
 local animate = require(project.utilities.animate)
 local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
 
 task.spawn(function()
 	while true and task.wait() do
@@ -6246,8 +7212,11 @@ end)
 return function(prop)
 	local textRef = value()
 	local defaultText = value(prop.Default or "")
+
 	local updatedText = value("")
 	local focused = value(false)
+	local isLocked = value(false)
+	local lockReason = value("")
 	local tabColor = value(prop.tabColor)
 	if matchColors(get(tabColor), get(config).defaultTab) then
 		observe(config):onChange(function()
@@ -6263,9 +7232,10 @@ return function(prop)
 		updatedText:set(get(defaultText))
 	end
 
-	local returnFunctions = {}
-
-	local newTextBox = new "Frame" {
+	local newTextBox = new "TextButton" {
+		Interactable = computed(function()
+			return not get(isLocked)
+		end),
 		Size = UDim2.new(1,0,0,40),
 		BackgroundColor3 = animate(function()
 			return get(config).secondaryBackground
@@ -6273,8 +7243,63 @@ return function(prop)
 		Parent = prop.Parent,
 		Name = prop.Name,
 
+		[onevent "MouseButton1Click"] = function()
+			local text = get(textRef)
+			text:CaptureFocus()
+		end,
+
 		[children] = {
 			{
+				{ -- Lock
+					new "Frame" {
+						ZIndex = 4,
+						Visible = computed(function()
+							return get(isLocked)
+						end),
+						Size = UDim2.fromScale(1,1),
+						BackgroundTransparency = 0.1,
+						BackgroundColor3 = animate(function()
+							return get(config).tertiaryBackground
+						end,40,1),
+
+						[children] = {
+							new "ImageLabel" {
+								AnchorPoint = Vector2.new(0,0.5),
+								Size = UDim2.fromOffset(24,24),
+								Position = UDim2.new(0,10,0.5),
+								BackgroundTransparency = 1,
+								ImageColor3 = animate(function()
+									return get(config).image
+								end,40,1),
+								Image = icons['lock']
+							},
+							new "TextLabel" {
+								Text = computed(function()
+									return get(lockReason)
+								end),
+								AnchorPoint = Vector2.new(0,0.5),
+								Position = UDim2.new(0,44,0.5,0),
+								Size = UDim2.new(1,-54,0,16),
+								Font = Enum.Font.GothamBold,
+								BackgroundTransparency = 1,
+								TextColor3 = animate(function()
+									return get(config).text
+								end,40,1),
+								TextSize = 16,
+								TextScaled = true,
+								TextXAlignment = Enum.TextXAlignment.Left,
+
+								[children] = {
+									new "UITextSizeConstraint" {
+										MinTextSize = 1,
+										MaxTextSize = 16
+									}
+								}
+							},
+							new "UICorner" {CornerRadius = UDim.new(0,6)},
+						}
+					}
+				},
 				new "UICorner" {
 					CornerRadius = UDim.new(0,6)
 				},
@@ -6297,10 +7322,11 @@ return function(prop)
 				},
 				new "TextLabel" {
 					BackgroundTransparency = 1,
-					Size = UDim2.new(1,0,1,0),
-					AnchorPoint = Vector2.new(0.5,0.5),
-					Position = UDim2.new(0.5,0,0.5,0),
+					Size = UDim2.new(1,-185,0,14),
+					AnchorPoint = Vector2.new(0,0.5),
+					Position = UDim2.new(0,10,0.5,0),
 					Font = Enum.Font.Gotham,
+					TextScaled = true,
 					TextSize = 14,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextTransparency = 0,
@@ -6311,8 +7337,9 @@ return function(prop)
 					end,40,1),
 
 					[children] = {
-						new "UIPadding" {
-							PaddingLeft = UDim.new(0,10)
+						new "UITextSizeConstraint" {
+							MinTextSize = 1,
+							MaxTextSize = 14
 						},
 					}
 				},
@@ -6335,6 +7362,9 @@ return function(prop)
 				}
 			},
 			new "TextBox" {
+				Interactable = computed(function()
+					return not get(isLocked)
+				end),
 				ZIndex = 3,
 				AnchorPoint = Vector2.new(1,0.5),
 				Position = UDim2.new(1,-10,0.5,0),
@@ -6393,6 +7423,7 @@ return function(prop)
 		}
 	}
 
+	local returnFunctions = {}
 	function returnFunctions:Remove()
 		newTextBox:Destroy()
 	end
@@ -6400,13 +7431,20 @@ return function(prop)
 		if typeof(newInput) == "string" then
 			get(textRef).Text = newInput
 		else
-			error("you didnt give "..prop.Name.." a string for setInput!")
+			error("You didn't give "..prop.Name.." a string for setInput")
 		end
+	end
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
 	end
 	return returnFunctions
 end
 end)() end,
-    [68] = function()local wax,script,require=ImportGlobals(68)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -6414,243 +7452,13 @@ local onevent = Fusion.OnEvent
 local children = Fusion.Children
 local value = Fusion.Value
 local computed = Fusion.Computed
-local ref = Fusion.Ref
 local observe = Fusion.Observer
 
 local get = require(project.utilities.get)
 local config = value(require(project.config))
 local animate = require(project.utilities.animate)
 local matchColors = require(project.utilities.matchColors)
-
-task.spawn(function()
-	while true and task.wait() do
-		config:set(require(project.config))
-	end
-end)
-
-return function(prop)
-	local down = value(false)
-	local textRef = value()
-	local textValue = value(prop.Name)
-	local callbackValue = value(prop.Callback)
-	local tabColor = value(prop.tabColor)
-	if matchColors(get(tabColor), get(config).defaultTab) then
-		observe(config):onChange(function()
-			tabColor:set(get(config).defaultTab)
-		end)
-	end
-
-	local returnFunctions = {}
-
-	local newTextButton = new "TextButton" {
-		ZIndex = 2,
-		Size = UDim2.new(1,0,0,40),
-		AutoButtonColor = false,
-		Text = "",
-
-		Name = prop.Name,
-		Parent = prop.Parent,
-		BackgroundColor3 = animate(function()
-			return get(config).secondaryBackground
-		end,40,1),
-
-		[onevent "MouseButton1Down"] = function()
-			down:set(true)
-		end,
-		[onevent "MouseButton1Up"] = function()
-			down:set(false)
-		end,
-		[onevent "MouseLeave"] = function()
-			down:set(false)
-		end,
-		[onevent "MouseButton1Click"] = function()
-			task.spawn(function()
-				get(callbackValue)()
-			end)
-		end,
-
-
-		[children] = {
-			new "UICorner" {
-				CornerRadius = UDim.new(0,6)
-			},
-			new "Frame" {
-				ZIndex = 2,
-				Size = UDim2.new(1,0,1,0),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				Position = UDim2.new(0.5,0,0.5,0),
-
-				BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
-				BackgroundTransparency = animate(function()
-					if get(down) then
-						return 0.95
-					end
-					return 0.85
-				end,50,1),
-
-				[children] = {
-					new "UICorner" {
-						CornerRadius = UDim.new(0,6)
-					}
-				}
-			},
-			new "TextLabel" {
-				BackgroundTransparency = 1,
-				Size = UDim2.new(1,0,1,0),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				Position = UDim2.new(0.5,0,0.5,0),
-				Font = Enum.Font.Gotham,
-				TextSize = 14,
-				TextXAlignment = Enum.TextXAlignment.Left,
-
-				TextColor3 = animate(function()
-					return get(config).text
-				end,40,1),
-				Text = computed(function()
-					return get(textValue)
-				end),
-				TextTransparency = animate(function()
-
-					if get(down) then
-						return 0.35
-					else
-						return 0
-					end
-
-				end,50,1),
-
-				[ref] = textRef,
-
-				[children] = {
-					new "UIPadding" {
-						PaddingLeft = UDim.new(0,10)
-					},
-				}
-			}
-		}
-	}
-
-	function returnFunctions:Remove()
-		newTextButton:Destroy()
-	end
-	function returnFunctions:SetText(newText)
-		if typeof(newText) == "string" then
-			textValue:set(newText)
-		else
-			error("you didnt give "..prop.Name.." a string for SetText!")
-		end
-	end
-	function returnFunctions:SetCallback(newFunction)
-		if typeof(newFunction) == "function" then
-			callbackValue:set(newFunction)
-		else
-			error("you didnt give "..prop.Name.." a function for SetCallback!")
-		end
-	end
-	return returnFunctions
-end
-end)() end,
-    [69] = function()local wax,script,require=ImportGlobals(69)local ImportGlobals return (function(...)local project = script.Parent.Parent
-
-local Fusion = require(project.Bundles.Fusion)
-local new = Fusion.New
-local children = Fusion.Children
-local value = Fusion.Value
-local computed = Fusion.Computed
-local observe = Fusion.Observer
-
-local get = require(project.utilities.get)
-local animate = require(project.utilities.animate)
-local config = value(require(project.config))
-local lerpColor = require(project.utilities.lerpColor)
-local matchColors = require(project.utilities.matchColors)
-
-task.spawn(function()
-	while true and task.wait() do
-		config:set(require(project.config))
-	end
-end)
-
-return function(prop)
-	local textValue = value(prop.Text)
-	local tabColor = value(prop.tabColor)
-	if matchColors(get(tabColor), get(config).defaultTab) then
-		observe(config):onChange(function()
-			tabColor:set(get(config).defaultTab)
-		end)
-	end
-
-	local returnFunctions = {}
-
-	local newTextLabel = new "Frame" {
-		Size = UDim2.new(1,0,0,30),
-		Parent = prop.Parent,
-		BackgroundColor3 = animate(function()
-			return get(config).secondaryBackground
-		end,40,1),
-
-		[children] = {
-			new "UICorner" {CornerRadius = UDim.new(0,4)},
-			new "TextLabel" {
-				ZIndex = 2,
-				Font = Enum.Font.GothamMedium,
-				TextSize = 14,
-				RichText = true,
-				BackgroundTransparency = 1,
-				Size = UDim2.new(1,0,0,14),
-				Position = UDim2.new(0,10,0.5,0),
-				AnchorPoint = Vector2.new(0,0.5),
-				TextXAlignment = Enum.TextXAlignment.Left,
-
-				TextColor3 = animate(function()
-					return lerpColor(get(tabColor), "white", 0.5)
-				end,40,1),
-				Text = computed(function()
-					return get(textValue)
-				end)
-			},
-			new "Frame" {
-				Size = UDim2.fromScale(1,1),
-				Position = UDim2.fromScale(0.5,0.5),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				BackgroundColor3 = animate(function()
-					return get(config).secondaryBackground
-				end,40,1),
-
-				[children] = {new "UICorner" {CornerRadius = UDim.new(0,6)}}
-			}
-		}
-	}
-
-	function returnFunctions:Remove()
-		newTextLabel:Destroy()
-	end
-	function returnFunctions:SetText(newText)
-		if typeof(newText) == "string" then
-			textValue:set(newText)
-		else
-			error("you didnt give "..prop.Name.." a string for SetText!")
-		end
-	end
-
-	return returnFunctions
-end
-end)() end,
-    [70] = function()local wax,script,require=ImportGlobals(70)local ImportGlobals return (function(...)local project = script.Parent.Parent
-
-local Fusion = require(project.Bundles.Fusion)
-local new = Fusion.New
-local onevent = Fusion.OnEvent
-local children = Fusion.Children
-local value = Fusion.Value
-local observe = Fusion.Observer
-
-local get = require(project.utilities.get)
-local config = value(require(project.config))
-local animate = require(project.utilities.animate)
-local matchColors = require(project.utilities.matchColors)
+local icons = require(project.Bundles.lucide)
 
 task.spawn(function()
 	while true and task.wait() do
@@ -6660,6 +7468,8 @@ end)
 
 return function(prop)
 	local toggled = value(false)
+	local isLocked = value(false)
+	local lockReason = value("")
 	local tabColor = value(prop.tabColor)
 	if matchColors(get(tabColor), get(config).defaultTab) then
 		observe(config):onChange(function()
@@ -6668,7 +7478,9 @@ return function(prop)
 	end
 	observe(toggled):onChange(function()
 		task.spawn(function()
-			prop.Callback(get(toggled))
+			if not get(isLocked) then
+				prop.Callback(get(toggled))
+			end
 		end)
 	end)
 	toggled:set(prop.Default)
@@ -6676,6 +7488,9 @@ return function(prop)
 	local returnFunctions = {}
 
 	local newToggle = new "TextButton" {
+		Interactable = computed(function()
+			return not get(isLocked)
+		end),
 		Size = UDim2.new(1,0,0,40),
 		AutoButtonColor = false,
 
@@ -6690,6 +7505,56 @@ return function(prop)
 		end,
 
 		[children] = {
+			{ -- Lock
+				new "Frame" {
+					ZIndex = 3,
+					Visible = computed(function()
+						return get(isLocked)
+					end),
+					Size = UDim2.fromScale(1,1),
+					BackgroundTransparency = 0.1,
+					BackgroundColor3 = animate(function()
+						return get(config).tertiaryBackground
+					end,40,1),
+
+					[children] = {
+						new "ImageLabel" {
+							AnchorPoint = Vector2.new(0,0.5),
+							Size = UDim2.fromOffset(24,24),
+							Position = UDim2.new(0,10,0.5),
+							BackgroundTransparency = 1,
+							ImageColor3 = animate(function()
+								return get(config).image
+							end,40,1),
+							Image = icons['lock']
+						},
+						new "TextLabel" {
+							Text = computed(function()
+								return get(lockReason)
+							end),
+							AnchorPoint = Vector2.new(0,0.5),
+							Position = UDim2.new(0,44,0.5,0),
+							Size = UDim2.new(1,-54,0,16),
+							Font = Enum.Font.GothamBold,
+							BackgroundTransparency = 1,
+							TextColor3 = animate(function()
+								return get(config).text
+							end,40,1),
+							TextSize = 16,
+							TextScaled = true,
+							TextXAlignment = Enum.TextXAlignment.Left,
+
+							[children] = {
+								new "UITextSizeConstraint" {
+									MinTextSize = 1,
+									MaxTextSize = 16
+								}
+							}
+						},
+						new "UICorner" {CornerRadius = UDim.new(0,6)},
+					}
+				}
+			},
 			new "UICorner" {
 				CornerRadius = UDim.new(0,6)
 			},
@@ -6701,8 +7566,8 @@ return function(prop)
 				BackgroundTransparency = 0.85,
 
 				BackgroundColor3 = animate(function()
-return get(tabColor)
-end,40,1),
+					return get(tabColor)
+				end,40,1),
 
 				[children] = {
 					new "UICorner" {
@@ -6712,10 +7577,11 @@ end,40,1),
 			},
 			new "TextLabel" {
 				BackgroundTransparency = 1,
-				Size = UDim2.new(1,0,1,0),
-				AnchorPoint = Vector2.new(0.5,0.5),
-				Position = UDim2.new(0.5,0,0.5,0),
+				Size = UDim2.new(1,-45,0,14),
+				AnchorPoint = Vector2.new(0,0.5),
+				Position = UDim2.new(0,10,0.5,0),
 				Font = Enum.Font.Gotham,
+				TextScaled = true,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				TextTransparency = 0,
@@ -6726,9 +7592,10 @@ end,40,1),
 				Text = prop.Name,
 
 				[children] = {
-					new "UIPadding" {
-						PaddingLeft = UDim.new(0,10)
-					},
+					new "UITextSizeConstraint" {
+						MinTextSize = 1,
+						MaxTextSize = 14
+					}
 				}
 			},
 			new "ImageLabel" {
@@ -6736,7 +7603,7 @@ end,40,1),
 				Position = UDim2.new(1,-5,0,6),
 				Size = UDim2.fromOffset(28,28),
 				BackgroundTransparency = 1,
-				Image = "rbxassetid://15555208034", -- rbxassetid://15555208034
+				Image = "rbxassetid://15555208034",
 				
 				ImageColor3 = animate(function()
 					return get(config).image
@@ -6751,7 +7618,7 @@ end,40,1),
 						Position = UDim2.fromScale(0.5,0.5),
 						Size = UDim2.new(1,0,1,0),
 						BackgroundTransparency = 1,
-						Image = "rbxassetid://15555206993", -- rbxassetid://15555206993
+						Image = "rbxassetid://15555206993",
 						
 						ImageColor3 = animate(function()
 							return get(config).image
@@ -6781,18 +7648,21 @@ end,40,1),
 	function returnFunctions:SetValue(newValue)
 		if typeof(newValue) == "boolean" then
 			toggled:set(newValue)
-			task.spawn(function()
-				prop.Callback(get(toggled))
-			end)
 		else
-			error("you didnt give "..prop.Name.." a boolean for SetValue!")
+			error("You didn't give "..prop.Name.." a boolean for SetValue")
 		end
 	end
-
+	function returnFunctions:Lock(reason)
+		isLocked:set(true)
+		lockReason:set(reason or "Locked")
+	end
+	function returnFunctions:Unlock()
+		isLocked:set(false)
+	end
 	return returnFunctions
 end
 end)() end,
-    [71] = function()local wax,script,require=ImportGlobals(71)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -6852,7 +7722,7 @@ return function(prop)
 	}
 end
 end)() end,
-    [72] = function()local wax,script,require=ImportGlobals(72)local ImportGlobals return (function(...)return {
+    [73] = function()local wax,script,require=ImportGlobals(73)local ImportGlobals return (function(...)return {
 	defaultTab = Color3.fromHex("#a49ae6"),
 	background = Color3.fromRGB(40, 44, 50),
 	secondaryBackground = Color3.fromRGB(49, 56, 66),
@@ -6863,7 +7733,7 @@ end)() end,
 	close = Color3.fromRGB(190, 100, 105)
 }
 end)() end,
-    [74] = function()local wax,script,require=ImportGlobals(74)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [75] = function()local wax,script,require=ImportGlobals(75)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local u = require(project.Bundles["ui-utilities"])
 local Fusion = require(project.Bundles.Fusion)
@@ -7142,6 +8012,7 @@ return function(prop)
 								}
 							},
 							new "Frame" { -- windowsContainer
+								Name = "windowsContainer",
 								AnchorPoint = Vector2.new(0,0),
 								Size = animate(function()
 									return UDim2.new(0,get(containerX) - 70,0,get(containerY) - 60)
@@ -7289,7 +8160,7 @@ return function(prop)
     end
 end
 end)() end,
-    [75] = function()local wax,script,require=ImportGlobals(75)local ImportGlobals return (function(...)local project = script.Parent.Parent
+    [76] = function()local wax,script,require=ImportGlobals(76)local ImportGlobals return (function(...)local project = script.Parent.Parent
 
 local Fusion = require(project.Bundles.Fusion)
 local new = Fusion.New
@@ -7580,7 +8451,7 @@ return function(prop)
     end
 end
 end)() end,
-    [76] = function()local wax,script,require=ImportGlobals(76)local ImportGlobals return (function(...)return {
+    [77] = function()local wax,script,require=ImportGlobals(77)local ImportGlobals return (function(...)return {
 	defaultTab = Color3.fromHex("#a49ae6"),
 	background = Color3.fromRGB(40, 44, 50),
 	secondaryBackground = Color3.fromRGB(49, 56, 66),
@@ -7591,7 +8462,8 @@ end)() end,
 	close = Color3.fromRGB(190, 100, 105)
 }
 end)() end,
-    [77] = function()local wax,script,require=ImportGlobals(77)local ImportGlobals return (function(...)local project = require(script.Parent)
+    [78] = function()local wax,script,require=ImportGlobals(78)local ImportGlobals return (function(...)local project = require(script.Parent)
+local lucide = require(script.Parent.Bundles.lucide)
 
 return function(target)
     local customThemes = {
@@ -7617,129 +8489,139 @@ return function(target)
             close = Color3.fromRGB(190, 100, 105)
         }
     }
-    for i=1,2 do
-        local ismobileToggle = false
-        if i == 2 then
-            ismobileToggle = true
+    local window = project:Window({
+        Title = "testing",
+        Parent = target, -- defaults to game.CoreGui dw
+        isMobile = false,
+        Size = {
+            X = 700,
+            Y = 400
+        },
+        CustomTheme = customThemes.dracula
+    })
+
+    local tab1 = window:Tab({
+        Name = "test1",
+        Image = "rbxassetid://10709769841"
+    })
+    local tab2 = window:Tab({
+        Name = "test2",
+        tabColor = Color3.fromRGB(0,255,0),
+        Image = lucide['circle']
+    })
+    local locker = tab1:Toggle({
+        Name = "Toggle", -- string
+        Default = false, -- boolean
+        Callback = function(value)
+            print(value)
         end
-        local window = project:Window({
-            Title = "testing",
-            Parent = target, -- defaults to game.CoreGui dw
-            isMobile = ismobileToggle,
-            Size = {
-                X = 700,
-                Y = 400
-            },
-            ConfigurationFile = {
-                doCreate = true,
-                Creator = "Name",
-                scriptName = "ScriptName"
-            }
-        })
-    
-        local tab1 = window:Tab({
-            Name = "test1",
-            Image = "rbxassetid://10709769841"
-        })
-        local tab2 = window:Tab({
-            Name = "test2",
-            --tabColor = Color3.fromRGB(0,255,0),
-            Image = "rbxassetid://15555209580"
-        })
-        for i = 1, 2 do
-            local parent
-            if i == 1 then
-                parent = tab1
+    })
+    tab1:Button({
+        Name = "SetBind",
+        Callback = function()
+            locker:SetValue(true)
+        end
+    })
+    tab1:Toggle({
+        Name = "Lock/Unlock",
+        Default = false,
+        Callback = function(value)
+            if value then
+                locker:Lock("Hey this is locked")
             else
-                parent = tab2
+                locker:Unlock()
             end
-            local dd = parent:Dropdown({
-                Name = "dropdown", -- string
-                Items = {"default", "dracula", "dark"}, -- table
-                Multiselect = true, -- boolean
-                Default = "", -- if multiselect its a table: {}
-                Callback = function(value)
-                    for i,v in ipairs(value) do
-                        print(i,v)
-                    end
-                end
-            })
-            parent:Button({
-                Name = "button", -- string
-                Callback = function()
-                    dd:SetSelectedItems({"Hey", "New", "Table"})
-                end
-            })
-            parent:Toggle({
-                Name = "toggle", -- string
-                Default = false, -- boolean
-                Callback = function(value)
-                    print(value)
-                end
-            })
-            parent:TextBox({
-                Name = "textbox", -- string
-                Default = "texts", -- string
-                Callback = function(value)
-                    print(value)
-                end
-            })
-            parent:Keybind({
-                Name = "keybind", -- string
-                Default = "E", -- string but a LETTER
-                Callback = function()
-                    print("quake")
-                end
-            })
-            parent:Dropdown({
-                Name = "dropdown multiselect", -- string
-                Items = {"apple", "banana", "carrot"}, -- table
-                Multiselect = true, -- boolean
-                Default = {}, -- if multiselect its a table: {}
-                Callback = function(value)
-                    for i,v in ipairs(value) do
-                        print(i,v)
-                    end
-                end
-            })
-            parent:Slider({
-                Name = "slider", -- string
-                Min = 0, -- number
-                Max = 100, -- number
-                Step = 1, -- number
-                InitialValue = 10, -- number
-                Callback = function(value)
-                    print(value)
-                end
-            })
-            parent:Section("section")
-            parent:Paragraph({
-                Title = "title", -- string
-                Body = "body", -- string
-            })
-            parent:Label("label")
         end
-    end
+    })
+    --[[
+    local group = tab1:Group({
+        Name = "Group",
+        Icon = lucide["plane"]
+    })
+    group:Button({
+        Name = "Group button",
+        Callback = function()
+            print("group button")
+        end
+    })
+    group:Dropdown({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Items = {"default", "dracula", "dark"}, -- table
+        Multiselect = true, -- boolean
+        Default = "", -- if multiselect its a table: {}
+        Callback = function(value)
+            for i,v in ipairs(value) do
+                print(i,v)
+            end
+        end
+    })
+    tab1:Toggle({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Default = false, -- boolean
+        Callback = function(value)
+            print(value)
+        end
+    })
+    tab1:TextBox({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Default = "", -- string
+        Callback = function(value)
+            print(value)
+        end
+    })
+    tab1:Keybind({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Default = "E", -- string but a LETTER
+        Callback = function()
+            print("quake")
+        end
+    })
+    tab1:Dropdown({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Items = {"apple", "banana", "carrot"}, -- table
+        Multiselect = false, -- boolean
+        Default = {}, -- if multiselect its a table: {}
+        Callback = function(value)
+            print(value)
+        end
+    })
+    tab1:Slider({
+        Name = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Min = 0, -- number
+        Max = 100, -- number
+        Step = 1, -- number
+        Callback = function(value)
+            print(value)
+        end
+    })
+    tab1:Section("MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW")
+    tab1:Paragraph({
+        Title = "MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW", -- string
+        Body = "MWMWMWMWMWMWM WMWMWMWMW MWMWMWMWM WMWMWM WMWMWMWMWMW MWMW MWMWMWM WMWMWMWM WMWM WMWMWMWMWMW MWMWMWMWM WMWMW", -- string
+    })
+    
+    tab1:Label("MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW")
+    ]]--
     return function()
         project:Destroy()
     end
 end
 end)() end,
-    [79] = function()local wax,script,require=ImportGlobals(79)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [80] = function()local wax,script,require=ImportGlobals(80)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local computed,spring = Fusion.Computed,Fusion.Spring
 
 return function(callback, speed, damping)
 	return spring(computed(callback), speed, damping)
 end
 end)() end,
-    [80] = function()local wax,script,require=ImportGlobals(80)local ImportGlobals return (function(...)return function(value, dependency)
+    [81] = function()local wax,script,require=ImportGlobals(81)local ImportGlobals return (function(...)return function(value, dependency)
 	if typeof(value) == "table" and value.type == "State" then
 		return value:get(dependency)
 	end
 	return value
 end
 end)() end,
-    [81] = function()local wax,script,require=ImportGlobals(81)local ImportGlobals return (function(...)return function(text:string, properties)
+    [82] = function()local wax,script,require=ImportGlobals(82)local ImportGlobals return (function(...)return function(text:string, properties)
     text = text or ""
     properties = properties or {
         TextSize = 14,
@@ -7750,7 +8632,7 @@ end)() end,
     return TextService:GetTextSize(text,properties.TextSize,properties.Font,properties.VectorSize)
 end
 end)() end,
-    [82] = function()local wax,script,require=ImportGlobals(82)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
+    [83] = function()local wax,script,require=ImportGlobals(83)local ImportGlobals return (function(...)local black = Color3.new(0, 0, 0)
 local white = Color3.new(1, 1, 1)
 
 return function(color: Color3, BorW: string, lerpAmount: number) 
@@ -7764,14 +8646,14 @@ return function(color: Color3, BorW: string, lerpAmount: number)
 	end
 end
 end)() end,
-    [83] = function()local wax,script,require=ImportGlobals(83)local ImportGlobals return (function(...)return function(Color1, Color2)
+    [84] = function()local wax,script,require=ImportGlobals(84)local ImportGlobals return (function(...)return function(Color1, Color2)
     if Color1.R == Color2.R and Color1.G == Color2.G and Color1.B == Color2.B then
         return true
     end
     return false
 end
 end)() end,
-    [84] = function()local wax,script,require=ImportGlobals(84)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
+    [85] = function()local wax,script,require=ImportGlobals(85)local ImportGlobals return (function(...)local Fusion = require(script.Parent.Parent.Bundles.Fusion)
 local computed = Fusion.Computed
 
 return function(callback,style)
@@ -7791,6 +8673,13 @@ local ObjectTree = {
         {
             {
                 73,
+                2,
+                {
+                    "config"
+                }
+            },
+            {
+                74,
                 1,
                 {
                     "platforms"
@@ -7800,174 +8689,23 @@ local ObjectTree = {
                         75,
                         2,
                         {
-                            "mobile"
+                            "computer"
                         }
                     },
                     {
-                        74,
+                        76,
                         2,
                         {
-                            "computer"
+                            "mobile"
                         }
                     }
-                }
-            },
-            {
-                76,
-                2,
-                {
-                    "preservedConfig"
                 }
             },
             {
                 77,
                 2,
                 {
-                    "project.story"
-                }
-            },
-            {
-                59,
-                1,
-                {
-                    "components"
-                },
-                {
-                    {
-                        62,
-                        2,
-                        {
-                            "newNotification"
-                        }
-                    },
-                    {
-                        68,
-                        2,
-                        {
-                            "newTextButton"
-                        }
-                    },
-                    {
-                        60,
-                        2,
-                        {
-                            "newDropdown"
-                        }
-                    },
-                    {
-                        70,
-                        2,
-                        {
-                            "newToggle"
-                        }
-                    },
-                    {
-                        63,
-                        2,
-                        {
-                            "newParagraph"
-                        }
-                    },
-                    {
-                        64,
-                        2,
-                        {
-                            "newSection"
-                        }
-                    },
-                    {
-                        71,
-                        2,
-                        {
-                            "newWindow"
-                        }
-                    },
-                    {
-                        69,
-                        2,
-                        {
-                            "newTextLabel"
-                        }
-                    },
-                    {
-                        65,
-                        2,
-                        {
-                            "newSlider"
-                        }
-                    },
-                    {
-                        67,
-                        2,
-                        {
-                            "newTextBox"
-                        }
-                    },
-                    {
-                        66,
-                        2,
-                        {
-                            "newTab"
-                        }
-                    },
-                    {
-                        61,
-                        2,
-                        {
-                            "newKeybind"
-                        }
-                    }
-                }
-            },
-            {
-                78,
-                1,
-                {
-                    "utilities"
-                },
-                {
-                    {
-                        82,
-                        2,
-                        {
-                            "lerpColor"
-                        }
-                    },
-                    {
-                        81,
-                        2,
-                        {
-                            "getStringBounds"
-                        }
-                    },
-                    {
-                        84,
-                        2,
-                        {
-                            "tween"
-                        }
-                    },
-                    {
-                        79,
-                        2,
-                        {
-                            "animate"
-                        }
-                    },
-                    {
-                        83,
-                        2,
-                        {
-                            "matchColors"
-                        }
-                    },
-                    {
-                        80,
-                        2,
-                        {
-                            "get"
-                        }
-                    }
+                    "preservedConfig"
                 }
             },
             {
@@ -7978,20 +8716,6 @@ local ObjectTree = {
                 },
                 {
                     {
-                        57,
-                        2,
-                        {
-                            "lucide"
-                        }
-                    },
-                    {
-                        58,
-                        2,
-                        {
-                            "ui-utilities"
-                        }
-                    },
-                    {
                         3,
                         2,
                         {
@@ -7999,163 +8723,12 @@ local ObjectTree = {
                         },
                         {
                             {
-                                33,
-                                1,
-                                {
-                                    "Logging"
-                                },
-                                {
-                                    {
-                                        34,
-                                        2,
-                                        {
-                                            "logError"
-                                        }
-                                    },
-                                    {
-                                        36,
-                                        2,
-                                        {
-                                            "logWarn"
-                                        }
-                                    },
-                                    {
-                                        35,
-                                        2,
-                                        {
-                                            "logErrorNonFatal"
-                                        }
-                                    },
-                                    {
-                                        38,
-                                        2,
-                                        {
-                                            "parseError"
-                                        }
-                                    },
-                                    {
-                                        37,
-                                        2,
-                                        {
-                                            "messages"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                22,
-                                1,
-                                {
-                                    "Instances"
-                                },
-                                {
-                                    {
-                                        28,
-                                        2,
-                                        {
-                                            "OnEvent"
-                                        }
-                                    },
-                                    {
-                                        25,
-                                        2,
-                                        {
-                                            "Hydrate"
-                                        }
-                                    },
-                                    {
-                                        30,
-                                        2,
-                                        {
-                                            "Ref"
-                                        }
-                                    },
-                                    {
-                                        32,
-                                        2,
-                                        {
-                                            "defaultProps"
-                                        }
-                                    },
-                                    {
-                                        27,
-                                        2,
-                                        {
-                                            "OnChange"
-                                        }
-                                    },
-                                    {
-                                        31,
-                                        2,
-                                        {
-                                            "applyInstanceProps"
-                                        }
-                                    },
-                                    {
-                                        23,
-                                        2,
-                                        {
-                                            "Children"
-                                        }
-                                    },
-                                    {
-                                        24,
-                                        2,
-                                        {
-                                            "Cleanup"
-                                        }
-                                    },
-                                    {
-                                        26,
-                                        2,
-                                        {
-                                            "New"
-                                        }
-                                    },
-                                    {
-                                        29,
-                                        2,
-                                        {
-                                            "Out"
-                                        }
-                                    }
-                                }
-                            },
-                            {
                                 40,
                                 1,
                                 {
                                     "State"
                                 },
                                 {
-                                    {
-                                        41,
-                                        2,
-                                        {
-                                            "Computed"
-                                        }
-                                    },
-                                    {
-                                        47,
-                                        2,
-                                        {
-                                            "unwrap"
-                                        }
-                                    },
-                                    {
-                                        42,
-                                        2,
-                                        {
-                                            "ForKeys"
-                                        }
-                                    },
-                                    {
-                                        46,
-                                        2,
-                                        {
-                                            "Value"
-                                        }
-                                    },
                                     {
                                         44,
                                         2,
@@ -8171,10 +8744,175 @@ local ObjectTree = {
                                         }
                                     },
                                     {
+                                        47,
+                                        2,
+                                        {
+                                            "unwrap"
+                                        }
+                                    },
+                                    {
+                                        46,
+                                        2,
+                                        {
+                                            "Value"
+                                        }
+                                    },
+                                    {
+                                        41,
+                                        2,
+                                        {
+                                            "Computed"
+                                        }
+                                    },
+                                    {
                                         43,
                                         2,
                                         {
                                             "ForPairs"
+                                        }
+                                    },
+                                    {
+                                        42,
+                                        2,
+                                        {
+                                            "ForKeys"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                22,
+                                1,
+                                {
+                                    "Instances"
+                                },
+                                {
+                                    {
+                                        31,
+                                        2,
+                                        {
+                                            "applyInstanceProps"
+                                        }
+                                    },
+                                    {
+                                        27,
+                                        2,
+                                        {
+                                            "OnChange"
+                                        }
+                                    },
+                                    {
+                                        24,
+                                        2,
+                                        {
+                                            "Cleanup"
+                                        }
+                                    },
+                                    {
+                                        32,
+                                        2,
+                                        {
+                                            "defaultProps"
+                                        }
+                                    },
+                                    {
+                                        28,
+                                        2,
+                                        {
+                                            "OnEvent"
+                                        }
+                                    },
+                                    {
+                                        30,
+                                        2,
+                                        {
+                                            "Ref"
+                                        }
+                                    },
+                                    {
+                                        25,
+                                        2,
+                                        {
+                                            "Hydrate"
+                                        }
+                                    },
+                                    {
+                                        29,
+                                        2,
+                                        {
+                                            "Out"
+                                        }
+                                    },
+                                    {
+                                        26,
+                                        2,
+                                        {
+                                            "New"
+                                        }
+                                    },
+                                    {
+                                        23,
+                                        2,
+                                        {
+                                            "Children"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                49,
+                                1,
+                                {
+                                    "Utility"
+                                },
+                                {
+                                    {
+                                        53,
+                                        2,
+                                        {
+                                            "isSimilar"
+                                        }
+                                    },
+                                    {
+                                        56,
+                                        2,
+                                        {
+                                            "xtypeof"
+                                        }
+                                    },
+                                    {
+                                        50,
+                                        2,
+                                        {
+                                            "None"
+                                        }
+                                    },
+                                    {
+                                        52,
+                                        2,
+                                        {
+                                            "doNothing"
+                                        }
+                                    },
+                                    {
+                                        54,
+                                        2,
+                                        {
+                                            "needsDestruction"
+                                        }
+                                    },
+                                    {
+                                        55,
+                                        2,
+                                        {
+                                            "restrictRead"
+                                        }
+                                    },
+                                    {
+                                        51,
+                                        2,
+                                        {
+                                            "cleanup"
                                         }
                                     }
                                 }
@@ -8196,98 +8934,12 @@ local ObjectTree = {
                                 }
                             },
                             {
-                                4,
-                                1,
-                                {
-                                    "Animation"
-                                },
-                                {
-                                    {
-                                        9,
-                                        2,
-                                        {
-                                            "getTweenRatio"
-                                        }
-                                    },
-                                    {
-                                        12,
-                                        2,
-                                        {
-                                            "springCoefficients"
-                                        }
-                                    },
-                                    {
-                                        5,
-                                        2,
-                                        {
-                                            "Spring"
-                                        }
-                                    },
-                                    {
-                                        10,
-                                        2,
-                                        {
-                                            "lerpType"
-                                        }
-                                    },
-                                    {
-                                        13,
-                                        2,
-                                        {
-                                            "unpackType"
-                                        }
-                                    },
-                                    {
-                                        7,
-                                        2,
-                                        {
-                                            "Tween"
-                                        }
-                                    },
-                                    {
-                                        8,
-                                        2,
-                                        {
-                                            "TweenScheduler"
-                                        }
-                                    },
-                                    {
-                                        11,
-                                        2,
-                                        {
-                                            "packType"
-                                        }
-                                    },
-                                    {
-                                        6,
-                                        2,
-                                        {
-                                            "SpringScheduler"
-                                        }
-                                    }
-                                }
-                            },
-                            {
                                 16,
                                 1,
                                 {
                                     "Dependencies"
                                 },
                                 {
-                                    {
-                                        18,
-                                        2,
-                                        {
-                                            "initDependency"
-                                        }
-                                    },
-                                    {
-                                        21,
-                                        2,
-                                        {
-                                            "useDependency"
-                                        }
-                                    },
                                     {
                                         17,
                                         2,
@@ -8303,75 +8955,24 @@ local ObjectTree = {
                                         }
                                     },
                                     {
+                                        21,
+                                        2,
+                                        {
+                                            "useDependency"
+                                        }
+                                    },
+                                    {
                                         20,
                                         2,
                                         {
                                             "updateAll"
                                         }
-                                    }
-                                }
-                            },
-                            {
-                                39,
-                                2,
-                                {
-                                    "PubTypes"
-                                }
-                            },
-                            {
-                                49,
-                                1,
-                                {
-                                    "Utility"
-                                },
-                                {
-                                    {
-                                        52,
-                                        2,
-                                        {
-                                            "doNothing"
-                                        }
                                     },
                                     {
-                                        56,
+                                        18,
                                         2,
                                         {
-                                            "xtypeof"
-                                        }
-                                    },
-                                    {
-                                        53,
-                                        2,
-                                        {
-                                            "isSimilar"
-                                        }
-                                    },
-                                    {
-                                        54,
-                                        2,
-                                        {
-                                            "needsDestruction"
-                                        }
-                                    },
-                                    {
-                                        51,
-                                        2,
-                                        {
-                                            "cleanup"
-                                        }
-                                    },
-                                    {
-                                        55,
-                                        2,
-                                        {
-                                            "restrictRead"
-                                        }
-                                    },
-                                    {
-                                        50,
-                                        2,
-                                        {
-                                            "None"
+                                            "initDependency"
                                         }
                                     }
                                 }
@@ -8382,16 +8983,304 @@ local ObjectTree = {
                                 {
                                     "Types"
                                 }
+                            },
+                            {
+                                4,
+                                1,
+                                {
+                                    "Animation"
+                                },
+                                {
+                                    {
+                                        9,
+                                        2,
+                                        {
+                                            "getTweenRatio"
+                                        }
+                                    },
+                                    {
+                                        10,
+                                        2,
+                                        {
+                                            "lerpType"
+                                        }
+                                    },
+                                    {
+                                        5,
+                                        2,
+                                        {
+                                            "Spring"
+                                        }
+                                    },
+                                    {
+                                        6,
+                                        2,
+                                        {
+                                            "SpringScheduler"
+                                        }
+                                    },
+                                    {
+                                        11,
+                                        2,
+                                        {
+                                            "packType"
+                                        }
+                                    },
+                                    {
+                                        13,
+                                        2,
+                                        {
+                                            "unpackType"
+                                        }
+                                    },
+                                    {
+                                        12,
+                                        2,
+                                        {
+                                            "springCoefficients"
+                                        }
+                                    },
+                                    {
+                                        8,
+                                        2,
+                                        {
+                                            "TweenScheduler"
+                                        }
+                                    },
+                                    {
+                                        7,
+                                        2,
+                                        {
+                                            "Tween"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                33,
+                                1,
+                                {
+                                    "Logging"
+                                },
+                                {
+                                    {
+                                        36,
+                                        2,
+                                        {
+                                            "logWarn"
+                                        }
+                                    },
+                                    {
+                                        34,
+                                        2,
+                                        {
+                                            "logError"
+                                        }
+                                    },
+                                    {
+                                        37,
+                                        2,
+                                        {
+                                            "messages"
+                                        }
+                                    },
+                                    {
+                                        35,
+                                        2,
+                                        {
+                                            "logErrorNonFatal"
+                                        }
+                                    },
+                                    {
+                                        38,
+                                        2,
+                                        {
+                                            "parseError"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                39,
+                                2,
+                                {
+                                    "PubTypes"
+                                }
                             }
+                        }
+                    },
+                    {
+                        57,
+                        2,
+                        {
+                            "lucide"
+                        }
+                    },
+                    {
+                        58,
+                        2,
+                        {
+                            "ui-utilities"
                         }
                     }
                 }
             },
             {
-                72,
+                78,
                 2,
                 {
-                    "config"
+                    "project.story"
+                }
+            },
+            {
+                59,
+                1,
+                {
+                    "components"
+                },
+                {
+                    {
+                        66,
+                        2,
+                        {
+                            "newParagraph"
+                        }
+                    },
+                    {
+                        70,
+                        2,
+                        {
+                            "newTextBox"
+                        }
+                    },
+                    {
+                        69,
+                        2,
+                        {
+                            "newTab"
+                        }
+                    },
+                    {
+                        60,
+                        2,
+                        {
+                            "newButton"
+                        }
+                    },
+                    {
+                        72,
+                        2,
+                        {
+                            "newWindow"
+                        }
+                    },
+                    {
+                        64,
+                        2,
+                        {
+                            "newLabel"
+                        }
+                    },
+                    {
+                        71,
+                        2,
+                        {
+                            "newToggle"
+                        }
+                    },
+                    {
+                        68,
+                        2,
+                        {
+                            "newSlider"
+                        }
+                    },
+                    {
+                        63,
+                        2,
+                        {
+                            "newKeybind"
+                        }
+                    },
+                    {
+                        61,
+                        2,
+                        {
+                            "newDropdown"
+                        }
+                    },
+                    {
+                        65,
+                        2,
+                        {
+                            "newNotification"
+                        }
+                    },
+                    {
+                        67,
+                        2,
+                        {
+                            "newSection"
+                        }
+                    },
+                    {
+                        62,
+                        2,
+                        {
+                            "newGroup"
+                        }
+                    }
+                }
+            },
+            {
+                79,
+                1,
+                {
+                    "utilities"
+                },
+                {
+                    {
+                        81,
+                        2,
+                        {
+                            "get"
+                        }
+                    },
+                    {
+                        84,
+                        2,
+                        {
+                            "matchColors"
+                        }
+                    },
+                    {
+                        82,
+                        2,
+                        {
+                            "getStringBounds"
+                        }
+                    },
+                    {
+                        83,
+                        2,
+                        {
+                            "lerpColor"
+                        }
+                    },
+                    {
+                        85,
+                        2,
+                        {
+                            "tween"
+                        }
+                    },
+                    {
+                        80,
+                        2,
+                        {
+                            "animate"
+                        }
+                    }
                 }
             }
         }
@@ -8401,78 +9290,79 @@ local ObjectTree = {
 -- Line offsets for debugging (only included when minifyTables is false)
 local LineOffsets = {
     8,
-    [3] = 292,
-    [5] = 366,
-    [6] = 584,
-    [7] = 677,
-    [8] = 813,
-    [9] = 888,
-    [10] = 931,
-    [11] = 1093,
-    [12] = 1192,
-    [13] = 1278,
-    [15] = 1367,
-    [17] = 1422,
-    [18] = 1479,
-    [19] = 1508,
-    [20] = 1532,
-    [21] = 1592,
-    [23] = 1622,
-    [24] = 1771,
-    [25] = 1792,
-    [26] = 1812,
-    [27] = 1848,
-    [28] = 1883,
-    [29] = 1920,
-    [30] = 1964,
-    [31] = 1994,
-    [32] = 2121,
-    [34] = 2232,
-    [35] = 2265,
-    [36] = 2300,
-    [37] = 2324,
-    [38] = 2370,
-    [39] = 2393,
-    [41] = 2540,
-    [42] = 2654,
-    [43] = 2903,
-    [44] = 3213,
-    [45] = 3460,
-    [46] = 3544,
-    [47] = 3607,
-    [48] = 3623,
-    [50] = 3770,
-    [51] = 3784,
-    [52] = 3838,
-    [53] = 3849,
-    [54] = 3867,
-    [55] = 3880,
-    [56] = 3909,
-    [57] = 3929,
-    [58] = 4753,
-    [60] = 4899,
-    [61] = 5275,
-    [62] = 5446,
-    [63] = 5603,
-    [64] = 5717,
-    [65] = 5787,
-    [66] = 6061,
-    [67] = 6224,
-    [68] = 6409,
-    [69] = 6555,
-    [70] = 6641,
-    [71] = 6795,
-    [72] = 6855,
-    [74] = 6866,
-    [75] = 7292,
-    [76] = 7583,
-    [77] = 7594,
-    [79] = 7728,
-    [80] = 7735,
-    [81] = 7742,
-    [82] = 7753,
-    [83] = 7767,
-    [84] = 7774
+    [3] = 371,
+    [5] = 445,
+    [6] = 663,
+    [7] = 756,
+    [8] = 892,
+    [9] = 967,
+    [10] = 1010,
+    [11] = 1172,
+    [12] = 1271,
+    [13] = 1357,
+    [15] = 1446,
+    [17] = 1501,
+    [18] = 1558,
+    [19] = 1587,
+    [20] = 1611,
+    [21] = 1671,
+    [23] = 1701,
+    [24] = 1850,
+    [25] = 1871,
+    [26] = 1891,
+    [27] = 1927,
+    [28] = 1962,
+    [29] = 1999,
+    [30] = 2043,
+    [31] = 2073,
+    [32] = 2200,
+    [34] = 2311,
+    [35] = 2344,
+    [36] = 2379,
+    [37] = 2403,
+    [38] = 2449,
+    [39] = 2472,
+    [41] = 2619,
+    [42] = 2733,
+    [43] = 2982,
+    [44] = 3292,
+    [45] = 3539,
+    [46] = 3623,
+    [47] = 3686,
+    [48] = 3702,
+    [50] = 3849,
+    [51] = 3863,
+    [52] = 3917,
+    [53] = 3928,
+    [54] = 3946,
+    [55] = 3959,
+    [56] = 3988,
+    [57] = 4008,
+    [58] = 4832,
+    [60] = 4978,
+    [61] = 5182,
+    [62] = 5712,
+    [63] = 5940,
+    [64] = 6187,
+    [65] = 6281,
+    [66] = 6438,
+    [67] = 6577,
+    [68] = 6644,
+    [69] = 7026,
+    [70] = 7189,
+    [71] = 7447,
+    [72] = 7665,
+    [73] = 7725,
+    [75] = 7736,
+    [76] = 8163,
+    [77] = 8454,
+    [78] = 8465,
+    [80] = 8610,
+    [81] = 8617,
+    [82] = 8624,
+    [83] = 8635,
+    [84] = 8649,
+    [85] = 8656
 }
 
 -- Misc AOT variable imports
