@@ -63,6 +63,20 @@ local tab = window:Tab({
     Image = "" -- rbxassetid
 })
 ```
+### new Group
+```lua
+local group = tab:Group({
+    Name = "", -- string
+    Icon = "" -- string
+})
+
+-- has returned functions
+
+group:SetName("") -- string
+group:SetIcon("") -- string
+```
+These will have the ability to add components with all their returned functions.
+Basically a folder
 ### new Button
 ```lua
 local button = tab:Button({
@@ -141,7 +155,10 @@ local dropdown = tab:Dropdown({
 -- has returned functions
 
 dropdown:SetItems({}) -- table
+dropdown:SetItem("") -- string
+dropdonw:SetItems({}) -- table
 ```
+SetItem is used when Multiselect is false and SetItems is for when it is true
 ### New Slider
 ```lua
 local slider = tab:Slider({
@@ -158,6 +175,9 @@ local slider = tab:Slider({
 -- has returned functions
 
 slider:SetValue(50) -- number
+slider:SetMin(50) -- number
+slider:SetMax(50) -- number
+slider:SetStep(5) -- number
 ```
 ### New Section
 ```lua
@@ -188,6 +208,9 @@ local label = tab:Label("") -- string
 label:SetText("") -- string
 ```
 ## Miscellaneous
+These are on all components that are added to tabs or groups
 ```lua
 <object>:Remove() -- ?? i think i added this for all
+<object>:Lock("") -- string
+<object>:Unlock()
 ```
