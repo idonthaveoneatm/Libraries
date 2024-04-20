@@ -88,7 +88,7 @@ local button = tab:Button({
 
 -- has returned functions
 
-button:SetText("") -- string
+button:SetName("") -- string
 button:SetCallback(function()
     print("new quake")
 end)
