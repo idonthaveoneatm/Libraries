@@ -155,8 +155,8 @@ local dropdown = tab:Dropdown({
 -- has returned functions
 
 dropdown:SetItems({}) -- table
-dropdown:SetItem("") -- string
-dropdonw:SetItems({}) -- table
+dropdown:SelectItem("") -- string
+dropdonw:SelectItems({}) -- table
 ```
 SetItem is used when Multiselect is false and SetItems is for when it is true
 ### New Slider
