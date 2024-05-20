@@ -179,6 +179,20 @@ slider:SetMin(50) -- number
 slider:SetMax(50) -- number
 slider:SetStep(5) -- number
 ```
+### New ColorPicker
+```lua
+local colorpicker = tab:ColorPicker({
+    Name = "", -- string
+    Color = Color3.fromHex("#ffffff"), -- Color3
+    Callback = function(value)
+        print(value)
+    end
+})
+
+-- has returned function
+
+colorpicker:SetColor(Color3.fromRGB(255,255,255)) -- Color3
+```
 ### New Section
 ```lua
 local section = tab:Section("") -- string
