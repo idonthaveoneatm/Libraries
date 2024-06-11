@@ -27,7 +27,8 @@ local window = quake:Window({
         image = Color3.fromRGB(220,221,225),
         placeholder = Color3.fromRGB(165,166,169),
         close = Color3.fromRGB(190, 100, 105)
-    }
+    },
+    KeyCode = Enum.KeyCode.Backquote -- not required defaults to backquote
 })
 ```
 ### Setting Theme
