@@ -3,167 +3,135 @@ local a local aa,ab,ac,ad,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q={function()local b,c,d
 utilities.matchColors),{}function m.Window(n,o)assert(o.Title,':Window needs a Title')local p,q=d(c.platforms.mobile),d(
 c.platforms.computer)local function r(s,t,u)u.Parent=t return d(c.components['new'..s])(u)end local s,t,u,v=g(j.text),g(
 tostring(math.random(1,100))),g(true),saltedTable or{}local function w(x:string)local y,z=x,''for A=1,5 do z=z..
-tostring(math.abs(math.random(0,9)))end local A=y..z v[y]=A return v[y]end o.Parent=o.Parent or gethui()or game.CoreGui
-o.KeyCode=o.KeyCode or Enum.KeyCode.Backquote w(o.Title)o.isMobile=o.isMobile or false if o.CustomTheme then j.
-defaultTab=o.CustomTheme.defaultTab or k.defaultTab j.background=o.CustomTheme.background or k.background j.
-secondaryBackground=o.CustomTheme.secondaryBackground or k.secondaryBackground j.tertiaryBackground=o.CustomTheme.
-tertiaryBackground or k.tertiaryBackground j.text=o.CustomTheme.text or k.text j.image=o.CustomTheme.image or k.image j.
-placeholder=o.CustomTheme.placeholder or k.placeholder j.close=o.CustomTheme.close or k.close end if o.Size then o.Size.
-X=o.Size.X or 550 o.Size.Y=o.Size.Y or 400 if o.Size.X<550 then o.Size.X=550 print'Size.X was too small! >550 required'
-end if o.Size.Y<400 then o.Size.Y=400 print'Size.Y was too small! >400 required'end elseif not o.Size then o.Size={}o.
-Size.X=550 o.Size.Y=400 end if o.Parent:FindFirstChild(v[o.Title])then o.Parent:FindFirstChild(v[o.Title]):Destroy()end
-local x,y if o.isMobile then x,y=p{Title=o.Title,Parent=o.Parent,KeyCode=o.KeyCode,saltedTable=v}else x,y=q{Title=o.
-Title,Parent=o.Parent,Size=o.Size,KeyCode=o.KeyCode,saltedTable=v}end h(s):onChange(function()y(i(s))end)m.Windows={}
-function m.Windows.Tab(z,A)local B=g(d(c.config))if not A.tabColor then A.tabColor=i(B).defaultTab end local C=g(A.
-tabColor)w(A.Name)if l(i(C),i(B).defaultTab)then h(B):onChange(function()C:set(i(B).defaultTab)end)end local D,E,F=(r(
-'Window',i(x.windowsRef),{Name=A.Name,saltedTable=v}))E,F=r('Tab',i(x.sideBarRef),{Name=A.Name,tabColor=i(C),Image=A.
-Image,saltedTable=v,Callback=function(G)if G then s:set(G)C:set(G)else i(x.uipagelayoutRef):JumpTo(D)s:set(i(C))t:set(v[
-A.Name])end end})h(t):onChange(function()if i(t)==v[A.Name]then E(true)else E(false)end end)if i(u)then u:set(false)F()
-end m.Windows.Component={}function m.Windows.Component.Button(G,H)assert(H.Name,':Button requires a Name')assert(typeof(
-H.Name)=='string','Name must be a string')assert(H.Callback,H.Name..' is missing Callback')return r('Button',D,{Name=H.
-Name,tabColor=i(C),Callback=H.Callback})end function m.Windows.Component.Toggle(G,H)assert(H.Name,
-':Toggle requires a Name')assert(typeof(H.Name)=='string','Name must be a string')assert(H.Callback,H.Name..
-' is missing Callback')return r('Toggle',D,{tabColor=i(C),Name=H.Name,Default=H.Default or false,Callback=function(I)H.
-Callback(I)end})end function m.Windows.Component.TextBox(G,H)assert(H.Name,':TextBox requires a Name')assert(typeof(H.
-Name)=='string','Name must be a string')assert(H.Callback,H.Name..' is missing Callback')return r('TextBox',D,{tabColor=
-i(C),Name=H.Name,Default=H.Default or'',Callback=function(I)H.Callback(I)end})end function m.Windows.Component.Keybind(G
-,H)assert(H.Name,':Keybind requires a Name')assert(typeof(H.Name)=='string','Name must be a string')assert(H.Callback,H.
-Name..' is missing Callback')return r('Keybind',D,{Name=H.Name,tabColor=i(C),Default=H.Default or'E',Callback=function()
-H.Callback()end})end function m.Windows.Component.Dropdown(G,H)assert(H.Name,':Dropdown requires a Name')assert(typeof(H
-.Name)=='string','Name must be a string')assert(H.Items,':Dropdown requires an Items')assert(typeof(H.Items)=='table',
-'Items must be a table')assert(H.Multiselect,':Dropdown requires a Multiselect')assert(typeof(H.Multiselect)=='boolean',
-'Items must be a boolean')assert(H.Callback,H.Name..' is missing Callback')return r('Dropdown',D,{Name=H.Name,Items=H.
-Items,Default=H.Default or'',Multiselect=H.Multiselect,tabColor=i(C),Callback=function(I)H.Callback(I)end})end function
-m.Windows.Component.Slider(G,H)assert(H.Name,':Slider requires a Name')assert(typeof(H.Name)=='string',
-'Name must be a string')assert(H.Min,':Slider requires a Min')assert(typeof(H.Min)=='number','Min must be a number')
-assert(H.Max,':Slider requires a Max')assert(typeof(H.Max)=='number','Max must be a number')assert(H.Callback,H.Name..
-' is missing Callback')return r('Slider',D,{Name=H.Name,tabColor=i(C),Min=H.Min,Max=H.Max,Step=H.Step,InitialValue=H.
-InitialValue,Callback=function(I)H.Callback(I)end})end function m.Windows.Component.Section(G,H:string)assert(H,
-':Section requires a string')assert(typeof(H)=='string','The string must be a string')return r('Section',D,{Text=H})end
-function m.Windows.Component.Paragraph(G,H)assert(H.Title,':Paragraph requires a Title')assert(typeof(H.Title)=='string'
-,'The Title must be a string')assert(H.Body,':Paragraph requires a Body')assert(typeof(H.Body)=='string',
-'The Body must be a string')return r('Paragraph',D,{Title=H.Title,Body=H.Body})end function m.Windows.Component.Label(G,
-H:string)assert(H,':Label requires a string')assert(typeof(H)=='string','The string must be a string')return r('Label',D
-,{tabColor=i(C),Text=H})end function m.Windows.Component.Group(G,H)assert(H.Name,':Group requires a string')assert(
-typeof(H.Name)=='string','The Name must be a string')local I,J=r('Group',D,{Name=H.Name,Icon=H.Icon,tabColor=i(C)})
-function J.Button(K,L)assert(H.Name,':Button requires a Name')assert(typeof(H.Name)=='string','Name must be a string')
-assert(H.Callback,H.Name..' is missing Callback')return r('Button',I,{Name=L.Name,tabColor=i(C),Callback=L.Callback})end
-function J.Toggle(K,L)assert(L.Name,':Toggle requires a Name')assert(typeof(L.Name)=='string','Name must be a string')
-assert(L.Callback,L.Name..' is missing Callback')return r('Toggle',I,{tabColor=i(C),Name=L.Name,Default=L.Default,
-Callback=function(M)L.Callback(M)end})end function J.TextBox(K,L)assert(L.Name,':TextBox requires a Name')assert(typeof(
-L.Name)=='string','Name must be a string')assert(L.Callback,L.Name..' is missing Callback')return r('TextBox',I,{
-tabColor=i(C),Name=L.Name,Default=L.Default,Callback=function(M)L.Callback(M)end})end function J.Keybind(K,L)assert(L.
-Name,':Keybind requires a Name')assert(typeof(L.Name)=='string','Name must be a string')assert(L.Callback,L.Name..
-' is missing Callback')return r('Keybind',I,{Name=L.Name,tabColor=i(C),Default=L.Default,Callback=function()L.Callback()
-end})end function J.Dropdown(K,L)assert(L.Name,':Dropdown requires a Name')assert(typeof(L.Name)=='string',
-'Name must be a string')assert(L.Items,':Dropdown requires an Items')assert(typeof(L.Items)=='table',
-'Items must be a table')assert(L.Multiselect,':Dropdown requires a Multiselect')assert(typeof(L.Multiselect)=='boolean',
-'Items must be a boolean')assert(L.Callback,L.Name..' is missing Callback')return r('Dropdown',I,{Name=L.Name,Items=L.
-Items,Default=L.Default,Multiselect=L.Multiselect,tabColor=i(C),Callback=function(M)L.Callback(M)end})end function J.
-Slider(K,L)assert(L.Name,':Slider requires a Name')assert(typeof(L.Name)=='string','Name must be a string')assert(L.Min,
-':Slider requires a Min')assert(typeof(L.Min)=='number','Min must be a number')assert(L.Max,':Slider requires a Max')
-assert(typeof(L.Max)=='number','Max must be a number')assert(L.Callback,L.Name..' is missing Callback')return r('Slider'
-,I,{Name=L.Name,tabColor=i(C),Min=L.Min,Max=L.Max,Step=L.Step,InitialValue=L.InitialValue,Callback=function(M)L.
-Callback(M)end})end function J.Section(K,L:string)assert(L,':Section requires a string')assert(typeof(L)=='string',
-'The string must be a string')return r('Section',I,{Text=L})end function J.Paragraph(K,L)assert(L.Title,
-':Paragraph requires a Title')assert(typeof(L.Title)=='string','The Title must be a string')assert(L.Body,
-':Paragraph requires a Body')assert(typeof(L.Body)=='string','The Body must be a string')return r('Paragraph',I,{
-isInGroup=true,Title=L.Title,Body=L.Body})end function J.Label(K,L:string)assert(L,':Label requires a string')assert(
-typeof(L)=='string','The string must be a string')return r('Label',I,{tabColor=i(C),isInGroup=true,Text=L})end function
-J.ColorPicker(K,L)return r('ColorPicker',I,{tabColor=i(C),Name=L.Name,Color=L.Color,Callback=function(M)L.Callback(M)end
-})end return J end function m.Windows.Component.ColorPicker(G,H)assert(H.Name,':ColorPicker requires a Name')assert(
-typeof(H.Name)=='string','Name must be a string')assert(H.Color,':ColorPicker requires a Color')assert(typeof(H.Color)==
-'Color3','Name must be a Color3')assert(H.Callback,H.Name..' is missing Callback')return r('ColorPicker',D,{tabColor=i(C
-),Name=H.Name,Color=H.Color,Callback=function(I)H.Callback(I)end})end return m.Windows.Component end function m.
-SetCustomTheme(z,A)j.defaultTab=A.defaultTab or k.defaultTab j.background=A.background or k.background j.
-secondaryBackground=A.secondaryBackground or k.secondaryBackground j.tertiaryBackground=A.tertiaryBackground or k.
-tertiaryBackground j.text=A.text or k.text j.image=A.image or k.image j.placeholder=A.placeholder or k.placeholder j.
-close=A.close or k.close end function m.Destroy(z)o.Parent:FindFirstChild(v[o.Title]):Destroy()end function m.Windows.
-Notify(z,A)return r('Notification',i(x.notificationListRef),{Title=A.Title,Duration=A.Duration,Body=A.Body})end return m
-.Windows end return m end)()end,[3]=function()local b,c,d=a(3)local e return(function(...)local f,g=d(c.PubTypes),d(c.
-Utility.restrictRead)export type StateObject<T> =PubTypes.StateObject<T>export type CanBeState<T> =PubTypes.CanBeState<T
->export type Symbol=PubTypes.Symbol export type Value<T> =PubTypes.Value<T>export type Computed<T> =PubTypes.Computed<T>
-export type ForPairs<KO,VO> =PubTypes.ForPairs<KO,VO>export type ForKeys<KI,KO> =PubTypes.ForKeys<KI,KO>export type
-ForValues<VI,VO> =PubTypes.ForKeys<VI,VO>export type Observer=PubTypes.Observer export type Tween<T> =PubTypes.Tween<T>
-export type Spring<T> =PubTypes.Spring<T>type Fusion={version:PubTypes.Version,New:(className:string)->((propertyTable:
-PubTypes.PropertyTable)->Instance),Hydrate:(target:Instance)->((propertyTable:PubTypes.PropertyTable)->Instance),Ref:
-PubTypes.SpecialKey,Cleanup:PubTypes.SpecialKey,Children:PubTypes.SpecialKey,Out:PubTypes.SpecialKey,OnEvent:(eventName:
-string)->PubTypes.SpecialKey,OnChange:(propertyName:string)->PubTypes.SpecialKey,Value:<T>(initialValue:T)->Value<T>,
-Computed:<T>(callback:()->T,destructor:((T)->())?)->Computed<T>,ForPairs:<KI,VI,KO,VO,M>(inputTable:CanBeState<{[KI]:VI}
->,processor:(KI,VI)->(KO,VO,M?),destructor:((KO,VO,M?)->())?)->ForPairs<KO,VO>,ForKeys:<KI,KO,M>(inputTable:CanBeState<{
-[KI]:any}>,processor:(KI)->(KO,M?),destructor:((KO,M?)->())?)->ForKeys<KO,any>,ForValues:<VI,VO,M>(inputTable:CanBeState
-<{[any]:VI}>,processor:(VI)->(VO,M?),destructor:((VO,M?)->())?)->ForValues<any,VO>,Observer:(watchedState:StateObject<
-any>)->Observer,Tween:<T>(goalState:StateObject<T>,tweenInfo:TweenInfo?)->Tween<T>,Spring:<T>(goalState:StateObject<T>,
-speed:number?,damping:number?)->Spring<T>,cleanup:(...any)->(),doNothing:(...any)->()}return g('Fusion',{version={major=
-0,minor=2,isRelease=true},New=d(c.Instances.New),Hydrate=d(c.Instances.Hydrate),Ref=d(c.Instances.Ref),Out=d(c.Instances
-.Out),Cleanup=d(c.Instances.Cleanup),Children=d(c.Instances.Children),OnEvent=d(c.Instances.OnEvent),OnChange=d(c.
-Instances.OnChange),Value=d(c.State.Value),Computed=d(c.State.Computed),ForPairs=d(c.State.ForPairs),ForKeys=d(c.State.
-ForKeys),ForValues=d(c.State.ForValues),Observer=d(c.State.Observer),Tween=d(c.Animation.Tween),Spring=d(c.Animation.
-Spring),cleanup=d(c.Utility.cleanup),doNothing=d(c.Utility.doNothing)})::Fusion end)()end,[5]=function()local b,c,d=a(5)
-local e return(function(...)local f=c.Parent.Parent local g,h,i,j,k,l,m,n,o,p,q,r=d(f.PubTypes),d(f.Types),d(f.Logging.
-logError),d(f.Logging.logErrorNonFatal),d(f.Animation.unpackType),d(f.Animation.SpringScheduler),d(f.Dependencies.
-useDependency),d(f.Dependencies.initDependency),d(f.Dependencies.updateAll),d(f.Utility.xtypeof),d(f.State.unwrap),{}
-local s,t={__index=r},{__mode='k'}function r.get(u,v:boolean?):any if v~=false then m(u)end return u._currentValue end
-function r.setPosition(u,v:PubTypes.Animatable)local w=typeof(v)if w~=u._currentType then i('springTypeMismatch',nil,w,u
-._currentType)end u._springPositions=k(v,w)u._currentValue=v l.add(u)o(u)end function r.setVelocity(u,v:PubTypes.
-Animatable)local w=typeof(v)if w~=u._currentType then i('springTypeMismatch',nil,w,u._currentType)end u.
-_springVelocities=k(v,w)l.add(u)end function r.addVelocity(u,v:PubTypes.Animatable)local w=typeof(v)if w~=u._currentType
-then i('springTypeMismatch',nil,w,u._currentType)end local x=k(v,w)for y,z in ipairs(x)do u._springVelocities[y]+=z end
-l.add(u)end function r.update(u):boolean local v=u._goalState:get(false)if v==u._goalValue then local w=q(u._damping)if
-typeof(w)~='number'then j('mistypedSpringDamping',nil,typeof(w))elseif w<0 then j('invalidSpringDamping',nil,w)else u.
-_currentDamping=w end local x=q(u._speed)if typeof(x)~='number'then j('mistypedSpringSpeed',nil,typeof(x))elseif x<0
-then j('invalidSpringSpeed',nil,x)else u._currentSpeed=x end return false else u._goalValue=v local w,x=u._currentType,
-typeof(v)u._currentType=x local y=k(v,x)local z=#y u._springGoals=y if x~=w then u._currentValue=u._goalValue local A,B=
-table.create(z,0),table.create(z,0)for C,D in ipairs(y)do A[C]=D end u._springPositions=A u._springVelocities=B l.
-remove(u)return true elseif z==0 then u._currentValue=u._goalValue return true else l.add(u)return false end end end
-local function u<T>(v:PubTypes.Value<T>,w:PubTypes.CanBeState<number>?,x:PubTypes.CanBeState<number>?):Types.Spring<T>if
-w==nil then w=10 end if x==nil then x=1 end local y={[v]=true}if p(w)=='State'then y[w]=true end if p(x)=='State'then y[
-x]=true end local z=setmetatable({type='State',kind='Spring',dependencySet=y,dependentSet=setmetatable({},t),_speed=w,
-_damping=x,_goalState=v,_goalValue=nil,_currentType=nil,_currentValue=nil,_currentSpeed=q(w),_currentDamping=q(x),
-_springPositions=nil,_springGoals=nil,_springVelocities=nil},s)n(z)v.dependentSet[z]=true z:update()return z end return
-u end)()end,[6]=function()local b,c,d=a(6)local e return(function(...)local f,g=game:GetService'RunService',c.Parent.
-Parent local h,i,j,k=d(g.Types),d(g.Animation.packType),d(g.Animation.springCoefficients),d(g.Dependencies.updateAll)
-type Set<T> ={[T]:any}type Spring=Types.Spring<any>local l,m,n:Set<Spring>,o={},0.0001,{},os.clock()function l.add(p:
-Spring)p._lastSchedule=o p._startDisplacements={}p._startVelocities={}for q,r in ipairs(p._springGoals)do p.
-_startDisplacements[q]=p._springPositions[q]-r p._startVelocities[q]=p._springVelocities[q]end n[p]=true end function l.
-remove(p:Spring)n[p]=nil end local function p()local q:Set<Spring> ={}o=os.clock()for r in pairs(n)do local s,t,u,v=j(o-
-r._lastSchedule,r._currentDamping,r._currentSpeed)local w,x,y,z,A=r._springPositions,r._springVelocities,r.
-_startDisplacements,r._startVelocities,false for B,C in ipairs(r._springGoals)do local D,E=y[B],z[B]local F,G=D*s+E*t,D*
-u+E*v if math.abs(F)>m or math.abs(G)>m then A=true end w[B]=F+C x[B]=G end if not A then q[r]=true end end for s in
-pairs(n)do s._currentValue=i(s._springPositions,s._currentType)k(s)end for t in pairs(q)do n[t]=nil end end f:
-BindToRenderStep('__FusionSpringScheduler',Enum.RenderPriority.First.Value,p)return l end)()end,[7]=function()local b,c,
-d=a(7)local e return(function(...)local f=c.Parent.Parent local g,h,i,j,k,l,m,n,o=d(f.PubTypes),d(f.Types),d(f.Animation
-.TweenScheduler),d(f.Dependencies.useDependency),d(f.Dependencies.initDependency),d(f.Logging.logError),d(f.Logging.
-logErrorNonFatal),d(f.Utility.xtypeof),{}local p,q={__index=o},{__mode='k'}function o.get(t,u:boolean?):any if u~=false
-then j(t)end return t._currentValue end function o.update(t):boolean local u=t._goalState:get(false)if u==t._nextValue
-and not t._currentlyAnimating then return false end local v=t._tweenInfo if t._tweenInfoIsState then v=v:get()end if
-typeof(v)~='TweenInfo'then m('mistypedTweenInfo',nil,typeof(v))return false end t._prevValue=t._currentValue t.
-_nextValue=u t._currentTweenStartTime=os.clock()t._currentTweenInfo=v local w=v.DelayTime+v.Time if v.Reverses then w+=v
-.Time end w*=v.RepeatCount+1 t._currentTweenDuration=w i.add(t)return false end local function t<T>(u:PubTypes.
-StateObject<PubTypes.Animatable>,v:PubTypes.CanBeState<TweenInfo>?):Types.Tween<T>local w=u:get(false)if v==nil then v=
-TweenInfo.new()end local x,y={[u]=true},n(v)=='State'if y then x[v]=true end local z=v if y then z=z:get()end if typeof(
-z)~='TweenInfo'then l('mistypedTweenInfo',nil,typeof(z))end local A=setmetatable({type='State',kind='Tween',
-dependencySet=x,dependentSet=setmetatable({},q),_goalState=u,_tweenInfo=v,_tweenInfoIsState=y,_prevValue=w,_nextValue=w,
-_currentValue=w,_currentTweenInfo=v,_currentTweenDuration=0,_currentTweenStartTime=0,_currentlyAnimating=false},p)k(A)u.
-dependentSet[A]=true return A end return t end)()end,[8]=function()local b,c,d=a(8)local e return(function(...)local f,g
-=game:GetService'RunService',c.Parent.Parent local h,i,j,k,l=d(g.Types),d(g.Animation.lerpType),d(g.Animation.
-getTweenRatio),d(g.Dependencies.updateAll),{}type Set<T> ={[T]:any}type Tween=Types.Tween<any>local m,n:Set<Tween> ={
-__mode='k'},{}setmetatable(n,m)function l.add(o:Tween)n[o]=true end function l.remove(o:Tween)n[o]=nil end
-local function o()local p=os.clock()for q:Tween in pairs(n::any)do local t=p-q._currentTweenStartTime if t>q.
-_currentTweenDuration then if q._currentTweenInfo.Reverses then q._currentValue=q._prevValue else q._currentValue=q.
-_nextValue end q._currentlyAnimating=false k(q)l.remove(q)else local u=j(q._currentTweenInfo,t)local v=i(q._prevValue,q.
-_nextValue,u)q._currentValue=v q._currentlyAnimating=true k(q)end end end f:BindToRenderStep('__FusionTweenScheduler',
-Enum.RenderPriority.First.Value,o)return l end)()end,[9]=function()local b,c,d=a(9)local e return(function(...)local f=
-game:GetService'TweenService'local function g(h:TweenInfo,i:number):number local j,k,l,m,n,o=h.DelayTime,h.Time,h.
-Reverses,1+h.RepeatCount,h.EasingStyle,h.EasingDirection local p=j+k if l then p+=k end if i>=p*m then return 1 end
-local q=i%p if q<=j then return 0 end local t=(q-j)/k if t>1 then t=2-t end local u=f:GetValue(t,n,o)return u end return
-g end)()end,[10]=function()local b,c,d=a(10)local e return(function(...)local f=c.Parent.Parent local g,h=d(f.PubTypes),
-d(f.Colour.Oklab)local function i(j:any,k:any,l:number):any local m=typeof(j)if typeof(k)==m then if m=='number'then
-local n,o=k::number,j::number return(n-o)*l+o elseif m=='CFrame'then local n,o=k::CFrame,j::CFrame return o:Lerp(n,l)
-elseif m=='Color3'then local n,o=k::Color3,j::Color3 local p,q=h.to(o),h.to(n)return h.from(p:Lerp(q,l),false)elseif m==
-'ColorSequenceKeypoint'then local n,o=k::ColorSequenceKeypoint,j::ColorSequenceKeypoint local p,q=h.to(o.Value),h.to(n.
-Value)return ColorSequenceKeypoint.new((n.Time-o.Time)*l+o.Time,h.from(p:Lerp(q,l),false))elseif m=='DateTime'then local
-n,o=k::DateTime,j::DateTime return DateTime.fromUnixTimestampMillis((n.UnixTimestampMillis-o.UnixTimestampMillis)*l+o.
+tostring(math.abs(math.random(0,9)))end local A=y..z v[y]=A return v[y]end o.Parent=o.Parent or game.CoreGui o.KeyCode=o
+.KeyCode or Enum.KeyCode.Backquote w(o.Title)o.isMobile=o.isMobile or false if o.CustomTheme then j.defaultTab=o.
+CustomTheme.defaultTab or k.defaultTab j.background=o.CustomTheme.background or k.background j.secondaryBackground=o.
+CustomTheme.secondaryBackground or k.secondaryBackground j.tertiaryBackground=o.CustomTheme.tertiaryBackground or k.
+tertiaryBackground j.text=o.CustomTheme.text or k.text j.image=o.CustomTheme.image or k.image j.placeholder=o.
+CustomTheme.placeholder or k.placeholder j.close=o.CustomTheme.close or k.close end if o.Size then o.Size.X=o.Size.X or
+550 o.Size.Y=o.Size.Y or 400 if o.Size.X<550 then o.Size.X=550 print'Size.X was too small! >550 required'end if o.Size.Y
+<400 then o.Size.Y=400 print'Size.Y was too small! >400 required'end elseif not o.Size then o.Size={}o.Size.X=550 o.Size
+.Y=400 end if o.Parent:FindFirstChild(v[o.Title])then o.Parent:FindFirstChild(v[o.Title]):Destroy()end local x,y if o.
+isMobile then x,y=p{Title=o.Title,Parent=o.Parent,KeyCode=o.KeyCode,saltedTable=v}else x,y=q{Title=o.Title,Parent=o.
+Parent,Size=o.Size,KeyCode=o.KeyCode,saltedTable=v}end h(s):onChange(function()y(i(s))end)m.Windows={}function m.Windows
+.Tab(z,A)local B=g(d(c.config))if not A.tabColor then A.tabColor=i(B).defaultTab end local C=g(A.tabColor)w(A.Name)if l(
+i(C),i(B).defaultTab)then h(B):onChange(function()C:set(i(B).defaultTab)end)end local D,E,F=(r('Window',i(x.windowsRef),
+{Name=A.Name,saltedTable=v}))E,F=r('Tab',i(x.sideBarRef),{Name=A.Name,tabColor=i(C),Image=A.Image,saltedTable=v,Callback
+=function(G)if G then s:set(G)C:set(G)else i(x.uipagelayoutRef):JumpTo(D)s:set(i(C))t:set(v[A.Name])end end})h(t):
+onChange(function()if i(t)==v[A.Name]then E(true)else E(false)end end)if i(u)then u:set(false)F()end m.Windows.Component
+={}function m.Windows.Component.Button(G,H)return r('Button',D,{Name=H.Name,tabColor=i(C),Callback=H.Callback})end
+function m.Windows.Component.Toggle(G,H)return r('Toggle',D,{tabColor=i(C),Name=H.Name,Default=H.Default,Callback=
+function(I)H.Callback(I)end})end function m.Windows.Component.TextBox(G,H)return r('TextBox',D,{tabColor=i(C),Name=H.
+Name,Default=H.Default,Callback=function(I)H.Callback(I)end})end function m.Windows.Component.Keybind(G,H)return r(
+'Keybind',D,{Name=H.Name,tabColor=i(C),Default=H.Default,Callback=function()H.Callback()end})end function m.Windows.
+Component.Dropdown(G,H)return r('Dropdown',D,{Name=H.Name,Items=H.Items,Default=H.Default,Multiselect=H.Multiselect,
+tabColor=i(C),Callback=function(I)H.Callback(I)end})end function m.Windows.Component.Slider(G,H)return r('Slider',D,{
+Name=H.Name,tabColor=i(C),Min=H.Min,Max=H.Max,Step=H.Step,InitialValue=H.InitialValue,Callback=function(I)H.Callback(I)
+end})end function m.Windows.Component.Section(G,H:string)return r('Section',D,{Text=H})end function m.Windows.Component.
+Paragraph(G,H)return r('Paragraph',D,{Title=H.Title,Body=H.Body})end function m.Windows.Component.Label(G,H:string)
+return r('Label',D,{tabColor=i(C),Text=H})end function m.Windows.Component.Group(G,H)local I,J=r('Group',D,{Name=H.Name,
+Icon=H.Icon,tabColor=i(C)})function J.Button(K,L)return r('Button',I,{Name=L.Name,tabColor=i(C),Callback=L.Callback})end
+function J.Toggle(K,L)return r('Toggle',I,{tabColor=i(C),Name=L.Name,Default=L.Default,Callback=function(M)L.Callback(M)
+end})end function J.TextBox(K,L)return r('TextBox',I,{tabColor=i(C),Name=L.Name,Default=L.Default,Callback=function(M)L.
+Callback(M)end})end function J.Keybind(K,L)return r('Keybind',I,{Name=L.Name,tabColor=i(C),Default=L.Default,Callback=
+function()L.Callback()end})end function J.Dropdown(K,L)return r('Dropdown',I,{Name=L.Name,Items=L.Items,Default=L.
+Default,Multiselect=L.Multiselect,tabColor=i(C),Callback=function(M)L.Callback(M)end})end function J.Slider(K,L)return
+r('Slider',I,{Name=L.Name,tabColor=i(C),Min=L.Min,Max=L.Max,Step=L.Step,InitialValue=L.InitialValue,Callback=function(M)
+L.Callback(M)end})end function J.Section(K,L:string)return r('Section',I,{Text=L})end function J.Paragraph(K,L)return r(
+'Paragraph',I,{isInGroup=true,Title=L.Title,Body=L.Body})end function J.Label(K,L:string)return r('Label',I,{tabColor=i(
+C),isInGroup=true,Text=L})end function J.ColorPicker(K,L)return r('ColorPicker',I,{tabColor=i(C),Name=L.Name,Color=L.
+Color,Callback=function(M)L.Callback(M)end})end return J end function m.Windows.Component.ColorPicker(G,H)return r(
+'ColorPicker',D,{tabColor=i(C),Name=H.Name,Color=H.Color,Callback=function(I)H.Callback(I)end})end return m.Windows.
+Component end function m.SetCustomTheme(z,A)j.defaultTab=A.defaultTab or k.defaultTab j.background=A.background or k.
+background j.secondaryBackground=A.secondaryBackground or k.secondaryBackground j.tertiaryBackground=A.
+tertiaryBackground or k.tertiaryBackground j.text=A.text or k.text j.image=A.image or k.image j.placeholder=A.
+placeholder or k.placeholder j.close=A.close or k.close end function m.Destroy(z)o.Parent:FindFirstChild(v[o.Title]):
+Destroy()end function m.Windows.Notify(z,A)return r('Notification',i(x.notificationListRef),{Title=A.Title,Duration=A.
+Duration,Body=A.Body})end return m.Windows end return m end)()end,[3]=function()local b,c,d=a(3)local e return(function(
+...)local f,g=d(c.PubTypes),d(c.Utility.restrictRead)export type StateObject<T> =PubTypes.StateObject<T>export type
+CanBeState<T> =PubTypes.CanBeState<T>export type Symbol=PubTypes.Symbol export type Value<T> =PubTypes.Value<T>export
+type Computed<T> =PubTypes.Computed<T>export type ForPairs<KO,VO> =PubTypes.ForPairs<KO,VO>export type ForKeys<KI,KO> =
+PubTypes.ForKeys<KI,KO>export type ForValues<VI,VO> =PubTypes.ForKeys<VI,VO>export type Observer=PubTypes.Observer
+export type Tween<T> =PubTypes.Tween<T>export type Spring<T> =PubTypes.Spring<T>type Fusion={version:PubTypes.Version,
+New:(className:string)->((propertyTable:PubTypes.PropertyTable)->Instance),Hydrate:(target:Instance)->((propertyTable:
+PubTypes.PropertyTable)->Instance),Ref:PubTypes.SpecialKey,Cleanup:PubTypes.SpecialKey,Children:PubTypes.SpecialKey,Out:
+PubTypes.SpecialKey,OnEvent:(eventName:string)->PubTypes.SpecialKey,OnChange:(propertyName:string)->PubTypes.SpecialKey,
+Value:<T>(initialValue:T)->Value<T>,Computed:<T>(callback:()->T,destructor:((T)->())?)->Computed<T>,ForPairs:<KI,VI,KO,
+VO,M>(inputTable:CanBeState<{[KI]:VI}>,processor:(KI,VI)->(KO,VO,M?),destructor:((KO,VO,M?)->())?)->ForPairs<KO,VO>,
+ForKeys:<KI,KO,M>(inputTable:CanBeState<{[KI]:any}>,processor:(KI)->(KO,M?),destructor:((KO,M?)->())?)->ForKeys<KO,any>,
+ForValues:<VI,VO,M>(inputTable:CanBeState<{[any]:VI}>,processor:(VI)->(VO,M?),destructor:((VO,M?)->())?)->ForValues<any,
+VO>,Observer:(watchedState:StateObject<any>)->Observer,Tween:<T>(goalState:StateObject<T>,tweenInfo:TweenInfo?)->Tween<T
+>,Spring:<T>(goalState:StateObject<T>,speed:number?,damping:number?)->Spring<T>,cleanup:(...any)->(),doNothing:(...any
+)->()}return g('Fusion',{version={major=0,minor=2,isRelease=true},New=d(c.Instances.New),Hydrate=d(c.Instances.Hydrate),
+Ref=d(c.Instances.Ref),Out=d(c.Instances.Out),Cleanup=d(c.Instances.Cleanup),Children=d(c.Instances.Children),OnEvent=d(
+c.Instances.OnEvent),OnChange=d(c.Instances.OnChange),Value=d(c.State.Value),Computed=d(c.State.Computed),ForPairs=d(c.
+State.ForPairs),ForKeys=d(c.State.ForKeys),ForValues=d(c.State.ForValues),Observer=d(c.State.Observer),Tween=d(c.
+Animation.Tween),Spring=d(c.Animation.Spring),cleanup=d(c.Utility.cleanup),doNothing=d(c.Utility.doNothing)})::Fusion
+end)()end,[5]=function()local b,c,d=a(5)local e return(function(...)local f=c.Parent.Parent local g,h,i,j,k,l,m,n,o,p,q,
+r=d(f.PubTypes),d(f.Types),d(f.Logging.logError),d(f.Logging.logErrorNonFatal),d(f.Animation.unpackType),d(f.Animation.
+SpringScheduler),d(f.Dependencies.useDependency),d(f.Dependencies.initDependency),d(f.Dependencies.updateAll),d(f.
+Utility.xtypeof),d(f.State.unwrap),{}local s,t={__index=r},{__mode='k'}function r.get(u,v:boolean?):any if v~=false then
+m(u)end return u._currentValue end function r.setPosition(u,v:PubTypes.Animatable)local w=typeof(v)if w~=u._currentType
+then i('springTypeMismatch',nil,w,u._currentType)end u._springPositions=k(v,w)u._currentValue=v l.add(u)o(u)end function
+r.setVelocity(u,v:PubTypes.Animatable)local w=typeof(v)if w~=u._currentType then i('springTypeMismatch',nil,w,u.
+_currentType)end u._springVelocities=k(v,w)l.add(u)end function r.addVelocity(u,v:PubTypes.Animatable)local w=typeof(v)
+if w~=u._currentType then i('springTypeMismatch',nil,w,u._currentType)end local x=k(v,w)for y,z in ipairs(x)do u.
+_springVelocities[y]+=z end l.add(u)end function r.update(u):boolean local v=u._goalState:get(false)if v==u._goalValue
+then local w=q(u._damping)if typeof(w)~='number'then j('mistypedSpringDamping',nil,typeof(w))elseif w<0 then j(
+'invalidSpringDamping',nil,w)else u._currentDamping=w end local x=q(u._speed)if typeof(x)~='number'then j(
+'mistypedSpringSpeed',nil,typeof(x))elseif x<0 then j('invalidSpringSpeed',nil,x)else u._currentSpeed=x end return false
+else u._goalValue=v local w,x=u._currentType,typeof(v)u._currentType=x local y=k(v,x)local z=#y u._springGoals=y if x~=w
+then u._currentValue=u._goalValue local A,B=table.create(z,0),table.create(z,0)for C,D in ipairs(y)do A[C]=D end u.
+_springPositions=A u._springVelocities=B l.remove(u)return true elseif z==0 then u._currentValue=u._goalValue return
+true else l.add(u)return false end end end local function u<T>(v:PubTypes.Value<T>,w:PubTypes.CanBeState<number>?,x:
+PubTypes.CanBeState<number>?):Types.Spring<T>if w==nil then w=10 end if x==nil then x=1 end local y={[v]=true}if p(w)==
+'State'then y[w]=true end if p(x)=='State'then y[x]=true end local z=setmetatable({type='State',kind='Spring',
+dependencySet=y,dependentSet=setmetatable({},t),_speed=w,_damping=x,_goalState=v,_goalValue=nil,_currentType=nil,
+_currentValue=nil,_currentSpeed=q(w),_currentDamping=q(x),_springPositions=nil,_springGoals=nil,_springVelocities=nil},s
+)n(z)v.dependentSet[z]=true z:update()return z end return u end)()end,[6]=function()local b,c,d=a(6)local e return(
+function(...)local f,g=game:GetService'RunService',c.Parent.Parent local h,i,j,k=d(g.Types),d(g.Animation.packType),d(g.
+Animation.springCoefficients),d(g.Dependencies.updateAll)type Set<T> ={[T]:any}type Spring=Types.Spring<any>local l,m,n:
+Set<Spring>,o={},0.0001,{},os.clock()function l.add(p:Spring)p._lastSchedule=o p._startDisplacements={}p.
+_startVelocities={}for q,r in ipairs(p._springGoals)do p._startDisplacements[q]=p._springPositions[q]-r p.
+_startVelocities[q]=p._springVelocities[q]end n[p]=true end function l.remove(p:Spring)n[p]=nil end local function p()
+local q:Set<Spring> ={}o=os.clock()for r in pairs(n)do local s,t,u,v=j(o-r._lastSchedule,r._currentDamping,r.
+_currentSpeed)local w,x,y,z,A=r._springPositions,r._springVelocities,r._startDisplacements,r._startVelocities,false for
+B,C in ipairs(r._springGoals)do local D,E=y[B],z[B]local F,G=D*s+E*t,D*u+E*v if math.abs(F)>m or math.abs(G)>m then A=
+true end w[B]=F+C x[B]=G end if not A then q[r]=true end end for s in pairs(n)do s._currentValue=i(s._springPositions,s.
+_currentType)k(s)end for t in pairs(q)do n[t]=nil end end f:BindToRenderStep('__FusionSpringScheduler',Enum.
+RenderPriority.First.Value,p)return l end)()end,[7]=function()local b,c,d=a(7)local e return(function(...)local f=c.
+Parent.Parent local g,h,i,j,k,l,m,n,o=d(f.PubTypes),d(f.Types),d(f.Animation.TweenScheduler),d(f.Dependencies.
+useDependency),d(f.Dependencies.initDependency),d(f.Logging.logError),d(f.Logging.logErrorNonFatal),d(f.Utility.xtypeof)
+,{}local p,q={__index=o},{__mode='k'}function o.get(t,u:boolean?):any if u~=false then j(t)end return t._currentValue
+end function o.update(t):boolean local u=t._goalState:get(false)if u==t._nextValue and not t._currentlyAnimating then
+return false end local v=t._tweenInfo if t._tweenInfoIsState then v=v:get()end if typeof(v)~='TweenInfo'then m(
+'mistypedTweenInfo',nil,typeof(v))return false end t._prevValue=t._currentValue t._nextValue=u t._currentTweenStartTime=
+os.clock()t._currentTweenInfo=v local w=v.DelayTime+v.Time if v.Reverses then w+=v.Time end w*=v.RepeatCount+1 t.
+_currentTweenDuration=w i.add(t)return false end local function t<T>(u:PubTypes.StateObject<PubTypes.Animatable>,v:
+PubTypes.CanBeState<TweenInfo>?):Types.Tween<T>local w=u:get(false)if v==nil then v=TweenInfo.new()end local x,y={[u]=
+true},n(v)=='State'if y then x[v]=true end local z=v if y then z=z:get()end if typeof(z)~='TweenInfo'then l(
+'mistypedTweenInfo',nil,typeof(z))end local A=setmetatable({type='State',kind='Tween',dependencySet=x,dependentSet=
+setmetatable({},q),_goalState=u,_tweenInfo=v,_tweenInfoIsState=y,_prevValue=w,_nextValue=w,_currentValue=w,
+_currentTweenInfo=v,_currentTweenDuration=0,_currentTweenStartTime=0,_currentlyAnimating=false},p)k(A)u.dependentSet[A]=
+true return A end return t end)()end,[8]=function()local b,c,d=a(8)local e return(function(...)local f,g=game:GetService
+'RunService',c.Parent.Parent local h,i,j,k,l=d(g.Types),d(g.Animation.lerpType),d(g.Animation.getTweenRatio),d(g.
+Dependencies.updateAll),{}type Set<T> ={[T]:any}type Tween=Types.Tween<any>local m,n:Set<Tween> ={__mode='k'},{}
+setmetatable(n,m)function l.add(o:Tween)n[o]=true end function l.remove(o:Tween)n[o]=nil end local function o()local p=
+os.clock()for q:Tween in pairs(n::any)do local t=p-q._currentTweenStartTime if t>q._currentTweenDuration then if q.
+_currentTweenInfo.Reverses then q._currentValue=q._prevValue else q._currentValue=q._nextValue end q._currentlyAnimating
+=false k(q)l.remove(q)else local u=j(q._currentTweenInfo,t)local v=i(q._prevValue,q._nextValue,u)q._currentValue=v q.
+_currentlyAnimating=true k(q)end end end f:BindToRenderStep('__FusionTweenScheduler',Enum.RenderPriority.First.Value,o)
+return l end)()end,[9]=function()local b,c,d=a(9)local e return(function(...)local f=game:GetService'TweenService'
+local function g(h:TweenInfo,i:number):number local j,k,l,m,n,o=h.DelayTime,h.Time,h.Reverses,1+h.RepeatCount,h.
+EasingStyle,h.EasingDirection local p=j+k if l then p+=k end if i>=p*m then return 1 end local q=i%p if q<=j then return
+0 end local t=(q-j)/k if t>1 then t=2-t end local u=f:GetValue(t,n,o)return u end return g end)()end,[10]=function()
+local b,c,d=a(10)local e return(function(...)local f=c.Parent.Parent local g,h=d(f.PubTypes),d(f.Colour.Oklab)
+local function i(j:any,k:any,l:number):any local m=typeof(j)if typeof(k)==m then if m=='number'then local n,o=k::number,
+j::number return(n-o)*l+o elseif m=='CFrame'then local n,o=k::CFrame,j::CFrame return o:Lerp(n,l)elseif m=='Color3'then
+local n,o=k::Color3,j::Color3 local p,q=h.to(o),h.to(n)return h.from(p:Lerp(q,l),false)elseif m=='ColorSequenceKeypoint'
+then local n,o=k::ColorSequenceKeypoint,j::ColorSequenceKeypoint local p,q=h.to(o.Value),h.to(n.Value)return
+ColorSequenceKeypoint.new((n.Time-o.Time)*l+o.Time,h.from(p:Lerp(q,l),false))elseif m=='DateTime'then local n,o=k::
+DateTime,j::DateTime return DateTime.fromUnixTimestampMillis((n.UnixTimestampMillis-o.UnixTimestampMillis)*l+o.
 UnixTimestampMillis)elseif m=='NumberRange'then local n,o=k::NumberRange,j::NumberRange return NumberRange.new((n.Min-o.
 Min)*l+o.Min,(n.Max-o.Max)*l+o.Max)elseif m=='NumberSequenceKeypoint'then local n,o=k::NumberSequenceKeypoint,j::
 NumberSequenceKeypoint return NumberSequenceKeypoint.new((n.Time-o.Time)*l+o.Time,(n.Value-o.Value)*l+o.Value,(n.
@@ -1173,14 +1141,14 @@ Bundles.Fusion)local d,e,f,g,h,i,j,k=c.New,c.OnEvent,c.Children,c.Value,c.Comput
 local l,m,n,o,p,q=g(ac(b.config)),ac(b.utilities.animate),ac(b.utilities.matchColors),ac(b.Bundles.lucide),game:
 GetService'UserInputService',game:GetService'RunService'task.spawn(function()while task.wait()do l:set(ac(b.config))end
 end)return function(t)t.Name=t.Name or'Slider'local u=g(t.tabColor)if n(k(u),k(l).defaultTab)then j(l):onChange(function
-()u:set(k(l).defaultTab)end)end if not t.InitialValue then t.InitialValue=t.Min end t.Step=t.Step or 1 if not t.Max then
-error('You have no max set for '..t.Name)end if not t.Min then error('You have no min set for '..t.Name)end if typeof(t.
-Max)~='number'then error("Your max value isn't a number for "..t.Name)end if typeof(t.Min)~='number'then error(
-"Your min value isn't a number for "..t.Name)end if typeof(t.Step)~='number'then error(
-"Your step value isn't a number for "..t.Name)end local v,E,F,G,H,I,J,K=g(),g(),g(false),g(false),g(false),g'',g(0),g(0)
-j(K):onChange(function()task.spawn(function()if not k(H)then t.Callback(k(K))end end)end)local L,M,N=g(tonumber(t.Min)),
-g(tonumber(t.Max)),g(tonumber(t.Step))local O=g(k(N)/(k(L)+k(M)))j(N):onChange(function()O:set(k(N)/(k(L)+k(M)))end)
-local P=g(tonumber(t.InitialValue))if k(P)<k(L)or k(P)>k(M)then error('InitialValue for '..t.Name..
+()u:set(k(l).defaultTab)end)end if not t.InitialValue then t.InitialValue=t.Min else t.InitialValue=t.InitialValue end t
+.Step=t.Step or 1 if not t.Max then error('You have no max set for '..t.Name)end if not t.Min then error(
+'You have no min set for '..t.Name)end if typeof(t.Max)~='number'then error("Your max value isn't a number for "..t.Name
+)end if typeof(t.Min)~='number'then error("Your min value isn't a number for "..t.Name)end if typeof(t.Step)~='number'
+then error("Your step value isn't a number for "..t.Name)end local v,E,F,G,H,I,J,K=g(),g(),g(false),g(false),g(false),g
+'',g(0),g(0)j(K):onChange(function()task.spawn(function()if not k(H)then t.Callback(k(K))end end)end)local L,M,N=g(
+tonumber(t.Min)),g(tonumber(t.Max)),g(tonumber(t.Step))local O=g(k(N)/(k(L)+k(M)))j(N):onChange(function()O:set(k(N)/(k(
+L)+k(M)))end)local P=g(tonumber(t.InitialValue))if k(P)<k(L)or k(P)>k(M)then error('InitialValue for '..t.Name..
 ' is either too big or too small! InitialValue = '..tostring(k(L)))P:set(k(L))end if k(P)~=k(L)then local Q=k(P)-k(L)Q=Q
 /(k(M)-k(L))J:set(Q)K:set(k(P))end local function Q(R,S)if S==0 then return R end return math.floor(R/S)*S end p.
 InputEnded:Connect(function(R)if R.UserInputType==Enum.UserInputType.MouseButton1 and k(G)then G:set(false)end end)local
@@ -1441,34 +1409,34 @@ local g=string.lower(e)if e=='black'then return d:Lerp(b,f)elseif e=='white'then
 'hey its not white or black'end end end)()end,[85]=function()local aa,ab,ac=a(85)local ad return(function(...)return
 function(b,c)if b.R==c.R and b.G==c.G and b.B==c.B then return true end return false end end)()end,[86]=function()local
 aa,ab,ac=a(86)local ad return(function(...)local b=ac(ab.Parent.Parent.Bundles.Fusion)local c=b.Computed return function
-(d,e)return b.Tween(c(d),e)end end)()end},{{1,2,{'quake'},{{78,2,{'preservedConfig'}},{74,2,{'config'}},{75,1,{
-'platforms'},{{76,2,{'computer'}},{77,2,{'mobile'}}}},{59,1,{'components'},{{69,2,{'newSlider'}},{64,2,{'newKeybind'}},{
-71,2,{'newTextBox'}},{73,2,{'newWindow'}},{72,2,{'newToggle'}},{62,2,{'newDropdown'}},{61,2,{'newColorPicker'}},{70,2,{
-'newTab'}},{63,2,{'newGroup'}},{66,2,{'newNotification'}},{60,2,{'newButton'}},{68,2,{'newSection'}},{67,2,{
-'newParagraph'}},{65,2,{'newLabel'}}}},{79,2,{'project.story'}},{80,1,{'utilities'},{{83,2,{'getStringBounds'}},{82,2,{
-'get'}},{84,2,{'lerpColor'}},{86,2,{'tween'}},{85,2,{'matchColors'}},{81,2,{'animate'}}}},{2,1,{'Bundles'},{{57,2,{
-'lucide'}},{58,2,{'ui-utilities'}},{3,2,{'Fusion'},{{16,1,{'Dependencies'},{{20,2,{'updateAll'}},{18,2,{'initDependency'
-}},{17,2,{'captureDependencies'}},{19,2,{'sharedState'}},{21,2,{'useDependency'}}}},{40,1,{'State'},{{44,2,{'ForValues'}
-},{42,2,{'ForKeys'}},{41,2,{'Computed'}},{47,2,{'unwrap'}},{45,2,{'Observer'}},{43,2,{'ForPairs'}},{46,2,{'Value'}}}},{
-39,2,{'PubTypes'}},{14,1,{'Colour'},{{15,2,{'Oklab'}}}},{49,1,{'Utility'},{{54,2,{'needsDestruction'}},{50,2,{'None'}},{
-56,2,{'xtypeof'}},{55,2,{'restrictRead'}},{52,2,{'doNothing'}},{51,2,{'cleanup'}},{53,2,{'isSimilar'}}}},{4,1,{
-'Animation'},{{13,2,{'unpackType'}},{12,2,{'springCoefficients'}},{7,2,{'Tween'}},{11,2,{'packType'}},{8,2,{
-'TweenScheduler'}},{9,2,{'getTweenRatio'}},{5,2,{'Spring'}},{6,2,{'SpringScheduler'}},{10,2,{'lerpType'}}}},{22,1,{
-'Instances'},{{24,2,{'Cleanup'}},{30,2,{'Ref'}},{26,2,{'New'}},{29,2,{'Out'}},{25,2,{'Hydrate'}},{28,2,{'OnEvent'}},{32,
-2,{'defaultProps'}},{27,2,{'OnChange'}},{31,2,{'applyInstanceProps'}},{23,2,{'Children'}}}},{48,2,{'Types'}},{33,1,{
-'Logging'},{{38,2,{'parseError'}},{36,2,{'logWarn'}},{37,2,{'messages'}},{34,2,{'logError'}},{35,2,{'logErrorNonFatal'}}
-}}}}}}}}},'0.4.1','WaxRuntime',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,
-tostring,tonumber,_VERSION local t,u,v,E,F,G,H=g.insert,g.remove,g.freeze or function(t)return t end,i.wrap,b.sub,b.
-match,b.gmatch if p and F(p,1,4)=='Lune'then local I,J=m(l,'@lune/task')if I and J then c=J end end local I=c and c.
-defer local J,K,L,M,N,O,P,Q,R=I or function(J,...)E(J)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]=
-'LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local S,T={GetFullName={{},function(S)local T,U=S.Name,S.Parent
-while U do T=U.Name..'.'..T U=U.Parent end return T end},GetChildren={{},function(S)local T={}for U in f,R[S]do t(T,U)
-end return T end},GetDescendants={{},function(S)local T={}for U in f,R[S]do t(T,U)for V,W in f,U:GetDescendants()do t(T,
-W)end end return T end},FindFirstChild={{'string','boolean?'},function(S,T,U)local V=R[S]for W in f,V do if W.Name==T
-then return W end end if U then for Z in f,V do return Z:FindFirstChild(T,true)end end end},FindFirstAncestor={{'string'
-},function(S,T)local U=S.Parent while U do if U.Name==T then return U end U=U.Parent end end},WaitForChild={{'string',
-'number?'},function(S,T)return S:FindFirstChild(T)end}},{}for U,V in f,S do local W,Z,_=V[1],V[2],{}for ae,af in f,W do
-local ag,ah=G(af,'^([^%?]+)(%??)')_[ae]={ag,ah}end T[U]=function(ag,...)if not R[ag]then e(
+(d,e)return b.Tween(c(d),e)end end)()end},{{1,2,{'quake'},{{79,2,{'project.story'}},{59,1,{'components'},{{73,2,{
+'newWindow'}},{62,2,{'newDropdown'}},{70,2,{'newTab'}},{69,2,{'newSlider'}},{72,2,{'newToggle'}},{68,2,{'newSection'}},{
+71,2,{'newTextBox'}},{65,2,{'newLabel'}},{67,2,{'newParagraph'}},{63,2,{'newGroup'}},{66,2,{'newNotification'}},{60,2,{
+'newButton'}},{64,2,{'newKeybind'}},{61,2,{'newColorPicker'}}}},{80,1,{'utilities'},{{84,2,{'lerpColor'}},{86,2,{'tween'
+}},{83,2,{'getStringBounds'}},{85,2,{'matchColors'}},{82,2,{'get'}},{81,2,{'animate'}}}},{75,1,{'platforms'},{{76,2,{
+'computer'}},{77,2,{'mobile'}}}},{78,2,{'preservedConfig'}},{2,1,{'Bundles'},{{57,2,{'lucide'}},{3,2,{'Fusion'},{{48,2,{
+'Types'}},{39,2,{'PubTypes'}},{40,1,{'State'},{{47,2,{'unwrap'}},{46,2,{'Value'}},{43,2,{'ForPairs'}},{45,2,{'Observer'}
+},{41,2,{'Computed'}},{44,2,{'ForValues'}},{42,2,{'ForKeys'}}}},{14,1,{'Colour'},{{15,2,{'Oklab'}}}},{22,1,{'Instances'}
+,{{25,2,{'Hydrate'}},{24,2,{'Cleanup'}},{29,2,{'Out'}},{28,2,{'OnEvent'}},{30,2,{'Ref'}},{26,2,{'New'}},{27,2,{
+'OnChange'}},{23,2,{'Children'}},{32,2,{'defaultProps'}},{31,2,{'applyInstanceProps'}}}},{49,1,{'Utility'},{{51,2,{
+'cleanup'}},{50,2,{'None'}},{53,2,{'isSimilar'}},{56,2,{'xtypeof'}},{52,2,{'doNothing'}},{54,2,{'needsDestruction'}},{55
+,2,{'restrictRead'}}}},{4,1,{'Animation'},{{10,2,{'lerpType'}},{11,2,{'packType'}},{5,2,{'Spring'}},{6,2,{
+'SpringScheduler'}},{9,2,{'getTweenRatio'}},{7,2,{'Tween'}},{13,2,{'unpackType'}},{8,2,{'TweenScheduler'}},{12,2,{
+'springCoefficients'}}}},{16,1,{'Dependencies'},{{18,2,{'initDependency'}},{21,2,{'useDependency'}},{19,2,{'sharedState'
+}},{17,2,{'captureDependencies'}},{20,2,{'updateAll'}}}},{33,1,{'Logging'},{{37,2,{'messages'}},{34,2,{'logError'}},{35,
+2,{'logErrorNonFatal'}},{38,2,{'parseError'}},{36,2,{'logWarn'}}}}}},{58,2,{'ui-utilities'}}}},{74,2,{'config'}}}}},
+'0.4.1','WaxRuntime',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,tostring,
+tonumber,_VERSION local t,u,v,E,F,G,H=g.insert,g.remove,g.freeze or function(t)return t end,i.wrap,b.sub,b.match,b.
+gmatch if p and F(p,1,4)=='Lune'then local I,J=m(l,'@lune/task')if I and J then c=J end end local I=c and c.defer local
+J,K,L,M,N,O,P,Q,R=I or function(J,...)E(J)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]='LocalScript',[5]=
+'StringValue'},{},{},{},{},{},{},{}local S,T={GetFullName={{},function(S)local T,U=S.Name,S.Parent while U do T=U.Name..
+'.'..T U=U.Parent end return T end},GetChildren={{},function(S)local T={}for U in f,R[S]do t(T,U)end return T end},
+GetDescendants={{},function(S)local T={}for U in f,R[S]do t(T,U)for V,W in f,U:GetDescendants()do t(T,W)end end return T
+end},FindFirstChild={{'string','boolean?'},function(S,T,U)local V=R[S]for W in f,V do if W.Name==T then return W end end
+if U then for Z in f,V do return Z:FindFirstChild(T,true)end end end},FindFirstAncestor={{'string'},function(S,T)local U
+=S.Parent while U do if U.Name==T then return U end U=U.Parent end end},WaitForChild={{'string','number?'},function(S,T)
+return S:FindFirstChild(T)end}},{}for U,V in f,S do local W,Z,_=V[1],V[2],{}for ae,af in f,W do local ag,ah=G(af,
+'^([^%?]+)(%??)')_[ae]={ag,ah}end T[U]=function(ag,...)if not R[ag]then e(
 "Expected ':' not '.' calling member function "..U,2)end local ah={...}for ai,aj in f,_ do local ak=ah[ai]local al,am,an
 =k(ak),aj[1],aj[2]if ak==nil and not an then e('Argument '..ak..' missing or nil',3)end if am~='any'and al~=am and not(
 al=='nil'and an)then e('Argument '..ai..' expects type "'..am..'", got "'..al..'"',2)end end return Z(ag,...)end end
