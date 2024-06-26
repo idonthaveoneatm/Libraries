@@ -2,6 +2,12 @@
 
 this is quake ui library i will fix things eventually
 
+### Credits
+- [violin-suzutsuki/LinoriaLib](https://github.com/violin-suzutsuki/LinoriaLib) - Code for slider math
+- [dawid-scripts/Fluent/](https://github.com/dawid-scripts/Fluent/) - lucide icons
+- [lucide.dev](https://lucide.dev/) - more lucide icons
+- [latte-soft/wax](https://github.com/latte-soft/wax) - bundler
+
 ## Calling Library
 ```lua
 -- quake
@@ -98,7 +104,7 @@ end)
 ```lua
 local toggle = tab:Toggle({
     Name = "", -- string
-    Default = false, -- boolean
+    Default = false, -- boolean OPTIONAL
     Callback = function(value)
         print(value)
     end
@@ -112,7 +118,9 @@ toggle:SetValue(true) -- boolean
 ```lua
 local textbox = tab:TextBox({
     Name = "", -- string
-    Default = "", -- string
+    Default = "", -- string OPTIONAL
+    OnLeave = true, -- boolean OPTIONAL
+    OnlyNumbers = false, -- boolean OPTIONAL
     Callback = function(value)
         print(value)
     end
@@ -141,8 +149,8 @@ keybind:SetBind("") -- string but a LETTER
 local dropdown = tab:Dropdown({
     Name = "", -- string
     Items = {}, -- table
-    Multiselect = false, -- boolean
-    Default = "", -- if multiselect its a table: {}
+    Multiselect = false, -- boolean OPTIONAL
+    Default = "" or {}, -- string or table OPTIONAL
     Callback = function(value)
         -- if multiselect
         for i,v in ipairs(value) do
@@ -166,8 +174,8 @@ local slider = tab:Slider({
     Name = "", -- string
     Min = 0, -- number
     Max = 100, -- number
-    Step = 1, -- number
-    InitialValue = 1, -- number
+    Placement = 0, -- number The amount of decimals to go OPTIONAL
+    InitialValue = 1, -- number OPTIONAL
     Callback = function(value)
         print(value)
     end
