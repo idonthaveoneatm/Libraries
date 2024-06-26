@@ -1,5 +1,5 @@
-local a local aa,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,b,c,d,e,f,g,h,i={function()local b,c,d=a(1)local e return(function(...
-)local f=d(c.Bundles.Fusion)local g,h,i,j,k,l,m=f.Value,f.Observer,d(c.utilities.get),d(c.preservedConfig),d(c.Bundles.
+local a local aa,ab,ac,ad,ae,af,ag,aj,ak,al,b,c,d,e,f,h,i,j,k,l={function()local b,c,d=a(1)local e return(function(...)
+local f=d(c.Bundles.Fusion)local g,h,i,j,k,l,m=f.Value,f.Observer,d(c.utilities.get),d(c.preservedConfig),d(c.Bundles.
 themeSystem),d(c.utilities.matchColors),{}function m.Window(n,o)assert(o.Title,':Window needs a Title')local p,q=d(c.
 platforms.mobile),d(c.platforms.computer)local function r(s,t,u)u.Parent=t return d(c.components['new'..s])(u)end local
 s,t,u,v=g(k.get'text'),g(tostring(math.random(1,100))),g(true),{}local function w(x:string)local y,z=x,''for A=1,5 do z=
@@ -711,699 +711,724 @@ Special.NthRoot(i,j)if type(j)=='table'and j[2]then else return warn'only tables
 end end return k^(1/l)end function f.Special.PerNth(i,j)if type(j)=='table'and j[2]then else return warn
 'only tables are allowed in this function'end if j[3]then return warn"you can't have three table values"end for k=1,#j,1
 do if typeof(j[k])=='number'then else return warn'only numbers are allowed in the table'end end local k,l=j[1],j[2]local
-m=k/l return m..' or '..(m*100)..'%'end return f end)()end,[68]=function()local b,c,d=a(68)local e return(function(...)
-return{lock='rbxassetid://10723434711',dropdown='rbxassetid://15555233897',chevron='rbxassetid://10709790948',emptyBox=
-'rbxassetid://15555208034',filledBox='rbxassetid://15555206993',maximize='rbxassetid://15556636376',minimize=
-'rbxassetid://15556637715',close='rbxassetid://10747384394'}end)()end,[69]=function()local b,c,d=a(69)local e return(
-function(...)local f,g,h={},d(c.Parent.Fusion),d(c.themes)local i,j,k,l=g.Value,g.Observer,d(c.Parent.Parent.utilities.
-get),{}local m=i{}j(m):onChange(function()for p,q in ipairs(l)do task.spawn(q)end end)function f.set(p)for q,t in
-ipairs(h)do if t.name==p then m:set(t)break end end end local p={defaultTab='Color3',background='Color3',
-secondaryBackground='Color3',tertiaryBackground='Color3',text='Color3',image='Color3',placeholder='Color3',close=
-'Color3'}function f.create(q)for t,u in p do if q[t]==nil then error('Missing value "'..tostring(t)..'"')end if typeof(q
-[t])~='Color3'then error(t.." isn't type Color3")end end for v,E in q do if p[v]==nil then warn(
-'Incorrect value removed "'..tostring(v)..'"')q[v]=nil end end m:set(q)end function f.get(q)local u=k(m)if u[q]then
-return u[q]else error(q.." isn't a theme element")end end m:set(h[1])function f.onChange(q)table.insert(l,q)end return f
-end)()end,[70]=function()local b,c,d=a(70)local e return(function(...)return{{defaultTab=Color3.fromHex'#a49ae6',
-background=Color3.fromRGB(40,44,50),secondaryBackground=Color3.fromRGB(49,56,66),tertiaryBackground=Color3.fromRGB(57,63
-,75),text=Color3.fromRGB(220,221,225),image=Color3.fromRGB(220,221,225),placeholder=Color3.fromRGB(165,166,169),close=
-Color3.fromRGB(190,100,105)}}end)()end,[71]=function()local b,c,d=a(71)local e return(function(...)local f={}function f.
-create(g,h,i)local j,k=Instance.new(g),i or{}for l,m in pairs(h)do j[l]=m end for p,q in pairs(k)do q.Parent=j end
-return j end function f.c(g,h,i,j)local k,l=Instance.new(h),j or{}for m,p in pairs(i)do k[m]=p end for q,u in pairs(l)do
-u.Parent=k end return k end function f.tween(g)if not g.r then g.r=0 end if not g.d then g.d='InOut'end if not g.s then
-g.s='Linear'end if not g.t then g.t=1 end if not g.a or not g.o then return warn
-[[
-
-UI-UTILITIES ERROR: 
-Missing one of the required propertoes: a, o]]elseif g.a and g.o then local h,i=game:GetService
-'TweenService',TweenInfo.new(g.t,Enum.EasingStyle[g.s],Enum.EasingDirection[g.d],g.r)local j=h:Create(g.o,i,g.a)return j
-end end function f.gtween(g)if not g.r then g.r=0 end if not g.d then g.d='InOut'end if not g.s then g.s='Linear'end if
-not g.t then g.t=1 end if not g.a or not g.o then return warn
-[[
-
-UI-UTILITIES ERROR: 
-Missing one of the required propertoes: a, o]]elseif g.a and g.o then local h,i=game:GetService
-'TweenService',TweenInfo.new(g.t,Enum.EasingStyle[g.s],Enum.EasingDirection[g.d],g.r)for j,k in next,g.o do h:Create(k,i
-,g.a):Play()end end end function f.drag(g,h)h=h or 10 local i,j,k,l,m,p,q,u,v=game:GetService'UserInputService',(game:
-GetService'RunService'),g local function E(F,G,H)return F+(G-F)*H end local F=(h)local function G(H)if not(v)then return
-end if not(l)and(p)then k.Position=UDim2.new(v.X.Scale,E(k.Position.X.Offset,p.X.Offset,H*F),v.Y.Scale,E(k.Position.Y.
-Offset,p.Y.Offset,H*F))return end local I=(m-i:GetMouseLocation())local K,L=(v.X.Offset-I.X),(v.Y.Offset-I.Y)p=UDim2.
-new(v.X.Scale,K,v.Y.Scale,L)k.Position=UDim2.new(v.X.Scale,E(k.Position.X.Offset,K,H*F),v.Y.Scale,E(k.Position.Y.Offset,
-L,H*F))end k.InputBegan:Connect(function(H)if H.UserInputType==Enum.UserInputType.MouseButton1 or H.UserInputType==Enum.
-UserInputType.Touch then l=true u=H.Position v=k.Position m=i:GetMouseLocation()H.Changed:Connect(function()if H.
-UserInputState==Enum.UserInputState.End then l=false end end)end end)k.InputChanged:Connect(function(H)if H.
-UserInputType==Enum.UserInputType.MouseMovement or H.UserInputType==Enum.UserInputType.Touch then q=H end end)j.
-Heartbeat:Connect(G)end return f end)()end,[73]=function()local b,c,d=a(73)local e return(function(...)local f=c.Parent.
-Parent local g=d(f.Bundles.Fusion)local h,i,j,k,l,m,p,q,u,v=g.New,g.OnEvent,g.Children,g.Value,g.Computed,d(f.utilities.
-get),d(f.Bundles.themeSystem),d(f.utilities.animate),d(f.utilities.matchColors),d(f.Bundles.icons)return function(E)
-assert(E.Name,'Button needs a Name')assert(E.Callback,'Button needs a Callback')local F,G=k(E.Parent),k(E.tabColor)if u(
-m(G),p.get'defaultTab')then G:set(p.get'defaultTab')end local H,I,K,L,M,N=k(E.Name),k(E.Callback),k(false),k(false),k'',
-{}local O=h'TextButton'{Interactable=l(function()return not m(L)end),ZIndex=2,Size=UDim2.new(1,0,0,40),AutoButtonColor=
-false,Parent=m(F),BackgroundColor3=q(function()return p.get'secondaryBackground'end,40,1),[i'MouseButton1Down']=function
-()K:set(true)end,[i'MouseButton1Up']=function()K:set(false)end,[i'MouseLeave']=function()K:set(false)end,[i
-'MouseButton1Click']=function()task.spawn(m(I))end,[j]={{h'Frame'{ZIndex=3,Visible=l(function()return m(L)end),Size=
-UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=q(function()return p.get'tertiaryBackground'end,40,1),[
+m=k/l return m..' or '..(m*100)..'%'end return f end)()end,[81]=function()local b,c,d=a(81)local e return(function(...)
+local f=c.Parent.Parent local g=d(f.Bundles.Fusion)local h,i,j,k,l,m,p=g.New,g.Children,g.Value,g.Computed,d(f.utilities
+.get),d(f.utilities.animate),d(f.Bundles.themeSystem)return function(q)assert(q.Text,'Section needs literally a string')
+local t,u,v=j(q.Parent),j(q.Text),{}local E=h'Frame'{Size=UDim2.new(1,0,0,30),BackgroundTransparency=1,Parent=l(t),[i]={
+h'TextLabel'{Size=UDim2.new(1,0,0,15),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,5,0.5,0),
+BackgroundTransparency=1,TextScaled=true,Font=Enum.Font.GothamMedium,TextXAlignment=Enum.TextXAlignment.Left,TextColor3=
+m(function()return p.get'text'end,40,1),Text=k(function()return l(u)end),[i]={h'UITextSizeConstraint'{MaxTextSize=15,
+MinTextSize=1}}}}}function v.Remove(F)E:Destroy()end function v.SetText(F,G)if typeof(G)=='string'then u:set(G)else
+error('you didnt give '..l(u)..' a string for SetText!')end end return v end end)()end,[75]=function()local b,c,d=a(75)
+local e return(function(...)local f=c.Parent.Parent local g=d(f.Bundles.Fusion)local h,i,j,k,l,m,p,q,t,u,v,E,F=g.New,g.
+OnEvent,g.Children,g.Value,g.Computed,g.Ref,g.Observer,d(f.utilities.get),d(f.Bundles.themeSystem),d(f.utilities.animate
+),d(f.utilities.matchColors),d(f.Bundles.icons),d(f.Bundles.betterMathModule)return function(G)assert(G.Name,
+'Dropdown needs a Name')assert(G.Items,'Dropdown needs an Items')assert(G.Callback,'Dropdown needs a Callback')local H,I
+=k(G.Parent),k(G.tabColor)if v(q(I),t.get'defaultTab')then I:set(t.get'defaultTab')end local K,L,M,N,O,P,Q=k(G.Default),
+k(G.Name),k(G.Multiselect or false),k(G.Items),k(G.Callback),k{},{}local R,S,T,U,V,W,X,Y,Z,_,aa,ab=k(q(L)),k(0),k'',k(),
+k(),k(false),k(false),k'',{},k(false),k'',k(false)local ac=h'Frame'{ClipsDescendants=true,Parent=q(H),Name=q(R),
+BackgroundColor3=u(function()return t.get'secondaryBackground'end,40,1),Size=u(function()if q(X)then return UDim2.new(1,
+0,0,174)end return UDim2.new(1,0,0,40)end,50,1),[j]={{h'UICorner'{CornerRadius=UDim.new(0,6)},h'Frame'{ZIndex=2,Size=
+UDim2.fromScale(1,1),AnchorPoint=Vector2.new(0.5,0),Position=UDim2.fromScale(0.5,0),BackgroundColor3=u(function()return
+q(I)end,40,1),BackgroundTransparency=u(function()if q(W)then return 0.95 end return 0.85 end,50,1),[j]={h'UICorner'{
+CornerRadius=UDim.new(0,6)}}},h'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),AnchorPoint=Vector2.new(0
+,0),Position=UDim2.new(0,10,0,13),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.
+Left,Text=l(function()return q(L)end),TextColor3=u(function()return t.get'text'end,40,1),TextTransparency=u(function()if
+q(W)then return 0.35 end return 0 end,50,1),[j]={h'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},h'ImageLabel'{
+Name='icon',AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-5,0,6),Size=UDim2.fromOffset(28,28),
+BackgroundTransparency=1,Image=E.dropdown,ImageColor3=u(function()return t.get'image'end,40,1),ImageTransparency=u(
+function()if q(W)then return 0.35 end return 0 end,50,1)},{h'Frame'{ZIndex=3,Visible=l(function()return q(_)end),Size=
+UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=u(function()return t.get'tertiaryBackground'end,40,1),[
 j]={h'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),
-BackgroundTransparency=1,ImageColor3=q(function()return p.get'image'end,40,1),Image=v.lock},h'TextLabel'{Text=l(function
-()return m(M)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.
-Font.GothamBold,BackgroundTransparency=1,TextColor3=q(function()return p.get'text'end,40,1),TextSize=16,TextScaled=true,
+BackgroundTransparency=1,ImageColor3=u(function()return t.get'image'end,40,1),Image=E.lock},h'TextLabel'{Text=l(function
+()return q(aa)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.
+Font.GothamBold,BackgroundTransparency=1,TextColor3=u(function()return t.get'text'end,40,1),TextSize=16,TextScaled=true,
 TextXAlignment=Enum.TextXAlignment.Left,[j]={h'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},h'UICorner'{
-CornerRadius=UDim.new(0,6)}}}},h'UICorner'{CornerRadius=UDim.new(0,6)},h'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),
-AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundColor3=q(function()return m(G)end,40,1),
-BackgroundTransparency=q(function()if m(K)then return 0.95 end return 0.85 end,50,1),[j]={h'UICorner'{CornerRadius=UDim.
-new(0,6)}}},h'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-20,0,14),AnchorPoint=Vector2.new(0,0.5),Position=
-UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,
-TextColor3=q(function()return p.get'text'end,40,1),Text=l(function()return m(H)end),TextTransparency=q(function()if m(K)
-then return 0.35 end return 0 end,50,1),[j]={h'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}}function N.Remove(
-P)O:Destroy()end function N.SetName(P,Q)if typeof(Q)=='string'then H:set(Q)else error('You didnt give '..m(H)..
-' a string for SetName')end end function N.SetCallback(P,Q)if typeof(Q)=='function'then I:set(Q)else error(
-'You didnt give '..m(H)..' a function for SetCallback')end end function N.Lock(P,Q)L:set(true)M:set(Q or'Locked')end
-function N.Unlock(P)L:set(false)end return N end end)()end,[74]=function()local b,c,d=a(74)local e return(function(...)
-local f=c.Parent.Parent local g=d(f.Bundles.Fusion)local h,i,j,k,l,m,p,q,u,v,E=g.New,g.OnEvent,g.Children,g.Value,g.
-Computed,g.Observer,d(f.utilities.get),d(f.Bundles.themeSystem),d(f.utilities.animate),d(f.utilities.matchColors),d(f.
-Bundles.icons)cloneref=cloneref or function(F)return F end local F,G=cloneref(game:GetService'UserInputService'),
-cloneref(game:GetService'RunService')return function(H)assert(H.Name,'ColorPicker needs Name')assert(H.Color,
-'ColorPicker needs Color')assert(H.Callback,'ColorPicker needs Callback')local I,K=k(H.Parent),k(H.tabColor)if v(p(K),q.
-get'defaultTab')then K:set(q.get'defaultTab')end local L,M,N,O,P=k(H.Name),k(H.Color),k(H.Callback),k(false),k''local Q=
-p(M)local R,S,T=Q:ToHSV()local U,V,W=k(R),k(S),k(T)local function X()return Color3.fromHSV(p(U),p(V),p(W))end
-local function Y(Z,_,aa)local ab,ac,ad if typeof(Z)=='Color3'then ab,ac,ad=Z:ToHSV()else ab,ac,ad=Color3.new(Z,_,aa):
-ToHSV()end U:set(ab)V:set(ac)W:set(ad)task.spawn(p(N),X())end local function aa(ab,ac)local ad=1 for Z=1,ab do ad=ad*10
-end return math.round(ac*ad)/ad end local ab,ac,ad,Z,_,ae,af,ag=k(false),k(false),k(false),k(false),(k(false))ag=h
-'TextButton'{ClipsDescendants=true,Interactable=l(function()return not p(O)end),ZIndex=2,Parent=p(I),Size=u(function()if
-p(ab)then return UDim2.new(1,0,0,160)end return UDim2.new(1,0,0,40)end,50,1),BackgroundColor3=u(function()return q.get
-'secondaryBackground'end,40,1),[i'MouseButton1Click']=function()ab:set(not p(ab))end,[i'Destroying']=function()if ae
-then ae:Disconnect()end end,[j]={{{h'Frame'{ZIndex=4,Visible=l(function()return p(O)end),Size=UDim2.fromScale(1,1),
-BackgroundTransparency=0.1,BackgroundColor3=u(function()return q.get'tertiaryBackground'end,40,1),[j]={h'ImageLabel'{
-AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,
-ImageColor3=u(function()return q.get'image'end,40,1),Image=E.lock},h'TextLabel'{Text=l(function()return p(P)end),
-AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,
-BackgroundTransparency=1,TextColor3=u(function()return q.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
-Enum.TextXAlignment.Left,[j]={h'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},h'UICorner'{CornerRadius=UDim.new(
-0,6)}}}},h'UICorner'{CornerRadius=UDim.new(0,6)},h'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.new(0.5,
-0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundColor3=u(function()return p(K)end,40,1),BackgroundTransparency=0.85,[j]={
-h'UICorner'{CornerRadius=UDim.new(0,6)}}},h'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),AnchorPoint=
-Vector2.new(0,0),Position=UDim2.new(0,10,0,13),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.
-TextXAlignment.Left,TextTransparency=0,TextColor3=u(function()return q.get'text'end,40,1),Text=p(L),[j]={h
-'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},h'ImageLabel'{ZIndex=3,AnchorPoint=Vector2.new(1,0),Position=
-UDim2.new(1,-7,0,8),Size=UDim2.fromOffset(24,24),BackgroundTransparency=1,Image='rbxassetid://16898730641',
-ImageRectOffset=Vector2.new(257,257),ImageRectSize=Vector2.new(256,256),ImageColor3=l(function()return Color3.fromHSV(p(
-U),p(V),p(W))end)}},h'Frame'{ClipsDescendants=true,Position=UDim2.fromOffset(10,40),Size=UDim2.new(1,-20,0,110),
-BackgroundTransparency=1,ZIndex=3,[j]={h'UIListLayout'{Padding=UDim.new(0,10),SortOrder=Enum.SortOrder.LayoutOrder,
-FillDirection=Enum.FillDirection.Horizontal,HorizontalAlignment=Enum.HorizontalAlignment.Right,VerticalAlignment=Enum.
-VerticalAlignment.Center},h'TextBox'{Name='HexTextBox',Size=UDim2.fromOffset(145,110),BackgroundColor3=u(function()
-return q.get'background'end,40,1),BackgroundTransparency=0.3,Text=l(function()return'#'..X():ToHex()end),TextColor3=u(
-function()return X()end,40,1),TextSize=20,Font=Enum.Font.GothamMedium,[i'FocusLost']=function()local ah=ag:
-FindFirstChild('HexTextBox',true).Text:gsub('[^%w#]','')if not string.find(ah,'#')then ah='#'..ah end if string.len(ah)
-~=7 then warn('Hex code malformed',ah)ag:FindFirstChild('HexTextBox',true).Text='#'..X():ToHex()else local ai,aj=pcall(
-function()return Color3.fromHex(ah)end)if tostring(aj)=='Unable to convert characters to hex value'then warn(
-'Hex code malformed',ah)ag:FindFirstChild('HexTextBox',true).Text='#'..X():ToHex()else Y(Color3.fromHex(ah))end end end,
-[j]={h'UICorner'{CornerRadius=UDim.new(0,4)}}},h'Frame'{Name='HSVTextBoxes',Size=UDim2.fromOffset(55,110),
-BackgroundColor3=u(function()return q.get'background'end,40,1),BackgroundTransparency=0.3,[j]={h'UICorner'{CornerRadius=
-UDim.new(0,4)},h'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.
-FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Center},h'TextLabel'{Text='H',TextColor3=u(function(
-)return p(K)end,40,1),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},h'TextBox'{Name
-='HText',TextColor3=u(function()return q.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=l(
-function()return tostring(aa(2,p(U)))end),Size=UDim2.fromOffset(55,14),[i'Changed']=function(ah)local ai=tonumber(ag:
-FindFirstChild('HText',true).Text)if ah:lower()=='text'and ai then if ai>1 or ai<0 then warn
-'Your H value was outside of [0,1] so we clamped it!'ai=math.clamp(ai,0,1)end if aa(2,p(U))~=ai then U:set(ai)end ag:
-FindFirstChild('HText',true).Text=tostring(aa(2,p(U)))end end,[i'FocusLost']=function()local ah=tonumber(ag:
-FindFirstChild('HText',true).Text)if not ah then warn'H needs to be a number'ag:FindFirstChild('HText',true).Text=
-tostring(aa(2,p(U)))end end},h'TextLabel'{Text='S',TextColor3=u(function()return p(K)end,40,1),Font=Enum.Font.
-GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},h'TextBox'{Name='SText',TextColor3=u(function()
-return q.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=l(function()return tostring(aa(2,p(V)))
-end),Size=UDim2.fromOffset(55,14),[i'Changed']=function(ah)local ai=tonumber(ag:FindFirstChild('SText',true).Text)if ah:
-lower()=='text'and ai then if ai>1 or ai<0 then warn'Your S value was outside of [0,1] so we clamped it!'ai=math.clamp(
-ai,0,1)end if aa(2,p(V))~=ai then V:set(ai)end ag:FindFirstChild('SText',true).Text=tostring(aa(2,p(V)))end end,[i
-'FocusLost']=function()local ah=tonumber(ag:FindFirstChild('SText',true).Text)if not ah then warn
-'S needs to be a number'ag:FindFirstChild('SText',true).Text=tostring(aa(2,p(V)))end end},h'TextLabel'{Text='V',
-TextColor3=u(function()return p(K)end,40,1),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(
-55,14)},h'TextBox'{Name='VText',TextColor3=u(function()return q.get'text'end,40,1),Font=Enum.Font.Gotham,
-BackgroundTransparency=1,Text=l(function()return tostring(aa(2,p(W)))end),Size=UDim2.fromOffset(55,14),[i'Changed']=
-function(ah)local ai=tonumber(ag:FindFirstChild('VText',true).Text)if ah:lower()=='text'and ai then if ai>1 or ai<0 then
-warn'Your V value was outside of [0,1] so we clamped it!'ai=math.clamp(ai,0,1)end if aa(2,p(W))~=ai then W:set(ai)end ag
-:FindFirstChild('VText',true).Text=tostring(aa(2,p(W)))end end,[i'FocusLost']=function()local ah=tonumber(ag:
-FindFirstChild('VText',true).Text)if not ah then warn'V needs to be a number'ag:FindFirstChild('VText',true).Text=
-tostring(aa(2,p(W)))end end}}},h'Frame'{Name='RGBTextBoxes',Size=UDim2.fromOffset(55,110),BackgroundColor3=u(function()
-return q.get'background'end,40,1),BackgroundTransparency=0.3,[j]={h'UICorner'{CornerRadius=UDim.new(0,4)},h
-'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,
-HorizontalAlignment=Enum.HorizontalAlignment.Center},h'TextLabel'{Text='R',TextColor3=Color3.fromRGB(200,0,0),Font=Enum.
-Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},h'TextBox'{Name='RText',TextColor3=u(function()
-return q.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=l(function()return tostring(math.round(
-X().R*255))end),Size=UDim2.fromOffset(55,14),[i'FocusLost']=function()local ah,ai=tonumber(ag:FindFirstChild('RText',
-true).Text),X()if ah then if math.clamp(math.round(ai.R*255),0,255)~=ah then Y(ah/255,ai.G,ai.B)end else print(ah,
-'needs to be a number')ag:FindFirstChild('RText',true).Text=tostring(math.round(ai.R*255))end end},h'TextLabel'{Text='G'
-,TextColor3=Color3.fromRGB(0,200,0),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},h
-'TextBox'{Name='GText',TextColor3=u(function()return q.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1
-,Text=l(function()return tostring(math.round(X().G*255))end),Size=UDim2.fromOffset(55,14),[i'FocusLost']=function()local
-ah,ai=tonumber(ag:FindFirstChild('GText',true).Text),X()if ah then if math.clamp(math.round(ai.G*255),0,255)~=ah then Y(
-ai.R,ah/255,ai.B)end else print'G needs to be a number'ag:FindFirstChild('GText',true).Text=tostring(math.round(ai.G*255
-))end end},h'TextLabel'{Text='B',TextColor3=Color3.fromRGB(0,0,125),Font=Enum.Font.GothamMedium,BackgroundTransparency=1
-,Size=UDim2.fromOffset(55,14)},h'TextBox'{Name='BText',TextColor3=u(function()return q.get'text'end,40,1),Font=Enum.Font
-.Gotham,BackgroundTransparency=1,Text=l(function()return tostring(math.round(X().B*255))end),Size=UDim2.fromOffset(55,14
-),[i'FocusLost']=function()local ah,ai=tonumber(ag:FindFirstChild('BText',true).Text),X()if ah then if math.clamp(math.
-round(ai.B*255),0,255)~=ah then Y(ai.R,ai.G,ah/255)end else print'B needs to be a number'ag:FindFirstChild('BText',true)
-.Text=tostring(math.round(ai.B*255))end end}}},h'TextButton'{ZIndex=2,Name='SVPicker',ClipsDescendants=true,Size=UDim2.
-fromOffset(110,110),[i'MouseLeave']=function()ac:set(true)end,[i'MouseEnter']=function()ac:set(false)end,[i'InputBegan']
-=function(ah)if ah.UserInputType==Enum.UserInputType.MouseButton1 then ad:set(true)local ai ai=ah.Changed:Connect(
-function()if ah.UserInputState==Enum.UserInputState.End then ad:set(false)ai:Disconnect()end end)end end,[j]={h
-'UIGradient'{Color=l(function()return ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),
-ColorSequenceKeypoint.new(1,Color3.fromHSV(p(U),1,1))}end)},h'ImageLabel'{AnchorPoint=Vector2.new(0.5,0.5),Position=
-UDim2.fromScale(0.5,0),Size=UDim2.fromScale(1,2),BackgroundTransparency=1,Image='rbxassetid://13611892279'},h'Frame'{
-ZIndex=2,Name='dot',AnchorPoint=Vector2.new(0.5,0.5),BackgroundColor3=l(function()local ah if p(U)>0.95 or p(U)<=0.05
-then ah=0.5 elseif p(U)<0.56 and p(U)>0.45 then ah=1 else if p(U)+1>1 then ah=1-p(U)else ah=1+p(U)end end return Color3.
-fromHSV(ah,1,1)end),Size=UDim2.fromOffset(4,4),Position=l(function()return UDim2.fromScale(p(V),1-p(W))end)}}},h
-'TextButton'{ZIndex=2,Name='HPicker',Size=UDim2.fromOffset(55,110),[i'MouseLeave']=function()Z:set(true)end,[i
-'MouseEnter']=function()Z:set(false)end,[i'InputBegan']=function(ah)if ah.UserInputType==Enum.UserInputType.MouseButton1
-then _:set(true)local ai ai=ah.Changed:Connect(function()if ah.UserInputState==Enum.UserInputState.End then _:set(false)
-ai:Disconnect()end end)end end,[j]={h'UIGradient'{Rotation=90,Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3
-.fromHSV(1,1,1)),ColorSequenceKeypoint.new(0.1,Color3.fromHSV(0.9,1,1)),ColorSequenceKeypoint.new(0.2,Color3.fromHSV(0.8
-,1,1)),ColorSequenceKeypoint.new(0.3,Color3.fromHSV(0.7,1,1)),ColorSequenceKeypoint.new(0.4,Color3.fromHSV(0.6,1,1)),
-ColorSequenceKeypoint.new(0.5,Color3.fromHSV(0.5,1,1)),ColorSequenceKeypoint.new(0.6,Color3.fromHSV(0.4,1,1)),
-ColorSequenceKeypoint.new(0.7,Color3.fromHSV(0.3,1,1)),ColorSequenceKeypoint.new(0.8,Color3.fromHSV(0.2,1,1)),
-ColorSequenceKeypoint.new(0.9,Color3.fromHSV(0.1,1,1)),ColorSequenceKeypoint.new(1,Color3.fromHSV(0,1,1))}},h'Frame'{
-Name='slide',AnchorPoint=Vector2.new(0,0.5),Size=UDim2.new(1,0,0,2),Position=l(function()return UDim2.fromScale(0,1-p(U)
-)end)}}}}}}}m(ad):onChange(function()if p(ad)then ae=G.Heartbeat:Connect(function()local ah=F:GetMouseLocation()local ai
-=(ah-ag:FindFirstChild('SVPicker',true).AbsolutePosition)if p(ac)then if ai.X>110 then ai=Vector2.new(110,ai.Y)elseif ai
-.X<0 then ai=Vector2.new(0,ai.Y)end if ai.Y>110 then ai=Vector2.new(ai.X,110)elseif ai.Y<0 then ai=Vector2.new(ai.X,0)
-end end V:set(ai.X/110)W:set((110-ai.Y)/110)end)else if ae then ae:Disconnect()end end end)m(_):onChange(function()if p(
-_)then af=G.Heartbeat:Connect(function()local ah=F:GetMouseLocation()local ai=(ah-ag:FindFirstChild('HPicker',true).
-AbsolutePosition)if p(Z)then if ai.Y>110 then ai=Vector2.new(ai.X,110)elseif ai.Y<0 then ai=Vector2.new(ai.X,0)end end U
-:set((110-ai.Y)/110)end)else if af then af:Disconnect()end end end)m(U):onChange(function()task.spawn(p(N),X())end)m(V):
-onChange(function()task.spawn(p(N),X())end)m(W):onChange(function()task.spawn(p(N),X())end)local ah={}function ah.Lock(
-ai,aj)O:set(true)ab:set(false)P:set(aj or'Locked')end function ah.Unlock(ai)O:set(false)end function ah.Remove(ai)ag:
-Destroy()end function ah.SetColor(ai,aj)Y(aj)end return ah end end)()end,[75]=function()local aa,ab,ac=a(75)local ad
-return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,b,c,d,e,f,g,h,i,j=af.New,
-af.OnEvent,af.Children,af.Value,af.Computed,af.Ref,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.
-utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons),ac(ae.Bundles.betterMathModule)return function(k)
-assert(k.Name,'Dropdown needs a Name')assert(k.Items,'Dropdown needs an Items')assert(k.Callback,
-'Dropdown needs a Callback')local l,m=aj(k.Parent),aj(k.tabColor)if h(e(m),f.get'defaultTab')then m:set(f.get
-'defaultTab')end local p,q,u,v,E,F,G=aj(k.Default),aj(k.Name),aj(k.Multiselect or false),aj(k.Items),aj(k.Callback),aj{}
-,{}local H,I,K,L,M,N,O,P,Q,R,S,T=aj(e(q)),aj(0),aj'',aj(),aj(),aj(false),aj(false),aj'',{},aj(false),aj'',aj(false)local
-U=ag'Frame'{ClipsDescendants=true,Parent=e(l),Name=e(H),BackgroundColor3=g(function()return f.get'secondaryBackground'
-end,40,1),Size=g(function()if e(O)then return UDim2.new(1,0,0,174)end return UDim2.new(1,0,0,40)end,50,1),[ai]={{ag
-'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.fromScale(1,1),AnchorPoint=Vector2.new(0.5,0),
-Position=UDim2.fromScale(0.5,0),BackgroundColor3=g(function()return e(m)end,40,1),BackgroundTransparency=g(function()if
-e(N)then return 0.95 end return 0.85 end,50,1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{
-BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),AnchorPoint=Vector2.new(0,0),Position=UDim2.new(0,10,0,13),Font=Enum
-.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,Text=b(function()return e(q)end),
-TextColor3=g(function()return f.get'text'end,40,1),TextTransparency=g(function()if e(N)then return 0.35 end return 0 end
-,50,1),[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'ImageLabel'{Name='icon',AnchorPoint=Vector2.
-new(1,0),Position=UDim2.new(1,-5,0,6),Size=UDim2.fromOffset(28,28),BackgroundTransparency=1,Image=i.dropdown,ImageColor3
-=g(function()return f.get'image'end,40,1),ImageTransparency=g(function()if e(N)then return 0.35 end return 0 end,50,1)},
-{ag'Frame'{ZIndex=3,Visible=b(function()return e(R)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,
-BackgroundColor3=g(function()return f.get'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,
-0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=g(function()return f
-.get'image'end,40,1),Image=i.lock},ag'TextLabel'{Text=b(function()return e(S)end),AnchorPoint=Vector2.new(0,0.5),
+CornerRadius=UDim.new(0,6)}}}}},h'TextButton'{Interactable=l(function()return not q(_)end),Size=UDim2.new(1,0,0,40),
+BackgroundTransparency=1,AnchorPoint=Vector2.new(0.5,0),Position=UDim2.fromScale(0.5,0),[i'MouseButton1Down']=function()
+W:set(true)end,[i'MouseButton1Up']=function()W:set(false)end,[i'MouseLeave']=function()W:set(false)end,[i
+'MouseButton1Click']=function()X:set(not q(X))end},h'TextBox'{Name='searchBox',Size=UDim2.new(1,-16,0,28),Position=UDim2
+.new(0.5,0,0,40),Text='',AnchorPoint=Vector2.new(0.5,0),PlaceholderText='Search',Font=Enum.Font.GothamMedium,TextSize=16
+,TextXAlignment=Enum.TextXAlignment.Left,BackgroundColor3=u(function()return q(I)end,40,1),TextColor3=u(function()return
+t.get'text'end,40,1),PlaceholderColor3=u(function()return t.get'placeholder'end,40,1),BackgroundTransparency=u(function(
+)if q(W)then return 0.95 end return 0.8 end,50,1),TextTransparency=u(function()if q(W)then return 0.35 end return 0 end,
+50,1),[i'Changed']=function(ac)if ac=='Text'then local ad,ae=q(V),q(U)Y:set(string.lower(ad.Text))if q(Y)~=''then for af
+,ag in ipairs(ae:GetChildren())do if q(Y)==''then break end if ag:IsA'TextButton'then local ah=F.String:
+JaroWinklerDistance{q(Y),ag.Name}if ah<0.5 then ag.Visible=true else ag.Visible=false end end task.wait()end else for af
+,ag in ipairs(ae:GetChildren())do if ag:IsA'TextButton'then ag.Visible=true end end end end end,[m]=V,[j]={{h'UICorner'{
+CornerRadius=UDim.new(0,4)},h'UIPadding'{PaddingLeft=UDim.new(0,10)}}}},h'ScrollingFrame'{Name='Items',Size=UDim2.new(1,
+0,0,94),BackgroundTransparency=1,ScrollBarThickness=2,Position=UDim2.new(0.5,0,0,72),AnchorPoint=Vector2.new(0.5,0),
+CanvasSize=UDim2.new(0,0,0,0),AutomaticCanvasSize=Enum.AutomaticSize.Y,ScrollBarImageColor3=u(function()return q(I)end,
+40,1),[m]=U,[j]={h'UIListLayout'{Padding=UDim.new(0,2),HorizontalAlignment=Enum.HorizontalAlignment.Center,SortOrder=
+Enum.SortOrder.LayoutOrder}}}}}p(P):onChange(function()L:set(q(R))S:set(0)table.clear(Z)table.clear(Q)if ac:
+FindFirstChild('Items',true)then for ad,ae in ipairs(ac:FindFirstChild('Items',true):GetChildren())do if ae:IsA
+'TextButton'then ae:Destroy()end end table.clear(Q)end for ad,ae in ipairs(q(P))do local af,ag=k(false),k(false)p(ag):
+onChange(function()if q(M)then if q(ag)then S:set(q(S)+1)else S:set(q(S)-1)end L:set(q(R)..': '..tostring(q(S))..'/'..
+tostring(#q(N)))else L:set(q(R)..': '..q(T))end end)p(T):onChange(function()if not q(M)then if q(T)==ae then ag:set(true
+)else ag:set(false)end end end)h'TextButton'{Size=UDim2.new(0.95,0,0,30),Name=ae,Parent=q(U),BackgroundColor3=u(function
+()return t.get'text'end,40,1),BackgroundTransparency=u(function()if q(af)then return 0.95 end return 1 end,50,1),[i
+'MouseEnter']=function()af:set(true)end,[i'MouseLeave']=function()af:set(false)end,[i'MouseButton1Click']=function()if
+q(M)then if q(ag)then ag:set(false)table.remove(Q,table.find(Q,ae))else ag:set(true)table.insert(Q,ae)end task.spawn(q(O
+),Q)else X:set(false)T:set(ae)task.spawn(q(O),q(T))end end,[j]={h'UICorner'{CornerRadius=UDim.new(0,6)},h'TextLabel'{
+Size=UDim2.new(1,0,0,12),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),AnchorPoint=Vector2.new(0.5,0.5),
+Font=Enum.Font.Gotham,TextSize=12,TextXAlignment=Enum.TextXAlignment.Left,Text=ae,TextColor3=u(function()if q(M)then if
+q(ag)and not q(af)then return Color3.fromRGB(85,220,135)elseif q(ag)and q(af)then return Color3.fromRGB(190,100,105)else
+return t.get'text'end end return t.get'text'end,30,1),TextTransparency=u(function()if q(W)then return 0.35 end return 0
+end,50,1),[j]={h'UIPadding'{PaddingLeft=UDim.new(0,20)}}}}}if typeof(q(K))=='table'and q(M)then for ah,ai in ipairs(q(K)
+)do if ai==ae then ag:set(true)table.insert(Q,ae)end end elseif typeof(q(K))=='string'then if q(K)==ae then if q(M)then
+ag:set(true)table.insert(Q,ae)else T:set(q(K))task.spawn(q(O),q(T))end end end Z[ae]=function(ah)ag:set(ah)end end if q(
+M)and#Q>0 then task.spawn(q(O),Q)end end)P:set(q(N))local ad={}function ad.Remove(ae)ac:Destroy()end function ad.
+SetItems(ae,af)if typeof(af)=='table'then P:set(af)else error("You didn't give "..q(R)..' a table for SetItems')end end
+function ad.SelectItem(ae,af)if not q(M)then if typeof(af)=='string'then local ag=false for ah,ai in ipairs(q(P))do if
+ai==af then ag=true end end if ag then T:set(af)for aj,ak in ipairs(Z)do ak(false)end Z[af](true)task.spawn(q(O),q(T))
+else error(af.." isn't in your Item table")end else error('You tried to pass a '..typeof(af)..
+' as a string for SelectItem')end else error(q(R)..' is multiselectable. Use SelectItems')end end function ad.
+SelectItems(ae,af)if q(M)then if typeof(af)=='table'then local ag={}for ah,ai in ipairs(af)do if table.find(q(P),ai)then
+table.insert(ag,ai)else warn(ai.." isn't in the Items table")end end task.wait()for aj,ak in ipairs(ag)do Z[ak](true)end
+task.spawn(q(O),ag)Q=ag else error('You tried to pass a '..typeof(af)..' as a table for SelectItems')end else error(q(R)
+.." isn't multiselectable. Use SelectItems")end end function ad.Lock(ae,af)_:set(true)ab:set(q(X))aa:set(af or'Locked')X
+:set(false)end function ad.Unlock(ae)_:set(false)X:set(q(ab))end return ad end end)()end,[90]=function()local aa,ab,ac=
+a(90)local ad return(function(...)return{defaultTab=Color3.fromHex'#a49ae6',background=Color3.fromRGB(40,44,50),
+secondaryBackground=Color3.fromRGB(49,56,66),tertiaryBackground=Color3.fromRGB(57,63,75),text=Color3.fromRGB(220,221,225
+),image=Color3.fromRGB(220,221,225),placeholder=Color3.fromRGB(165,166,169),close=Color3.fromRGB(190,100,105)}end)()end,
+[91]=function()local aa,ab,ac=a(91)local ad return(function(...)local ae=ac(ab.Parent)return function(af)local ag=ae:
+Window{Title='Quake Window',Parent=af,isMobile=false}local aj,ak,b=ag:Tab{Name='Quake Tab 1',Image=
+'rbxassetid://10734908793'},ag:Tab{Name='Quake Tab 2',tabColor=Color3.fromRGB(255,120,222),Image=
+'rbxassetid://10734919691'},ag:Tab{Name='Quake Tab 3',tabColor=Color3.fromRGB(65,253,123),Image=
+'rbxassetid://10734950309'}aj:Button{Name='Quake Button',Callback=function()print'Quake Button'end}aj:Toggle{Name=
+'Quake Toggle',Default=false,Callback=function(c)print('Quake Toggle',c)end}aj:Slider{Name='Quake Slider',Min=0,Max=100,
+InitialValue=0,Callback=function(c)print('Quake Slider',c)end}aj:Dropdown{Name='Quake Dropdown',Items={'Apple','Banana',
+'Carrot','Dingleberry'},Default='Apple',Multiselect=true,Callback=function(c)print('Quake Dropdown',c)end}aj:TextBox{
+Name='Quake TextBox',Default='',OnLeave=true,Callback=function(c)print('Quake TextBox',c)end}aj:Keybind{Name=
+'Quake Keybind',Default='E',Callback=function()print'Quake Keybind'end}aj:ColorPicker{Name='Quake Color Picker',Color=
+Color3.fromHex'#a49ae6',Callback=function(c)print('Quake Color Picker',c)end}aj:Label'Quake Label'aj:Section
+'Quake Section'aj:Paragraph{Title='Quake Paragraph',Body='Quake Paragraph'}local c=aj:Group{Name='Quake Group',Icon=
+'rbxassetid://10734950309'}c:Button{Name='Quake Button',Callback=function()print'Quake Button'end}c:Toggle{Name=
+'Quake Toggle',Default=false,Callback=function(d)print('Quake Toggle',d)end}c:Slider{Name='Quake Slider',Min=0,Max=100,
+Step=1,InitialValue=0,Callback=function(d)print('Quake Slider',d)end}c:Dropdown{Name='Quake Dropdown',Items={'Apple',
+'Banana','Carrot','Dingleberry'},Multiselect=false,Callback=function(d)print('Quake Dropdown',d)end}c:TextBox{Name=
+'Quake TextBox',Default='',Callback=function(d)print('Quake TextBox',d)end}c:Keybind{Name='Quake Keybind',Default='E',
+Callback=function()print'Quake Keybind'end}c:ColorPicker{Name='Quake Color Picker',Color=Color3.fromHex'#a49ae6',
+Callback=function(d)print('Quake Color Picker',d)end}c:Label'Quake Label'c:Section'Quake Section'c:Paragraph{Title=
+'Quake Paragraph',Body='Quake Paragraph'}ak:Toggle{Name='Switch Theme',Callback=function(d)if d then ae:SetCustomTheme{
+defaultTab=Color3.fromRGB(150,150,150),background=Color3.fromRGB(26,27,33),secondaryBackground=Color3.fromRGB(34,35,39),
+tertiaryBackground=Color3.fromRGB(22,22,22),text=Color3.fromRGB(230,230,230),image=Color3.fromRGB(94,93,93),placeholder=
+Color3.fromRGB(79,79,79),close=Color3.fromRGB(190,100,105)}else ae:SetCustomTheme{defaultTab=Color3.fromRGB(254,126,92),
+background=Color3.fromRGB(40,42,54),secondaryBackground=Color3.fromRGB(50,52,64),tertiaryBackground=Color3.fromRGB(45,47
+,59),text=Color3.fromRGB(204,204,204),image=Color3.fromRGB(204,204,204),placeholder=Color3.fromRGB(165,166,169),close=
+Color3.fromRGB(190,100,105)}end end}b:Slider{Name='TextBox',Max=150,Min=37,Callback=function(d)end}return function()ae:
+Destroy()end end end)()end,[86]=function()local aa,ab,ac=a(86)local ad return(function(...)local ae=ab.Parent.Parent
+local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c=af.New,af.Children,ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),
+ac(ae.utilities.get)return function(d)return ag'ScrollingFrame'{Name=d.saltedTable[d.Name],Parent=d.Parent,
+BackgroundTransparency=1,Size=UDim2.fromScale(1,1),ScrollBarThickness=0,CanvasSize=UDim2.new(0,0,0,0),
+AutomaticCanvasSize=Enum.AutomaticSize.Y,[aj]={ag'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.
+LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Center},ag'TextLabel'
+{Size=UDim2.new(1,0,0,20),Text=d.Name,BackgroundTransparency=1,TextScaled=true,Font=Enum.Font.GothamMedium,
+TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0.75,TextColor3=b(function()return ak.get'text'end,40,1),[aj]={
+ag'UITextSizeConstraint'{MaxTextSize=12,MinTextSize=1},ag'UIPadding'{PaddingLeft=UDim.new(0,5)}}}}}end end)()end,[93]=
+function()local aa,ab,ac=a(93)local ad return(function(...)local ae=ac(ab.Parent.Parent.Bundles.Fusion)local af,ag=ae.
+Computed,ae.Spring return function(aj,ak,b)return ag(af(aj),ak,b)end end)()end,[83]=function()local aa,ab,ac=a(83)local
+ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,g,h,i=af.New,af.
+OnEvent,af.Children,af.Value,af.Ref,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.
+getStringBounds),ac(ae.utilities.animate),ac(ae.utilities.matchColors)return function(j)assert(j.Name,'Tab needs a Name'
+)local k,l=b(j.Parent),b(j.tabColor)if i(e(l),f.get'defaultTab')then l:set(f.get'defaultTab')end local m,p,q,t=b(j.Name)
+,b(j.Callback),b(j.saltedTable),b(false)d(t):onChange(function()if e(t)then task.spawn(e(p),e(l))end end)local u,v,E=b(
+false),b(0),b()do local F=g(e(m),{TextSize=14,Font=Enum.Font.GothamMedium,VectorSize=Vector2.new(10000,14)})if F.X<449
+then v:set(math.abs(F.X))else for G=1,14 do local H=g(e(m),{TextSize=14-G,Font=Enum.Font.GothamMedium,VectorSize=Vector2
+.new(450,40)})if H.X<450 and H.Y<14 then v:set(math.abs(H.X+1))break end end end end ag'TextButton'{ZIndex=5,Name=e(q)[
+e(m)],Parent=e(k),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.fromOffset(30,30),BackgroundColor3=h(function()return f.
+get'secondaryBackground'end,40,1),ClipsDescendants=true,Text='',Size=h(function()if e(u)then return UDim2.fromOffset(e(v
+)+50,40)else return UDim2.fromOffset(40,40)end end,20,1),[aj'MouseEnter']=function()u:set(true)end,[aj'MouseLeave']=
+function()u:set(false)end,[aj'MouseButton1Click']=function()e(p)(e(l))end,[ak]={ag'UICorner'{CornerRadius=h(function()if
+e(u)then return UDim.new(0,10)else return UDim.new(1,0)end end,30,1)},ag'ImageLabel'{ZIndex=5,Name='icon',AnchorPoint=
+Vector2.new(0,0.5),Position=UDim2.new(0,6,0.5,0),Size=UDim2.fromOffset(28,28),BackgroundTransparency=1,Image=j.Image,
+ImageColor3=h(function()if e(u)and not e(t)then return e(l)elseif not e(u)and not e(t)then return f.get'image'else
+return e(l)end end,30,1)},ag'TextLabel'{ZIndex=5,AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,40,0.5,0),Size=
+UDim2.new(0,e(v),0,14),BackgroundTransparency=1,Text=j.Name,TextScaled=true,TextTransparency=h(function()if e(u)then
+return 0 end return 1 end,20,1),Font=Enum.Font.GothamMedium,TextColor3=h(function()return f.get'text'end,40,1),
+TextXAlignment=Enum.TextXAlignment.Left,[c]=E,[ak]={ag'UITextSizeConstraint'{MaxTextSize=14,MinTextSize=1}}}}}return
+function(F)t:set(F)return e(l)end end end)()end,[98]=function()local aa,ab,ac=a(98)local ad return(function(...)local ae
+=ac(ab.Parent.Parent.Bundles.Fusion)local af=ae.Computed return function(ag,aj)return ae.Tween(af(ag),aj)end end)()end,[
+68]=function()local aa,ab,ac=a(68)local ad return(function(...)return{lock='rbxassetid://10723434711',dropdown=
+'rbxassetid://15555233897',chevron='rbxassetid://10709790948',emptyBox='rbxassetid://15555208034',filledBox=
+'rbxassetid://15555206993',maximize='rbxassetid://15556636376',minimize='rbxassetid://15556637715',close=
+'rbxassetid://10747384394'}end)()end,[70]=function()local aa,ab,ac=a(70)local ad return(function(...)return{{defaultTab=
+Color3.fromHex'#a49ae6',background=Color3.fromRGB(40,44,50),secondaryBackground=Color3.fromRGB(49,56,66),
+tertiaryBackground=Color3.fromRGB(57,63,75),text=Color3.fromRGB(220,221,225),image=Color3.fromRGB(220,221,225),
+placeholder=Color3.fromRGB(165,166,169),close=Color3.fromRGB(190,100,105)}}end)()end,[94]=function()local aa,ab,ac=a(94)
+local ad return(function(...)return function(ae,af)if typeof(ae)=='table'and ae.type=='State'then return ae:get(af)end
+return ae end end)()end,[77]=function()local aa,ab,ac=a(77)local ad return(function(...)local ae=ab.Parent.Parent local
+af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,g,h,i,j=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Ref,ac(ae
+.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons),
+game:GetService'UserInputService'return function(k)assert(k.Name,'Keybind needs a Name')assert(k.Default,
+'Keybind needs a Default')assert(k.Callback,'Keybind needs a Callback')local l,m=b(k.Parent),b(k.tabColor)if h(e(m),f.
+get'defaultTab')then m:set(f.get'defaultTab')end local p,q,t,u,v,E,F,G=b(k.Name),b(k.Callback),b(string.upper(k.Default)
+),b(),b(false),b(false),b'',{}local H,I=(ag'TextButton'{Interactable=c(function()return not e(E)end),Size=UDim2.new(1,0,
+0,40),BackgroundColor3=g(function()return f.get'secondaryBackground'end,40,1),Parent=e(l),[aj'MouseButton1Click']=
+function()local H=e(u)H:CaptureFocus()end,[ak]={{{ag'Frame'{ZIndex=4,Visible=c(function()return e(E)end),Size=UDim2.
+fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=g(function()return f.get'tertiaryBackground'end,40,1),[ak]={
+ag'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),
+BackgroundTransparency=1,ImageColor3=g(function()return f.get'image'end,40,1),Image=i.lock},ag'TextLabel'{Text=c(
+function()return e(F)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=
+Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=g(function()return f.get'text'end,40,1),TextSize=16,TextScaled=
+true,TextXAlignment=Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'
+{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),
+AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundTransparency=0.85,BackgroundColor3=g(function
+()return e(m)end,40,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=
+UDim2.new(1,-60,0,14),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=
+true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,Text=e(p),TextColor3=g(function()return f.
+get'text'end,40,1),[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'Frame'{ZIndex=3,Size=UDim2.new(0,30
+,0,24),AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),BackgroundTransparency=0.25,BackgroundColor3=g(
+function()return f.get'secondaryBackground'end,40,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'TextBox'{
+Interactable=c(function()return not e(E)end),ZIndex=3,AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),
+Size=UDim2.new(0,30,0,12),BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Center,PlaceholderText='. . .',
+Font=Enum.Font.Gotham,TextSize=12,PlaceholderColor3=g(function()return f.get'placeholder'end,40,1),TextColor3=g(function
+()if e(v)then return f.get'text'end return e(m)end,50,1),Text=c(function()return e(t)end),[aj'Focused']=function()v:set(
+true)t:set''end,[aj'FocusLost']=function()v:set(false)end,[d]=u}}})I=j.InputBegan:Connect(function(K,L)if e(v)then if K.
+KeyCode~=Enum.KeyCode.Unknown then local M=string.split(tostring(K.KeyCode),'.')t:set(M[3])e(u):ReleaseFocus()end elseif
+not L and(e(t)~='')and(K.KeyCode==Enum.KeyCode[e(t)])and H then if not e(E)then task.spawn(e(q))end end end)H.Destroying
+:Connect(function()I:Disconnect()end)function G.Remove(K)H:Destroy()end function G.SetBind(K,L:string)if typeof(L)==
+'string'then t:set(string.upper(L))else error('you didnt give '..e(p)..' a string for SetBind!')end end function G.Lock(
+K,L)E:set(true)F:set(L or'Locked')end function G.Unlock(K)E:set(false)end return G end end)()end,[71]=function()local aa
+,ab,ac=a(71)local ad return(function(...)local ae={}function ae.create(af,ag,aj)local ak,b=Instance.new(af),aj or{}for c
+,d in pairs(ag)do ak[c]=d end for e,f in pairs(b)do f.Parent=ak end return ak end function ae.c(af,ag,aj,ak)local b,c=
+Instance.new(ag),ak or{}for d,e in pairs(aj)do b[d]=e end for f,g in pairs(c)do g.Parent=b end return b end function ae.
+tween(af)if not af.r then af.r=0 end if not af.d then af.d='InOut'end if not af.s then af.s='Linear'end if not af.t then
+af.t=1 end if not af.a or not af.o then return warn
+[[
+
+UI-UTILITIES ERROR: 
+Missing one of the required propertoes: a, o]]elseif af.a and af.o then local ag,aj=game:
+GetService'TweenService',TweenInfo.new(af.t,Enum.EasingStyle[af.s],Enum.EasingDirection[af.d],af.r)local ak=ag:Create(af
+.o,aj,af.a)return ak end end function ae.gtween(af)if not af.r then af.r=0 end if not af.d then af.d='InOut'end if not
+af.s then af.s='Linear'end if not af.t then af.t=1 end if not af.a or not af.o then return warn
+[[
+
+UI-UTILITIES ERROR: 
+Missing one of the required propertoes: a, o]]elseif af.a and af.o then local ag,aj=game:
+GetService'TweenService',TweenInfo.new(af.t,Enum.EasingStyle[af.s],Enum.EasingDirection[af.d],af.r)for ak,b in next,af.o
+do ag:Create(b,aj,af.a):Play()end end end function ae.drag(af,ag)ag=ag or 10 local aj,ak,b,c,d,e,f,g,h=game:GetService
+'UserInputService',(game:GetService'RunService'),af local function i(j,k,l)return j+(k-j)*l end local j=(ag)
+local function k(l)if not(h)then return end if not(c)and(e)then b.Position=UDim2.new(h.X.Scale,i(b.Position.X.Offset,e.X
+.Offset,l*j),h.Y.Scale,i(b.Position.Y.Offset,e.Y.Offset,l*j))return end local m=(d-aj:GetMouseLocation())local p,q=(h.X.
+Offset-m.X),(h.Y.Offset-m.Y)e=UDim2.new(h.X.Scale,p,h.Y.Scale,q)b.Position=UDim2.new(h.X.Scale,i(b.Position.X.Offset,p,l
+*j),h.Y.Scale,i(b.Position.Y.Offset,q,l*j))end b.InputBegan:Connect(function(l)if l.UserInputType==Enum.UserInputType.
+MouseButton1 or l.UserInputType==Enum.UserInputType.Touch then c=true g=l.Position h=b.Position d=aj:GetMouseLocation()l
+.Changed:Connect(function()if l.UserInputState==Enum.UserInputState.End then c=false end end)end end)b.InputChanged:
+Connect(function(l)if l.UserInputType==Enum.UserInputType.MouseMovement or l.UserInputType==Enum.UserInputType.Touch
+then f=l end end)ak.Heartbeat:Connect(k)end return ae end)()end,[73]=function()local aa,ab,ac=a(73)local ad return(
+function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,g,h=af.New,af.OnEvent,af.
+Children,af.Value,af.Computed,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.
+matchColors),ac(ae.Bundles.icons)return function(i)assert(i.Name,'Button needs a Name')assert(i.Callback,
+'Button needs a Callback')local j,k=b(i.Parent),b(i.tabColor)if g(d(k),e.get'defaultTab')then k:set(e.get'defaultTab')
+end local l,m,p,q,t,u=b(i.Name),b(i.Callback),b(false),b(false),b'',{}local v=ag'TextButton'{Interactable=c(function()
+return not d(q)end),ZIndex=2,Size=UDim2.new(1,0,0,40),AutoButtonColor=false,Parent=d(j),BackgroundColor3=f(function()
+return e.get'secondaryBackground'end,40,1),[aj'MouseButton1Down']=function()p:set(true)end,[aj'MouseButton1Up']=function
+()p:set(false)end,[aj'MouseLeave']=function()p:set(false)end,[aj'MouseButton1Click']=function()task.spawn(d(m))end,[ak]=
+{{ag'Frame'{ZIndex=3,Visible=c(function()return d(q)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,
+BackgroundColor3=f(function()return e.get'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,
+0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=f(function()return e
+.get'image'end,40,1),Image=h.lock},ag'TextLabel'{Text=c(function()return d(t)end),AnchorPoint=Vector2.new(0,0.5),
 Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=
-g(function()return f.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ai]={ag
-'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}}},ag'TextButton'{
-Interactable=b(function()return not e(R)end),Size=UDim2.new(1,0,0,40),BackgroundTransparency=1,AnchorPoint=Vector2.new(
-0.5,0),Position=UDim2.fromScale(0.5,0),[ah'MouseButton1Down']=function()N:set(true)end,[ah'MouseButton1Up']=function()N:
-set(false)end,[ah'MouseLeave']=function()N:set(false)end,[ah'MouseButton1Click']=function()O:set(not e(O))end},ag
-'TextBox'{Name='searchBox',Size=UDim2.new(1,-16,0,28),Position=UDim2.new(0.5,0,0,40),Text='',AnchorPoint=Vector2.new(0.5
-,0),PlaceholderText='Search',Font=Enum.Font.GothamMedium,TextSize=16,TextXAlignment=Enum.TextXAlignment.Left,
-BackgroundColor3=g(function()return e(m)end,40,1),TextColor3=g(function()return f.get'text'end,40,1),PlaceholderColor3=
-g(function()return f.get'placeholder'end,40,1),BackgroundTransparency=g(function()if e(N)then return 0.95 end return 0.8
-end,50,1),TextTransparency=g(function()if e(N)then return 0.35 end return 0 end,50,1),[ah'Changed']=function(U)if U==
-'Text'then local V,W=e(M),e(L)P:set(string.lower(V.Text))if e(P)~=''then for X,Y in ipairs(W:GetChildren())do if e(P)==
-''then break end if Y:IsA'TextButton'then local Z=j.String:JaroWinklerDistance{e(P),Y.Name}if Z<0.5 then Y.Visible=true
-else Y.Visible=false end end task.wait()end else for X,Y in ipairs(W:GetChildren())do if Y:IsA'TextButton'then Y.Visible
-=true end end end end end,[c]=M,[ai]={{ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'UIPadding'{PaddingLeft=UDim.new(0,10)
-}}}},ag'ScrollingFrame'{Name='Items',Size=UDim2.new(1,0,0,94),BackgroundTransparency=1,ScrollBarThickness=2,Position=
-UDim2.new(0.5,0,0,72),AnchorPoint=Vector2.new(0.5,0),CanvasSize=UDim2.new(0,0,0,0),AutomaticCanvasSize=Enum.
-AutomaticSize.Y,ScrollBarImageColor3=g(function()return e(m)end,40,1),[c]=L,[ai]={ag'UIListLayout'{Padding=UDim.new(0,2)
-,HorizontalAlignment=Enum.HorizontalAlignment.Center,SortOrder=Enum.SortOrder.LayoutOrder}}}}}d(F):onChange(function()q:
-set(e(H))I:set(0)table.clear(Q)table.clear(G)if U:FindFirstChild('Items',true)then for V,W in ipairs(U:FindFirstChild(
-'Items',true):GetChildren())do if W:IsA'TextButton'then W:Destroy()end end table.clear(G)end for V,W in ipairs(e(F))do
-local X,Y=aj(false),aj(false)d(Y):onChange(function()if e(u)then if e(Y)then I:set(e(I)+1)else I:set(e(I)-1)end q:set(e(
-H)..': '..tostring(e(I))..'/'..tostring(#e(v)))else q:set(e(H)..': '..e(K))end end)d(K):onChange(function()if not e(u)
-then if e(K)==W then Y:set(true)else Y:set(false)end end end)ag'TextButton'{Size=UDim2.new(0.95,0,0,30),Name=W,Parent=e(
-L),BackgroundColor3=g(function()return f.get'text'end,40,1),BackgroundTransparency=g(function()if e(X)then return 0.95
-end return 1 end,50,1),[ah'MouseEnter']=function()X:set(true)end,[ah'MouseLeave']=function()X:set(false)end,[ah
-'MouseButton1Click']=function()if e(u)then if e(Y)then Y:set(false)table.remove(G,table.find(G,W))else Y:set(true)table.
-insert(G,W)end task.spawn(e(E),G)else O:set(false)K:set(W)task.spawn(e(E),e(K))end end,[ai]={ag'UICorner'{CornerRadius=
-UDim.new(0,6)},ag'TextLabel'{Size=UDim2.new(1,0,0,12),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),
-AnchorPoint=Vector2.new(0.5,0.5),Font=Enum.Font.Gotham,TextSize=12,TextXAlignment=Enum.TextXAlignment.Left,Text=W,
-TextColor3=g(function()if e(u)then if e(Y)and not e(X)then return Color3.fromRGB(85,220,135)elseif e(Y)and e(X)then
-return Color3.fromRGB(190,100,105)else return f.get'text'end end return f.get'text'end,30,1),TextTransparency=g(function
-()if e(N)then return 0.35 end return 0 end,50,1),[ai]={ag'UIPadding'{PaddingLeft=UDim.new(0,20)}}}}}if typeof(e(p))==
-'table'and e(u)then for Z,_ in ipairs(e(p))do if _==W then Y:set(true)table.insert(G,W)end end elseif typeof(e(p))==
-'string'then if e(p)==W then if e(u)then Y:set(true)table.insert(G,W)else K:set(e(p))task.spawn(e(E),e(K))end end end Q[
-W]=function(Z)Y:set(Z)end end if e(u)and#G>0 then task.spawn(e(E),G)end end)F:set(e(v))local V={}function V.Remove(W)U:
-Destroy()end function V.SetItems(W,X)if typeof(X)=='table'then F:set(X)else error("You didn't give "..e(H)..
-' a table for SetItems')end end function V.SelectItem(W,X)if not e(u)then if typeof(X)=='string'then local Y=false for Z
-,_ in ipairs(e(F))do if _==X then Y=true end end if Y then K:set(X)for ak,al in ipairs(Q)do al(false)end Q[X](true)task.
-spawn(e(E),e(K))else error(X.." isn't in your Item table")end else error('You tried to pass a '..typeof(X)..
-' as a string for SelectItem')end else error(e(H)..' is multiselectable. Use SelectItems')end end function V.SelectItems
-(ak,al)if e(u)then if typeof(al)=='table'then local W={}for X,Y in ipairs(al)do if table.find(e(F),Y)then table.insert(W
-,Y)else warn(Y.." isn't in the Items table")end end task.wait()for Z,_ in ipairs(W)do Q[_](true)end task.spawn(e(E),W)G=
-W else error('You tried to pass a '..typeof(al)..' as a table for SelectItems')end else error(e(H)..
-" isn't multiselectable. Use SelectItems")end end function V.Lock(ak,al)R:set(true)T:set(e(O))S:set(al or'Locked')O:set(
-false)end function V.Unlock(ak)R:set(false)O:set(e(T))end return V end end)()end,[76]=function()local aa,ab,ac=a(76)
-local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e=af.
-New,af.OnEvent,af.Children,af.Value,af.Computed,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate)
-,ac(ae.utilities.matchColors),ac(ae.Bundles.icons)return function(f)assert(f.Name,'Group needs a Name')local g,h=aj(f.
-Parent),aj(f.tabColor)if d(al(h),b.get'defaultTab')then h:set(b.get'defaultTab')end local i,j,k,l,m,p,q,u=aj(f.Name),aj(
-f.Icon or''),aj(40),aj(false),aj(false),aj(false),aj'',aj(false)local v=ag'TextButton'{ZIndex=2,Parent=al(g),
-ClipsDescendants=true,Size=ak(function()if al(l)then return UDim2.new(1,0,0,40)end return UDim2.new(1,0,0,al(k))end),
-BackgroundTransparency=c(function()if al(l)then return 0 end return 1 end,30,1),BackgroundColor3=c(function()if al(l)
-then return b.get'secondaryBackground'end return b.get'background'end,30,1),[ah'MouseButton1Click']=function()l:set(not
-al(l))end,[ai]={{ag'Frame'{ZIndex=3,Name='Lock',Visible=ak(function()return al(m)end),Size=UDim2.fromScale(1,1),
-BackgroundTransparency=0.1,BackgroundColor3=c(function()return b.get'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'{
-AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,
-ImageColor3=c(function()return b.get'image'end,40,1),Image=e.lock},ag'TextLabel'{Text=ak(function()return al(q)end),
-AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,
-BackgroundTransparency=1,TextColor3=c(function()return b.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
-Enum.TextXAlignment.Left,[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.
-new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'TextLabel'{Text=ak(function()return al(i)end),TextColor3=c(
-function()if al(l)then return b.get'text'end return al(h)end,40,1),BackgroundTransparency=1,Font=Enum.Font.GothamMedium,
-Size=ak(function()if al(u)then return UDim2.new(1,-54,0,16)end return UDim2.new(1,-20,0,16)end),TextSize=16,Position=ak(
-function()if al(u)then return UDim2.fromOffset(44,12)end return UDim2.fromOffset(10,12)end),AnchorPoint=Vector2.new(0,0)
-,TextXAlignment=Enum.TextXAlignment.Left},ag'ImageLabel'{Visible=ak(function()if al(u)then return true end return false
-end),BackgroundTransparency=1,ImageColor3=c(function()return b.get'image'end,40,1),Image=ak(function()if al(u)then
-return al(j)end return''end),Size=UDim2.fromOffset(24,24),Position=UDim2.fromOffset(10,8)},ag'Frame'{
-BackgroundTransparency=1,Size=UDim2.fromOffset(24,24),Position=UDim2.new(1,-34,0,8),[ai]={ag'ImageLabel'{AnchorPoint=
-Vector2.new(0.5,0.5),BackgroundTransparency=1,Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0.5,0.5),ImageColor3=c(
-function()if al(l)then return b.get'image'end return al(h)end,40,1),Image=e.chevron,Rotation=c(function()if al(l)then
-return 0 end return 180 end,30,1)}}},ag'Frame'{Name='componentHolder',Size=ak(function()return UDim2.new(1,0,0,al(k)-40)
-end),Position=UDim2.fromOffset(0,40),BackgroundTransparency=1,[ah'ChildAdded']=function(v)if typeof(v)=='Instance'and
-not v:IsA'UIListLayout'then local E=v.AbsoluteSize.Y k:set(al(k)+v.AbsoluteSize.Y+5)v.Changed:Connect(function(F)if F:
-lower()=='absolutesize'then if E~=math.round(v.AbsoluteSize.Y)then k:set(al(k)-E+math.round(v.AbsoluteSize.Y))E=math.
-round(v.AbsoluteSize.Y)end end end)end end,[ai]={ag'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.
-LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Center,
-VerticalAlignment=Enum.VerticalAlignment.Top},ag'UIPadding'{PaddingLeft=UDim.new(0,5),PaddingRight=UDim.new(0,5)}}}}}if
-al(j)~=''then u:set(true)end local E={}function E.SetName(F,G)if typeof(G)=='string'then i:set(G)else error(
-'You entered a '..typeof(G)..' instead of a string')end end function E.SetIcon(F,G)if typeof(G)=='string'then j:set(G)
-else error('You entered a '..typeof(G)..' instead of a string')end end function E.Lock(F,G)m:set(true)p:set(al(l))l:set(
-true)q:set(G or'Locked')end function E.Unlock(F)m:set(false)l:set(al(p))end return v.componentHolder,E end end)()end,[77
-]=function()local aa,ab,ac=a(77)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)
-local ag,ah,ai,aj,ak,al,b,c,d,e,f,g=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Ref,ac(ae.utilities.get),ac(ae
-.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons),game:GetService
-'UserInputService'return function(h)assert(h.Name,'Keybind needs a Name')assert(h.Default,'Keybind needs a Default')
-assert(h.Callback,'Keybind needs a Callback')local i,j=aj(h.Parent),aj(h.tabColor)if e(b(j),c.get'defaultTab')then j:
-set(c.get'defaultTab')end local k,l,m,p,q,u,v,E=aj(h.Name),aj(h.Callback),aj(string.upper(h.Default)),aj(),aj(false),aj(
-false),aj'',{}local F,G=(ag'TextButton'{Interactable=ak(function()return not b(u)end),Size=UDim2.new(1,0,0,40),
-BackgroundColor3=d(function()return c.get'secondaryBackground'end,40,1),Parent=b(i),[ah'MouseButton1Click']=function()
-local F=b(p)F:CaptureFocus()end,[ai]={{{ag'Frame'{ZIndex=4,Visible=ak(function()return b(u)end),Size=UDim2.fromScale(1,1
-),BackgroundTransparency=0.1,BackgroundColor3=d(function()return c.get'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'
-{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,
-ImageColor3=d(function()return c.get'image'end,40,1),Image=f.lock},ag'TextLabel'{Text=ak(function()return b(v)end),
-AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,
-BackgroundTransparency=1,TextColor3=d(function()return c.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
-Enum.TextXAlignment.Left,[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.
-new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.
-new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundTransparency=0.85,BackgroundColor3=d(function()return b(j)end,40,
-1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-60,0,14),
-AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,
-TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,Text=b(k),TextColor3=d(function()return c.get'text'end,40,1),
-[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'Frame'{ZIndex=3,Size=UDim2.new(0,30,0,24),AnchorPoint=
-Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),BackgroundTransparency=0.25,BackgroundColor3=d(function()return c.get
-'secondaryBackground'end,40,1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'TextBox'{Interactable=ak(function()
-return not b(u)end),ZIndex=3,AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),Size=UDim2.new(0,30,0,12),
-BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Center,PlaceholderText='. . .',Font=Enum.Font.Gotham,
-TextSize=12,PlaceholderColor3=d(function()return c.get'placeholder'end,40,1),TextColor3=d(function()if b(q)then return c
-.get'text'end return b(j)end,50,1),Text=ak(function()return b(m)end),[ah'Focused']=function()q:set(true)m:set''end,[ah
-'FocusLost']=function()q:set(false)end,[al]=p}}})G=g.InputBegan:Connect(function(H,I)if b(q)then if H.KeyCode~=Enum.
-KeyCode.Unknown then local K=string.split(tostring(H.KeyCode),'.')m:set(K[3])b(p):ReleaseFocus()end elseif not I and(b(m
-)~='')and(H.KeyCode==Enum.KeyCode[b(m)])and F then if not b(u)then task.spawn(b(l))end end end)F.Destroying:Connect(
-function()G:Disconnect()end)function E.Remove(H)F:Destroy()end function E.SetBind(H,I:string)if typeof(I)=='string'then
-m:set(string.upper(I))else error('you didnt give '..b(k)..' a string for SetBind!')end end function E.Lock(H,I)u:set(
-true)v:set(I or'Locked')end function E.Unlock(H)u:set(false)end return E end end)()end,[78]=function()local aa,ab,ac=a(
-78)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d=af
-.New,af.Children,af.Value,af.Computed,ac(ae.utilities.get),ac(ae.utilities.animate),ac(ae.Bundles.themeSystem),ac(ae.
-utilities.lerpColor),ac(ae.utilities.matchColors)return function(e)assert(e.Text,'Label needs literally a string')local
-f,g,h=ai(e.Parent),ai(e.Text),ai(e.tabColor)if d(ak(h),b.get'defaultTab')then h:set(b.get'defaultTab')end local i,j={},
-ag'Frame'{Size=UDim2.new(1,0,0,30),Parent=ak(f),BackgroundColor3=al(function()return b.get'secondaryBackground'end,40,1)
-,[ah]={ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'TextLabel'{ZIndex=2,Font=Enum.Font.GothamMedium,TextSize=14,RichText=
-true,TextScaled=true,BackgroundTransparency=1,Size=UDim2.new(1,-20,0,14),Position=UDim2.new(0,10,0.5,0),AnchorPoint=
-Vector2.new(0,0.5),TextXAlignment=Enum.TextXAlignment.Left,TextColor3=al(function()return c(ak(h),'white',0.5)end,40,1),
-Text=aj(function()return ak(g)end),[ah]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}}function i.Remove(k)j
-:Destroy()end function i.SetText(k,l)if typeof(l)=='string'then g:set(l)else error('you didnt give '..ak(g)..
-' a string for SetText!')end end return i end end)()end,[79]=function()local aa,ab,ac=a(79)local ad return(function(...)
-local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e=af.New,af.OnEvent,af.Children,af
-.Value,af.Computed,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.tween),ac(ae
-.utilities.getStringBounds)local function f(g,h)local i=1 for j=1,g do i=i*10 end local j=tostring(math.round(h*i)/i)
-local k=string.split(j,'.')if#k==1 then local l=''for m=1,g do l=l..'0'end j=j..'.'..l end return j end return function(
-g)assert(g.Title,'Notify needs a Title')assert(g.Body,'Notfiy needs a Body')assert(g.Duration,'Notify needs a Duration')
-local h,i,j,k,l,m,p,q,u=aj(g.Parent),aj(g.Title),aj(g.Body),aj(g.Duration),aj(e(g.Body,{TextSize=13,Font=Enum.Font.
-Gotham,VectorSize=Vector2.new(230,1000)}).Y),aj(false),aj(false),(aj'')u=ag'Frame'{AnchorPoint=Vector2.new(0,0.5),
-BackgroundTransparency=1,Parent=al(h),Size=c(function()if al(m)then task.delay(0.4,function()p:set(true)end)return UDim2
-.fromOffset(230,25+al(l)+15)end return UDim2.fromOffset(230,0)end,20,1),[ai]={ag'TextButton'{AnchorPoint=Vector2.new(0,
-0.5),BackgroundTransparency=0,BackgroundColor3=c(function()return b.get'background'end,40,1),Size=ak(function()return
-UDim2.fromOffset(230,25+al(l)+15)end),Position=c(function()if al(p)then return UDim2.fromScale(0,0.5)end return UDim2.
-fromScale(1.2,0.5)end,30,1),[ah'MouseButton1Click']=function()p:set(false)task.wait(0.4)m:set(false)task.wait(2)u:
-Destroy()end,[ai]={ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'TextLabel'{Name='Title',Size=UDim2.new(1,-5,0,18),
-Position=UDim2.new(0,5,0,5),BackgroundTransparency=1,Font=Enum.Font.GothamMedium,TextXAlignment=Enum.TextXAlignment.Left
-,TextSize=18,TextColor3=c(function()return b.get'text'end,40,1),Text=al(i)},ag'TextLabel'{Name='Body',Size=UDim2.new(1,-
-8,0,al(l)),Position=UDim2.fromOffset(8,25),BackgroundTransparency=1,Font=Enum.Font.Gotham,TextSize=13,TextXAlignment=
-Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Top,TextTransparency=0.2,TextWrapped=true,TextColor3=c(
-function()return b.get'text'end,40,1),Text=al(j)},ag'TextLabel'{Size=UDim2.fromOffset(100,10),AnchorPoint=Vector2.new(1,
-1),Position=UDim2.new(1,-5,1,-5),Text=ak(function()return al(q)end),TextColor3=c(function()return b.get'text'end,40,1),
-BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Right},ag'Frame'{Name='timer',ZIndex=0,AnchorPoint=Vector2.
-new(0,1),Position=UDim2.fromScale(0,1),BackgroundColor3=c(function()return b.get'text'end,40,1),Size=d(function()if al(p
-)then return UDim2.new(1,0,0,10)end return UDim2.new(0,0,0,10)end,TweenInfo.new(al(k),Enum.EasingStyle.Linear)),[ai]={ag
-'UICorner'{CornerRadius=UDim.new(0,4)},ag'Frame'{AnchorPoint=Vector2.new(0.5,0),Size=UDim2.fromScale(1,0.6),Position=
-UDim2.fromScale(0.5,0),BackgroundColor3=c(function()return b.get'background'end,40,1)}}}}}}}task.spawn(function()repeat
-task.wait()until al(p)local v,E=(tick())repeat E=tick()-v q:set(f(1,math.clamp(E,0,al(k))))task.wait()until E>al(k)end)
-task.spawn(function()task.wait()m:set(true)repeat task.wait()until al(p)task.wait(al(k))p:set(false)task.wait(0.4)m:set(
-false)task.wait(2)u:Destroy()end)end end)()end,[80]=function()local aa,ab,ac=a(80)local ad return(function(...)local ae=
-ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e=af.New,af.Children,af.Value,af.Computed,
-af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.getStringBounds),
-ac(ae.utilities.lerpColor)return function(f)assert(f.Title,'Paragraph needs a Title')assert(f.Body,
-'Paragrap needs a Body')local g,h,i=ai(f.Parent),ai(f.Title),ai(f.Body)local j=ai(d(al(i),{Font=Enum.Font.Gotham,
-VectorSize=Vector2.new(math.round(al(g).AbsoluteSize.X),1000),TextSize=12}).Y)al(g).Changed:Connect(function(k)if k:
-lower()=='absolutesize'then j:set(d(al(i),{Font=Enum.Font.Gotham,VectorSize=Vector2.new(math.round(al(g).AbsoluteSize.X)
-,1000),TextSize=12}).Y)end end)ak(i):onChange(function()j:set(d(al(i),{Font=Enum.Font.Gotham,VectorSize=Vector2.new(math
-.round(al(g).AbsoluteSize.X),1000),TextSize=12}).Y)end)local k,l={},ag'Frame'{BackgroundColor3=c(function()return b.get
-'secondaryBackground'end,40,1),Parent=al(g),Size=aj(function()return UDim2.new(1,0,0,36+al(j))end),[ah]={ag'UICorner'{
-CornerRadius=UDim.new(0,4)},ag'UIPadding'{PaddingTop=UDim.new(0,10),PaddingLeft=UDim.new(0,10),PaddingRight=UDim.new(0,
-10)},ag'TextLabel'{Name='Title',RichText=true,Position=UDim2.fromScale(0,0),Size=UDim2.new(1,0,0,16),
-BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Top,TextScaled=true,
-TextSize=16,Font=Enum.Font.GothamMedium,TextColor3=c(function()return b.get'text'end,40,1),Text=aj(function()return al(h
-)end),[ah]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'TextLabel'{Name='Body',TextWrapped=true,RichText
-=true,Position=UDim2.fromOffset(4,16),BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=
-Enum.TextYAlignment.Top,TextSize=12,Font=Enum.Font.Gotham,TextColor3=c(function()return e(b.get'text','black',0.1)end,40
-,1),Text=aj(function()return al(i)end),Size=aj(function()return UDim2.new(1,-4,0,al(j))end)}}}function k.Remove(m)l:
-Destroy()end function k.SetBody(m,p)if typeof(p)=='string'then i:set(p)else error('you didnt give '..al(h)..
-' a string for SetBody!')end end function k.SetTitle(m,p)if typeof(p)=='string'then h:set(p)else error('you didnt give '
-..al(h)..' a string for SetTitle!')end end return k end end)()end,[81]=function()local aa,ab,ac=a(81)local ad return(
-function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b=af.New,af.Children,af.
-Value,af.Computed,ac(ae.utilities.get),ac(ae.utilities.animate),ac(ae.Bundles.themeSystem)return function(c)assert(c.
-Text,'Section needs literally a string')local d,e,f=ai(c.Parent),ai(c.Text),{}local g=ag'Frame'{Size=UDim2.new(1,0,0,30)
-,BackgroundTransparency=1,Parent=ak(d),[ah]={ag'TextLabel'{Size=UDim2.new(1,0,0,15),AnchorPoint=Vector2.new(0,0.5),
-Position=UDim2.new(0,5,0.5,0),BackgroundTransparency=1,TextScaled=true,Font=Enum.Font.GothamMedium,TextXAlignment=Enum.
-TextXAlignment.Left,TextColor3=al(function()return b.get'text'end,40,1),Text=aj(function()return ak(e)end),[ah]={ag
-'UITextSizeConstraint'{MaxTextSize=15,MinTextSize=1}}}}}function f.Remove(h)g:Destroy()end function f.SetText(h,i)if
-typeof(i)=='string'then e:set(i)else error('you didnt give '..ak(e)..' a string for SetText!')end end return f end end)(
-)end,[82]=function()local aa,ab,ac=a(82)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.
-Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e,f,g,h,i=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Ref,af.Observer,ac(
-ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons),
-game:GetService'UserInputService',game:GetService'RunService'return function(j)assert(j.Name,'Slider needs a Name')
-assert(j.Max,'Slider needs a Max')assert(j.Min,'Slider needs a Min')assert(j.Callback,'Slider needs a Callback')local k,
-l=aj(j.Parent),aj(j.tabColor)if f(c(l),d.get'defaultTab')then l:set(d.get'defaultTab')end local m,p,q,u,v=aj(j.Name),aj(
-j.Callback),aj(j.Max),aj(j.Min),aj(j.Placement or 0)local E,F,G,H,I,K,L=aj(j.InitialValue or c(u)),aj(),aj(),aj(false),
-aj(false),aj(false),aj''local function M(N)if c(v)==0 then return math.floor(N)end return tonumber(string.format('%.'..
-c(v)..'f',N))end local function N(O,P,Q,R,S)return(1-((O-P)/(Q-P)))*R+((O-P)/(Q-P))*S end local function O(P)return M(N(
-P,0,180,c(u),c(q)))end local P,Q=aj(0),aj(c(u))b(Q):onChange(function()P:set(N(c(Q),c(u),c(q),0,1))if not c(K)then task.
-spawn(c(p),c(Q))end end)Q:set(c(E))if c(E)<c(u)or c(E)>c(q)then warn('InitialValue for '..c(m)..
-' is either too big or too small! InitialValue = '..tostring(c(u)))E:set(c(u))end h.InputEnded:Connect(function(R)if R.
-UserInputType==Enum.UserInputType.MouseButton1 and c(I)then I:set(false)end end)local R,S=ag'Frame'{Size=UDim2.new(1,0,0
-,40),ClipsDescendants=true,BackgroundColor3=e(function()return d.get'secondaryBackground'end,40,1),Parent=c(k),[ah
-'MouseEnter']=function()H:set(true)end,[ah'MouseLeave']=function()H:set(false)end,[ai]={{{ag'Frame'{ZIndex=4,Visible=ak(
-function()return c(K)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=e(function()return d.get
-'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=
-UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=e(function()return d.get'image'end,40,1),Image=g.lock},ag
-'TextLabel'{Text=ak(function()return c(L)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.
-new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=e(function()return d.get'text'end,40,1),
-TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ai]={ag'UITextSizeConstraint'{MinTextSize=1,
-MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=
-2,Size=UDim2.fromScale(1,1),AnchorPoint=Vector2.new(0.5,0),Position=UDim2.fromScale(0.5,0),BackgroundTransparency=0.85,
-BackgroundColor3=e(function()return c(l)end,40,1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{
-BackgroundTransparency=1,Size=UDim2.new(1,-220,0,14),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=
-Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,TextColor3=e(
-function()return d.get'text'end,40,1),Text=c(m),[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}},ag
-'CanvasGroup'{AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),BackgroundColor3=e(function()return d.get
-'image'end,40,1),Size=e(function()if c(H)and not c(K)then return UDim2.fromOffset(180,16)end return UDim2.fromOffset(180
-,4)end,40,1),[ai]={ag'UICorner'{CornerRadius=e(function()if c(H)then return UDim.new(0,4)end return UDim.new(0,6)end,40,
-1)},ag'TextButton'{Interactable=ak(function()return not c(K)end),AnchorPoint=Vector2.new(0.5,0.5),Size=UDim2.fromScale(1
-,1),Position=UDim2.fromScale(0.5,0.5),BackgroundTransparency=1,[ah'MouseButton1Down']=function()I:set(true)end,[ah
-'InputBegan']=function(R)if R.UserInputType==Enum.UserInputType.MouseButton1 then local S,T=h:GetMouseLocation().X,c(F).
-Size.X.Offset local U=S-(c(F).AbsolutePosition.X+T)while c(I)and not c(K)and task.wait()do local V=h:GetMouseLocation().
-X local W=math.clamp(T+(V-S)+U,0,180)Q:set(O(W))i.RenderStepped:Wait()end end end,[al]=G,[ai]={ag'Frame'{Name=
-'ChangeThing',AnchorPoint=Vector2.new(0,0.5),Position=UDim2.fromScale(0,0.5),BackgroundColor3=e(function()return c(l)end
-,40,1),Size=e(function()return UDim2.fromScale(c(P),1)end,60,1),[al]=F}}}}},ag'TextLabel'{AnchorPoint=Vector2.new(1,0.5)
-,Size=UDim2.fromOffset(20,14),Position=UDim2.new(1,-195,0.5,0),BackgroundTransparency=1,Text=ak(function()return
-tostring(c(Q))end),TextColor3=e(function()return d.get'text'end,40,1),Font=Enum.Font.Gotham,TextSize=14,TextXAlignment=
-Enum.TextXAlignment.Right,TextScaled=true,[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}},{}function S.
-Remove(T)R:Destroy()end function S.SetValue(T,U)if typeof(U)=='number'and(U<=c(q))and(U>=c(u))then Q:set(U)elseif
-typeof(U)~='number'then error("You didn't give "..c(m)..' a number for SetValue')else error('Your SetValue for '..c(m)..
-' is great or smaller than the maximum or minimum')end end function S.SetMin(T,U)if typeof(U)=='number'and(U<c(q))then u
-:set(U)local V=c(G)V.ChangeThing.ZIndex=2 V.ChangeThing.ZIndex=1 elseif typeof(U)~='number'then error("You didn't give "
-..c(m)..' a number for SetMin')else error('Your SetMin for '..c(m)..' is great than the maximum')end end function S.
-SetMax(T,U)if typeof(U)=='number'and(U<c(u))then q:set(U)local V=c(G)V.ChangeThing.ZIndex=2 V.ChangeThing.ZIndex=1
-elseif typeof(U)~='number'then error("You didn't give "..c(m)..' a number for SetMax')else error('Your SetMax for '..c(m
-)..' is smaller than the minimum')end end function S.Lock(T,U)K:set(true)L:set(U or'Locked')end function S.Unlock(T)K:
-set(false)end return S end end)()end,[83]=function()local aa,ab,ac=a(83)local ad return(function(...)local ae=ab.Parent.
-Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e,f=af.New,af.OnEvent,af.Children,af.Value,af.Ref,af.
-Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.getStringBounds),ac(ae.utilities.animate),ac(ae
-.utilities.matchColors)return function(g)assert(g.Name,'Tab needs a Name')local h,i=aj(g.Parent),aj(g.tabColor)if f(b(i)
-,c.get'defaultTab')then i:set(c.get'defaultTab')end local j,k,l,m=aj(g.Name),aj(g.Callback),aj(g.saltedTable),aj(false)
-al(m):onChange(function()if b(m)then task.spawn(b(k),b(i))end end)local p,q,u=aj(false),aj(0),aj()do local v=d(b(j),{
-TextSize=14,Font=Enum.Font.GothamMedium,VectorSize=Vector2.new(10000,14)})if v.X<449 then q:set(math.abs(v.X))else for E
-=1,14 do local F=d(b(j),{TextSize=14-E,Font=Enum.Font.GothamMedium,VectorSize=Vector2.new(450,40)})if F.X<450 and F.Y<14
-then q:set(math.abs(F.X+1))break end end end end ag'TextButton'{ZIndex=5,Name=b(l)[b(j)],Parent=b(h),AnchorPoint=Vector2
-.new(0,0.5),Position=UDim2.fromOffset(30,30),BackgroundColor3=e(function()return c.get'secondaryBackground'end,40,1),
-ClipsDescendants=true,Text='',Size=e(function()if b(p)then return UDim2.fromOffset(b(q)+50,40)else return UDim2.
-fromOffset(40,40)end end,20,1),[ah'MouseEnter']=function()p:set(true)end,[ah'MouseLeave']=function()p:set(false)end,[ah
-'MouseButton1Click']=function()b(k)(b(i))end,[ai]={ag'UICorner'{CornerRadius=e(function()if b(p)then return UDim.new(0,
-10)else return UDim.new(1,0)end end,30,1)},ag'ImageLabel'{ZIndex=5,Name='icon',AnchorPoint=Vector2.new(0,0.5),Position=
-UDim2.new(0,6,0.5,0),Size=UDim2.fromOffset(28,28),BackgroundTransparency=1,Image=g.Image,ImageColor3=e(function()if b(p)
-and not b(m)then return b(i)elseif not b(p)and not b(m)then return c.get'image'else return b(i)end end,30,1)},ag
-'TextLabel'{ZIndex=5,AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,40,0.5,0),Size=UDim2.new(0,b(q),0,14),
-BackgroundTransparency=1,Text=g.Name,TextScaled=true,TextTransparency=e(function()if b(p)then return 0 end return 1 end,
-20,1),Font=Enum.Font.GothamMedium,TextColor3=e(function()return c.get'text'end,40,1),TextXAlignment=Enum.TextXAlignment.
-Left,[ak]=u,[ai]={ag'UITextSizeConstraint'{MaxTextSize=14,MinTextSize=1}}}}}return function(v)m:set(v)return b(i)end end
-end)()end,[84]=function()local aa,ab,ac=a(84)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.
-Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e,f,g=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Ref,af.Observer
-,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.
-icons)return function(h)assert(h.Name,'TextBox needs a Name')assert(h.Callback,'ColorPicker needs Callback')local i,j=
-aj(h.Parent),aj(h.tabColor)if f(c(j),d.get'defaultTab')then j:set(d.get'defaultTab')end local k,l,m,p,q,u,v,E,F,G=aj(h.
-Name),aj(h.Callback),aj(h.Default or''),aj(h.OnlyNumbers or false),aj(h.OnLeave or false),aj(),aj'',aj(false),aj(false),
-aj''local H=aj(c(v))b(v):onChange(function()if c(p)then if tonumber(c(v))or c(v)==''then H:set(c(v))end else H:set(c(v))
-end local I=c(u)I.Text=c(H)end)if c(q)then b(E):onChange(function()if not c(E)then if c(p)then if tonumber(c(v))then
-task.spawn(c(l),c(v))end else task.spawn(c(l),c(v))end end end)else b(v):onChange(function()if c(p)then if tonumber(c(v)
-)then task.spawn(c(l),c(v))end else task.spawn(c(l),c(v))end end)end if c(m)~=''then v:set(c(m))end local I,K=ag
-'TextButton'{Parent=c(i),Interactable=ak(function()return not c(F)end),Size=UDim2.new(1,0,0,40),BackgroundColor3=e(
-function()return d.get'secondaryBackground'end,40,1),[ah'MouseButton1Click']=function()local I=c(u)I:CaptureFocus()end,[
-ai]={{{ag'Frame'{ZIndex=4,Visible=ak(function()return c(F)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,
-BackgroundColor3=e(function()return d.get'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,
-0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=e(function()return d
-.get'image'end,40,1),Image=g.lock},ag'TextLabel'{Text=ak(function()return c(G)end),AnchorPoint=Vector2.new(0,0.5),
-Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=
-e(function()return d.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ai]={ag
+f(function()return e.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ak]={ag
 'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{
 CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.
-new(0.5,0,0.5,0),BackgroundTransparency=0.85,BackgroundColor3=e(function()return c(j)end,40,1),[ai]={ag'UICorner'{
-CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-185,0,14),AnchorPoint=Vector2.
-new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.
-TextXAlignment.Left,TextTransparency=0,Text=c(k),TextColor3=e(function()return d.get'text'end,40,1),[ai]={ag
-'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'Frame'{ZIndex=3,Size=UDim2.new(0,160,0,24),AnchorPoint=Vector2
-.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),BackgroundTransparency=0.25,BackgroundColor3=e(function()return d.get
-'secondaryBackground'end,40,1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'TextBox'{Interactable=ak(function()
-return not c(F)end),ZIndex=3,AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),Size=UDim2.new(0,160,0,24),
-BackgroundTransparency=1,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,PlaceholderText='Input Here',Font=Enum.
-Font.Gotham,TextSize=12,PlaceholderColor3=e(function()return d.get'placeholder'end,40,1),Text=ak(function()if c(m)~=''
-then return c(m)end return''end),TextColor3=e(function()if c(E)then return d.get'text'else return c(j)end end,50,1),[ah
-'Focused']=function()E:set(true)end,[ah'FocusLost']=function()E:set(false)end,[ah'Changed']=function(I)if I=='Text'then
-local K=c(u)v:set(K.Text)end end,[al]=u,[ai]={ag'UIPadding'{PaddingLeft=UDim.new(0,5),PaddingRight=UDim.new(0,5)},ag
-'UITextSizeConstraint'{MaxTextSize=12,MinTextSize=1}}}}},{}function K.Remove(L)I:Destroy()end function K.SetInput(L,M)if
-typeof(M)=='string'then c(u).Text=M else error("You didn't give "..c(k)..' a string for setInput')end end function K.
-Lock(L,M)F:set(true)G:set(M or'Locked')end function K.Unlock(L)F:set(false)end return K end end)()end,[85]=function()
-local aa,ab,ac=a(85)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,
-aj,ak,al,b,c,d,e,f=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.
-themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons)return function(g)assert(g.Name,
-'Toggle needs a Name')assert(g.Callback,'Toggle needs a Callback')local h,i=aj(g.Parent),aj(g.tabColor)if e(b(i),c.get
-'defaultTab')then i:set(c.get'defaultTab')end local j,k,l,m,p,q=aj(g.Name),aj(g.Callback),aj(g.Default or false),aj(
-false),aj(false),aj''al(m):onChange(function()if not b(p)then task.spawn(b(k),b(m))end end)m:set(b(l))local u,v=ag
-'TextButton'{Interactable=ak(function()return not b(p)end),Size=UDim2.new(1,0,0,40),AutoButtonColor=false,
-BackgroundColor3=d(function()return c.get'secondaryBackground'end,40,1),Parent=b(h),[ah'MouseButton1Click']=function()m:
-set(not b(m))end,[ai]={{ag'Frame'{ZIndex=3,Visible=ak(function()return b(p)end),Size=UDim2.fromScale(1,1),
-BackgroundTransparency=0.1,BackgroundColor3=d(function()return c.get'tertiaryBackground'end,40,1),[ai]={ag'ImageLabel'{
+new(0.5,0,0.5,0),BackgroundColor3=f(function()return d(k)end,40,1),BackgroundTransparency=f(function()if d(p)then return
+0.95 end return 0.85 end,50,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,
+Size=UDim2.new(1,-20,0,14),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,
+TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,TextColor3=f(function()return e.get'text'end,40,1),
+Text=c(function()return d(l)end),TextTransparency=f(function()if d(p)then return 0.35 end return 0 end,50,1),[ak]={ag
+'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}}function u.Remove(E)v:Destroy()end function u.SetName(E,F)if
+typeof(F)=='string'then l:set(F)else error('You didnt give '..d(l)..' a string for SetName')end end function u.
+SetCallback(E,F)if typeof(F)=='function'then m:set(F)else error('You didnt give '..d(l)..' a function for SetCallback')
+end end function u.Lock(E,F)q:set(true)t:set(F or'Locked')end function u.Unlock(E)q:set(false)end return u end end)()end
+,[96]=function()local aa,ab,ac=a(96)local ad return(function(...)local ae,af=Color3.new(0,0,0),Color3.new(1,1,1)return
+function(ag:Color3,aj:string,ak:number)local b=string.lower(aj)if aj=='black'then return ag:Lerp(ae,ak)elseif aj==
+'white'then return ag:Lerp(af,ak)else return error'hey its not white or black'end end end)()end,[80]=function()local aa,
+ab,ac=a(80)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f
+,g,h=af.New,af.Children,af.Value,af.Computed,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities
+.animate),ac(ae.utilities.getStringBounds),ac(ae.utilities.lerpColor)return function(i)assert(i.Title,
+'Paragraph needs a Title')assert(i.Body,'Paragrap needs a Body')local j,k,l=ak(i.Parent),ak(i.Title),ak(i.Body)local m=
+ak(g(d(l),{Font=Enum.Font.Gotham,VectorSize=Vector2.new(math.round(d(j).AbsoluteSize.X),1000),TextSize=12}).Y)d(j).
+Changed:Connect(function(p)if p:lower()=='absolutesize'then m:set(g(d(l),{Font=Enum.Font.Gotham,VectorSize=Vector2.new(
+math.round(d(j).AbsoluteSize.X),1000),TextSize=12}).Y)end end)c(l):onChange(function()m:set(g(d(l),{Font=Enum.Font.
+Gotham,VectorSize=Vector2.new(math.round(d(j).AbsoluteSize.X),1000),TextSize=12}).Y)end)local p,q={},ag'Frame'{
+BackgroundColor3=f(function()return e.get'secondaryBackground'end,40,1),Parent=d(j),Size=b(function()return UDim2.new(1,
+0,0,36+d(m))end),[aj]={ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'UIPadding'{PaddingTop=UDim.new(0,10),PaddingLeft=UDim
+.new(0,10),PaddingRight=UDim.new(0,10)},ag'TextLabel'{Name='Title',RichText=true,Position=UDim2.fromScale(0,0),Size=
+UDim2.new(1,0,0,16),BackgroundTransparency=1,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.
+Top,TextScaled=true,TextSize=16,Font=Enum.Font.GothamMedium,TextColor3=f(function()return e.get'text'end,40,1),Text=b(
+function()return d(k)end),[aj]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'TextLabel'{Name='Body',
+TextWrapped=true,RichText=true,Position=UDim2.fromOffset(4,16),BackgroundTransparency=1,TextXAlignment=Enum.
+TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Top,TextSize=12,Font=Enum.Font.Gotham,TextColor3=f(function()
+return h(e.get'text','black',0.1)end,40,1),Text=b(function()return d(l)end),Size=b(function()return UDim2.new(1,-4,0,d(m
+))end)}}}function p.Remove(t)q:Destroy()end function p.SetBody(t,u)if typeof(u)=='string'then l:set(u)else error(
+'you didnt give '..d(k)..' a string for SetBody!')end end function p.SetTitle(t,u)if typeof(u)=='string'then k:set(u)
+else error('you didnt give '..d(k)..' a string for SetTitle!')end end return p end end)()end,[69]=function()local aa,ab,
+ac=a(69)local ad return(function(...)local ae,af,ag={},ac(ab.Parent.Fusion),ac(ab.themes)local aj,ak,b,c=af.Value,af.
+Observer,ac(ab.Parent.Parent.utilities.get),{}local d=aj{}ak(d):onChange(function()for e,f in ipairs(c)do task.spawn(f)
+end end)function ae.set(e)for f,g in ipairs(ag)do if g.name==e then d:set(g)break end end end local e={defaultTab=
+'Color3',background='Color3',secondaryBackground='Color3',tertiaryBackground='Color3',text='Color3',image='Color3',
+placeholder='Color3',close='Color3'}function ae.create(f)for g,h in e do if f[g]==nil then error('Missing value "'..
+tostring(g)..'"')end if typeof(f[g])~='Color3'then error(g.." isn't type Color3")end end for i,j in f do if e[i]==nil
+then warn('Incorrect value removed "'..tostring(i)..'"')f[i]=nil end end d:set(f)end function ae.get(f)local h=b(d)if h[
+f]then return h[f]else error(f.." isn't a theme element")end end d:set(ag[1])function ae.onChange(f)table.insert(c,f)end
+return ae end)()end,[79]=function()local aa,ab,ac=a(79)local ad return(function(...)local ae=ab.Parent.Parent local af=
+ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,h,i=af.New,af.OnEvent,af.Children,af.Value,af.Computed,ac(ae.utilities.get
+),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.tween),ac(ae.utilities.getStringBounds)
+local function j(k,l)local m=1 for p=1,k do m=m*10 end local p=tostring(math.round(l*m)/m)local q=string.split(p,'.')if#
+q==1 then local t=''for u=1,k do t=t..'0'end p=p..'.'..t end return p end return function(k)assert(k.Title,
+'Notify needs a Title')assert(k.Body,'Notfiy needs a Body')assert(k.Duration,'Notify needs a Duration')local l,m,p,q,t,u
+,v,E,F=b(k.Parent),b(k.Title),b(k.Body),b(k.Duration),b(i(k.Body,{TextSize=13,Font=Enum.Font.Gotham,VectorSize=Vector2.
+new(230,1000)}).Y),b(false),b(false),(b'')F=ag'Frame'{AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=1,Parent=d(l
+),Size=f(function()if d(u)then task.delay(0.4,function()v:set(true)end)return UDim2.fromOffset(230,25+d(t)+15)end return
+UDim2.fromOffset(230,0)end,20,1),[ak]={ag'TextButton'{AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=0,
+BackgroundColor3=f(function()return e.get'background'end,40,1),Size=c(function()return UDim2.fromOffset(230,25+d(t)+15)
+end),Position=f(function()if d(v)then return UDim2.fromScale(0,0.5)end return UDim2.fromScale(1.2,0.5)end,30,1),[aj
+'MouseButton1Click']=function()v:set(false)task.wait(0.4)u:set(false)task.wait(2)F:Destroy()end,[ak]={ag'UICorner'{
+CornerRadius=UDim.new(0,4)},ag'TextLabel'{Name='Title',Size=UDim2.new(1,-5,0,18),Position=UDim2.new(0,5,0,5),
+BackgroundTransparency=1,Font=Enum.Font.GothamMedium,TextXAlignment=Enum.TextXAlignment.Left,TextSize=18,TextColor3=f(
+function()return e.get'text'end,40,1),Text=d(m)},ag'TextLabel'{Name='Body',Size=UDim2.new(1,-8,0,d(t)),Position=UDim2.
+fromOffset(8,25),BackgroundTransparency=1,Font=Enum.Font.Gotham,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left,
+TextYAlignment=Enum.TextYAlignment.Top,TextTransparency=0.2,TextWrapped=true,TextColor3=f(function()return e.get'text'
+end,40,1),Text=d(p)},ag'TextLabel'{Size=UDim2.fromOffset(100,10),AnchorPoint=Vector2.new(1,1),Position=UDim2.new(1,-5,1,
+-5),Text=c(function()return d(E)end),TextColor3=f(function()return e.get'text'end,40,1),BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right},ag'Frame'{Name='timer',ZIndex=0,AnchorPoint=Vector2.new(0,1),Position=UDim2.
+fromScale(0,1),BackgroundColor3=f(function()return e.get'text'end,40,1),Size=h(function()if d(v)then return UDim2.new(1,
+0,0,10)end return UDim2.new(0,0,0,10)end,TweenInfo.new(d(q),Enum.EasingStyle.Linear)),[ak]={ag'UICorner'{CornerRadius=
+UDim.new(0,4)},ag'Frame'{AnchorPoint=Vector2.new(0.5,0),Size=UDim2.fromScale(1,0.6),Position=UDim2.fromScale(0.5,0),
+BackgroundColor3=f(function()return e.get'background'end,40,1)}}}}}}}task.spawn(function()repeat task.wait()until d(v)
+local G,H=(tick())repeat H=tick()-G E:set(j(1,math.clamp(H,0,d(q))))task.wait()until H>d(q)end)task.spawn(function()task
+.wait()u:set(true)repeat task.wait()until d(v)task.wait(d(q))v:set(false)task.wait(0.4)u:set(false)task.wait(2)F:
+Destroy()end)end end)()end,[84]=function()local aa,ab,ac=a(84)local ad return(function(...)local ae=ab.Parent.Parent
+local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,h,i,j,k=af.New,af.OnEvent,af.Children,af.Value,af.Computed,af.Ref
+,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae
+.Bundles.icons)return function(l)assert(l.Name,'TextBox needs a Name')assert(l.Callback,'ColorPicker needs Callback')
+local m,p=b(l.Parent),b(l.tabColor)if j(f(p),h.get'defaultTab')then p:set(h.get'defaultTab')end local q,t,u,v,E,F,G,H,I,
+K=b(l.Name),b(l.Callback),b(l.Default or''),b(l.OnlyNumbers or false),b(l.OnLeave or false),b(),b'',b(false),b(false),b
+''local L=b(f(G))e(G):onChange(function()if f(v)then if tonumber(f(G))or f(G)==''then L:set(f(G))end else L:set(f(G))end
+local M=f(F)M.Text=f(L)end)if f(E)then e(H):onChange(function()if not f(H)then if f(v)then if tonumber(f(G))then task.
+spawn(f(t),f(G))end else task.spawn(f(t),f(G))end end end)else e(G):onChange(function()if f(v)then if tonumber(f(G))then
+task.spawn(f(t),f(G))end else task.spawn(f(t),f(G))end end)end if f(u)~=''then G:set(f(u))end local M,N=ag'TextButton'{
+Parent=f(m),Interactable=c(function()return not f(I)end),Size=UDim2.new(1,0,0,40),BackgroundColor3=i(function()return h.
+get'secondaryBackground'end,40,1),[aj'MouseButton1Click']=function()local M=f(F)M:CaptureFocus()end,[ak]={{{ag'Frame'{
+ZIndex=4,Visible=c(function()return f(I)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=i(
+function()return h.get'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.
+fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=i(function()return h.get'image'end,
+40,1),Image=k.lock},ag'TextLabel'{Text=c(function()return f(K)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,
+44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=i(function()return h.
+get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{
+MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag
+'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),
+BackgroundTransparency=0.85,BackgroundColor3=i(function()return f(p)end,40,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0
+,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-185,0,14),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.
+new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,
+TextTransparency=0,Text=f(q),TextColor3=i(function()return h.get'text'end,40,1),[ak]={ag'UITextSizeConstraint'{
+MinTextSize=1,MaxTextSize=14}}},ag'Frame'{ZIndex=3,Size=UDim2.new(0,160,0,24),AnchorPoint=Vector2.new(1,0.5),Position=
+UDim2.new(1,-10,0.5,0),BackgroundTransparency=0.25,BackgroundColor3=i(function()return h.get'secondaryBackground'end,40,
+1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'TextBox'{Interactable=c(function()return not f(I)end),ZIndex=3,
+AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-10,0.5,0),Size=UDim2.new(0,160,0,24),BackgroundTransparency=1,
+TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,PlaceholderText='Input Here',Font=Enum.Font.Gotham,TextSize=12,
+PlaceholderColor3=i(function()return h.get'placeholder'end,40,1),Text=c(function()if f(u)~=''then return f(u)end return
+''end),TextColor3=i(function()if f(H)then return h.get'text'else return f(p)end end,50,1),[aj'Focused']=function()H:set(
+true)end,[aj'FocusLost']=function()H:set(false)end,[aj'Changed']=function(M)if M=='Text'then local N=f(F)G:set(N.Text)
+end end,[d]=F,[ak]={ag'UIPadding'{PaddingLeft=UDim.new(0,5),PaddingRight=UDim.new(0,5)},ag'UITextSizeConstraint'{
+MaxTextSize=12,MinTextSize=1}}}}},{}function N.Remove(O)M:Destroy()end function N.SetInput(O,P)if typeof(P)=='string'
+then f(F).Text=P else error("You didn't give "..f(q)..' a string for setInput')end end function N.Lock(O,P)I:set(true)K:
+set(P or'Locked')end function N.Unlock(O)I:set(false)end return N end end)()end,[74]=function()local aa,ab,ac=a(74)local
+ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,b,c,d,e,f,h,i,j=af.New,af.
+OnEvent,af.Children,af.Value,af.Computed,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.
+animate),ac(ae.utilities.matchColors),ac(ae.Bundles.icons)cloneref=cloneref or function(k)return k end local k,l=
+cloneref(game:GetService'UserInputService'),cloneref(game:GetService'RunService')return function(m)assert(m.Name,
+'ColorPicker needs Name')assert(m.Color,'ColorPicker needs Color')assert(m.Callback,'ColorPicker needs Callback')local p
+,q=b(m.Parent),b(m.tabColor)if i(e(q),f.get'defaultTab')then q:set(f.get'defaultTab')end local t,u,v,E,F=b(m.Name),b(m.
+Color),b(m.Callback),b(false),b''local G=e(u)local H,I,K=G:ToHSV()local L,M,N=b(H),b(I),b(K)local function O()return
+Color3.fromHSV(e(L),e(M),e(N))end local function P(Q,R,S)local T,U,V if typeof(Q)=='Color3'then T,U,V=Q:ToHSV()else T,U,
+V=Color3.new(Q,R,S):ToHSV()end L:set(T)M:set(U)N:set(V)task.spawn(e(v),O())end local function Q(R,S)local T=1 for U=1,R
+do T=T*10 end return math.round(S*T)/T end local R,S,T,U,V,W,X,Y=b(false),b(false),b(false),b(false),(b(false))Y=ag
+'TextButton'{ClipsDescendants=true,Interactable=c(function()return not e(E)end),ZIndex=2,Parent=e(p),Size=h(function()if
+e(R)then return UDim2.new(1,0,0,160)end return UDim2.new(1,0,0,40)end,50,1),BackgroundColor3=h(function()return f.get
+'secondaryBackground'end,40,1),[aj'MouseButton1Click']=function()R:set(not e(R))end,[aj'Destroying']=function()if W then
+W:Disconnect()end end,[ak]={{{ag'Frame'{ZIndex=4,Visible=c(function()return e(E)end),Size=UDim2.fromScale(1,1),
+BackgroundTransparency=0.1,BackgroundColor3=h(function()return f.get'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{
 AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,
-ImageColor3=d(function()return c.get'image'end,40,1),Image=f.lock},ag'TextLabel'{Text=ak(function()return b(q)end),
+ImageColor3=h(function()return f.get'image'end,40,1),Image=j.lock},ag'TextLabel'{Text=c(function()return e(F)end),
 AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,
-BackgroundTransparency=1,TextColor3=d(function()return c.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
-Enum.TextXAlignment.Left,[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.
+BackgroundTransparency=1,TextColor3=h(function()return f.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
+Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.
 new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.
-new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundTransparency=0.85,BackgroundColor3=d(function()return b(i)end,40,
-1),[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),
-AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,
-TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,TextColor3=d(function()return c.get'text'end,40,1),Text=b(j),
-[ai]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'ImageLabel'{AnchorPoint=Vector2.new(1,0),Position=
-UDim2.new(1,-5,0,6),Size=UDim2.fromOffset(28,28),BackgroundTransparency=1,Image=f.emptyBox,ImageColor3=d(function()
-return c.get'image'end,40,1),[ai]={ag'UICorner'{CornerRadius=UDim.new(1,0)},ag'ImageLabel'{AnchorPoint=Vector2.new(0.5,
-0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.new(1,0,1,0),BackgroundTransparency=1,Image=f.filledBox,ImageColor3=d(
-function()return c.get'image'end,40,1),ImageTransparency=d(function()if b(m)then return 0 end return 1 end,30,1),[ai]={
-ag'UICorner'{CornerRadius=UDim.new(1,0)}}}}}}},{}function v.Remove(E)u:Destroy()end function v.SetValue(E,F)if typeof(F)
-=='boolean'then m:set(F)else error("You didn't give "..b(j)..' a boolean for SetValue')end end function v.Lock(E,F)p:
-set(true)q:set(F or'Locked')end function v.Unlock(E)p:set(false)end return v end end)()end,[86]=function()local aa,ab,ac
-=a(86)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak=af.New,
-af.Children,ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.get)return function(al)return ag
-'ScrollingFrame'{Name=al.saltedTable[al.Name],Parent=al.Parent,BackgroundTransparency=1,Size=UDim2.fromScale(1,1),
-ScrollBarThickness=0,CanvasSize=UDim2.new(0,0,0,0),AutomaticCanvasSize=Enum.AutomaticSize.Y,[ah]={ag'UIListLayout'{
-Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment
-=Enum.HorizontalAlignment.Center},ag'TextLabel'{Size=UDim2.new(1,0,0,20),Text=al.Name,BackgroundTransparency=1,
-TextScaled=true,Font=Enum.Font.GothamMedium,TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0.75,TextColor3=aj(
-function()return ai.get'text'end,40,1),[ah]={ag'UITextSizeConstraint'{MaxTextSize=12,MinTextSize=1},ag'UIPadding'{
-PaddingLeft=UDim.new(0,5)}}}}}end end)()end,[88]=function()local aa,ab,ac=a(88)local ad return(function(...)local ae=ab.
-Parent.Parent local af,ag=ac(ae.Bundles['ui-utilities']),ac(ae.Bundles.Fusion)local ah,ai,aj,ak,al,b,c,d,e,f,g,h,i,j=ag.
-New,ag.OnEvent,ag.Children,ag.Value,ag.Ref,ag.Observer,ag.Computed,ac(ae.utilities.get),ac(ae.utilities.animate),ac(ae.
-utilities.matchColors),ac(ae.Bundles.themeSystem),ac(ae.Bundles.icons),game:GetService'UserInputService',game:GetService
-'RunService'return function(k)local l,m,p,q,u,v,E,F,G,H=ak(g.get'text'),k.KeyCode,ak(),ak(false),ak(true),ak(false),ak(k
-.Size.X),(ak(k.Size.Y))b(v):onChange(function()if not d(v)and H~=nil then H:Disconnect()H=nil end end)local I={}I.
-sideBarRef=ak()I.windowsRef=ak()I.uipagelayoutRef=ak()I.notificationListRef=ak()local K,L=ak(),i.InputBegan:Connect(
-function(K)if K.KeyCode and K.KeyCode==m then u:set(not d(u))end end)G=ah'ScreenGui'{Name=k.saltedTable[k.Title],Parent=
-k.Parent,IgnoreGuiInset=true,ResetOnSpawn=false,Enabled=c(function()return d(u)end),[ai'Destroying']=function()L:
-Disconnect()H:Disconnect()end,[aj]={ah'Frame'{Name='container',BackgroundTransparency=1,AnchorPoint=Vector2.new(0,0),
-Position=UDim2.new(0.5,-d(E)/2,0.5,-d(F)/2),Size=c(function()return UDim2.fromOffset(d(E),45)end),[al]=p,[aj]={ah'Frame'
-{AnchorPoint=Vector2.new(0,0),Position=UDim2.fromScale(0,0),ClipsDescendants=true,BackgroundColor3=e(function()return g.
-get'background'end,40,1),Size=e(function()if d(q)then return UDim2.fromOffset(d(E),45)end return UDim2.fromOffset(d(E),
-d(F))end,20,1),[aj]={ah'UICorner'{CornerRadius=UDim.new(0,6)},ah'Frame'{ZIndex=5,AnchorPoint=Vector2.new(0,0),Position=
-UDim2.fromOffset(10,50),Size=UDim2.new(1,0,0,466),ClipsDescendants=true,BackgroundTransparency=1,[aj]={ah
-'ScrollingFrame'{Name='sideBar',AnchorPoint=Vector2.new(0,0),Position=UDim2.fromScale(0,0),Size=UDim2.new(0,40,1,0),
+new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundColor3=h(function()return e(q)end,40,1),BackgroundTransparency=
+0.85,[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),
+AnchorPoint=Vector2.new(0,0),Position=UDim2.new(0,10,0,13),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,
+TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,TextColor3=h(function()return f.get'text'end,40,1),Text=e(t),
+[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag'ImageLabel'{ZIndex=3,AnchorPoint=Vector2.new(1,0),
+Position=UDim2.new(1,-7,0,8),Size=UDim2.fromOffset(24,24),BackgroundTransparency=1,Image='rbxassetid://16898730641',
+ImageRectOffset=Vector2.new(257,257),ImageRectSize=Vector2.new(256,256),ImageColor3=c(function()return Color3.fromHSV(e(
+L),e(M),e(N))end)}},ag'Frame'{ClipsDescendants=true,Position=UDim2.fromOffset(10,40),Size=UDim2.new(1,-20,0,110),
+BackgroundTransparency=1,ZIndex=3,[ak]={ag'UIListLayout'{Padding=UDim.new(0,10),SortOrder=Enum.SortOrder.LayoutOrder,
+FillDirection=Enum.FillDirection.Horizontal,HorizontalAlignment=Enum.HorizontalAlignment.Right,VerticalAlignment=Enum.
+VerticalAlignment.Center},ag'TextBox'{Name='HexTextBox',Size=UDim2.fromOffset(145,110),BackgroundColor3=h(function()
+return f.get'background'end,40,1),BackgroundTransparency=0.3,Text=c(function()return'#'..O():ToHex()end),TextColor3=h(
+function()return O()end,40,1),TextSize=20,Font=Enum.Font.GothamMedium,[aj'FocusLost']=function()local Z=Y:
+FindFirstChild('HexTextBox',true).Text:gsub('[^%w#]','')if not string.find(Z,'#')then Z='#'..Z end if string.len(Z)~=7
+then warn('Hex code malformed',Z)Y:FindFirstChild('HexTextBox',true).Text='#'..O():ToHex()else local _,al=pcall(function
+()return Color3.fromHex(Z)end)if tostring(al)=='Unable to convert characters to hex value'then warn('Hex code malformed'
+,Z)Y:FindFirstChild('HexTextBox',true).Text='#'..O():ToHex()else P(Color3.fromHex(Z))end end end,[ak]={ag'UICorner'{
+CornerRadius=UDim.new(0,4)}}},ag'Frame'{Name='HSVTextBoxes',Size=UDim2.fromOffset(55,110),BackgroundColor3=h(function()
+return f.get'background'end,40,1),BackgroundTransparency=0.3,[ak]={ag'UICorner'{CornerRadius=UDim.new(0,4)},ag
+'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,
+HorizontalAlignment=Enum.HorizontalAlignment.Center},ag'TextLabel'{Text='H',TextColor3=h(function()return e(q)end,40,1),
+Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},ag'TextBox'{Name='HText',TextColor3=
+h(function()return f.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=c(function()return tostring(
+Q(2,e(L)))end),Size=UDim2.fromOffset(55,14),[aj'Changed']=function(al)local Z=tonumber(Y:FindFirstChild('HText',true).
+Text)if al:lower()=='text'and Z then if Z>1 or Z<0 then warn'Your H value was outside of [0,1] so we clamped it!'Z=math.
+clamp(Z,0,1)end if Q(2,e(L))~=Z then L:set(Z)end Y:FindFirstChild('HText',true).Text=tostring(Q(2,e(L)))end end,[aj
+'FocusLost']=function()local al=tonumber(Y:FindFirstChild('HText',true).Text)if not al then warn'H needs to be a number'
+Y:FindFirstChild('HText',true).Text=tostring(Q(2,e(L)))end end},ag'TextLabel'{Text='S',TextColor3=h(function()return e(q
+)end,40,1),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},ag'TextBox'{Name='SText',
+TextColor3=h(function()return f.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=c(function()
+return tostring(Q(2,e(M)))end),Size=UDim2.fromOffset(55,14),[aj'Changed']=function(al)local Z=tonumber(Y:FindFirstChild(
+'SText',true).Text)if al:lower()=='text'and Z then if Z>1 or Z<0 then warn
+'Your S value was outside of [0,1] so we clamped it!'Z=math.clamp(Z,0,1)end if Q(2,e(M))~=Z then M:set(Z)end Y:
+FindFirstChild('SText',true).Text=tostring(Q(2,e(M)))end end,[aj'FocusLost']=function()local al=tonumber(Y:
+FindFirstChild('SText',true).Text)if not al then warn'S needs to be a number'Y:FindFirstChild('SText',true).Text=
+tostring(Q(2,e(M)))end end},ag'TextLabel'{Text='V',TextColor3=h(function()return e(q)end,40,1),Font=Enum.Font.
+GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},ag'TextBox'{Name='VText',TextColor3=h(function()
+return f.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=c(function()return tostring(Q(2,e(N)))
+end),Size=UDim2.fromOffset(55,14),[aj'Changed']=function(al)local Z=tonumber(Y:FindFirstChild('VText',true).Text)if al:
+lower()=='text'and Z then if Z>1 or Z<0 then warn'Your V value was outside of [0,1] so we clamped it!'Z=math.clamp(Z,0,1
+)end if Q(2,e(N))~=Z then N:set(Z)end Y:FindFirstChild('VText',true).Text=tostring(Q(2,e(N)))end end,[aj'FocusLost']=
+function()local al=tonumber(Y:FindFirstChild('VText',true).Text)if not al then warn'V needs to be a number'Y:
+FindFirstChild('VText',true).Text=tostring(Q(2,e(N)))end end}}},ag'Frame'{Name='RGBTextBoxes',Size=UDim2.fromOffset(55,
+110),BackgroundColor3=h(function()return f.get'background'end,40,1),BackgroundTransparency=0.3,[ak]={ag'UICorner'{
+CornerRadius=UDim.new(0,4)},ag'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=
+Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Center},ag'TextLabel'{Text='R',TextColor3=
+Color3.fromRGB(200,0,0),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},ag'TextBox'{
+Name='RText',TextColor3=h(function()return f.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=c(
+function()return tostring(math.round(O().R*255))end),Size=UDim2.fromOffset(55,14),[aj'FocusLost']=function()local al,Z=
+tonumber(Y:FindFirstChild('RText',true).Text),O()if al then if math.clamp(math.round(Z.R*255),0,255)~=al then P(al/255,Z
+.G,Z.B)end else print(al,'needs to be a number')Y:FindFirstChild('RText',true).Text=tostring(math.round(Z.R*255))end end
+},ag'TextLabel'{Text='G',TextColor3=Color3.fromRGB(0,200,0),Font=Enum.Font.GothamMedium,BackgroundTransparency=1,Size=
+UDim2.fromOffset(55,14)},ag'TextBox'{Name='GText',TextColor3=h(function()return f.get'text'end,40,1),Font=Enum.Font.
+Gotham,BackgroundTransparency=1,Text=c(function()return tostring(math.round(O().G*255))end),Size=UDim2.fromOffset(55,14)
+,[aj'FocusLost']=function()local al,Z=tonumber(Y:FindFirstChild('GText',true).Text),O()if al then if math.clamp(math.
+round(Z.G*255),0,255)~=al then P(Z.R,al/255,Z.B)end else print'G needs to be a number'Y:FindFirstChild('GText',true).
+Text=tostring(math.round(Z.G*255))end end},ag'TextLabel'{Text='B',TextColor3=Color3.fromRGB(0,0,125),Font=Enum.Font.
+GothamMedium,BackgroundTransparency=1,Size=UDim2.fromOffset(55,14)},ag'TextBox'{Name='BText',TextColor3=h(function()
+return f.get'text'end,40,1),Font=Enum.Font.Gotham,BackgroundTransparency=1,Text=c(function()return tostring(math.round(
+O().B*255))end),Size=UDim2.fromOffset(55,14),[aj'FocusLost']=function()local al,Z=tonumber(Y:FindFirstChild('BText',true
+).Text),O()if al then if math.clamp(math.round(Z.B*255),0,255)~=al then P(Z.R,Z.G,al/255)end else print
+'B needs to be a number'Y:FindFirstChild('BText',true).Text=tostring(math.round(Z.B*255))end end}}},ag'TextButton'{
+ZIndex=2,Name='SVPicker',ClipsDescendants=true,Size=UDim2.fromOffset(110,110),[aj'MouseLeave']=function()S:set(true)end,
+[aj'MouseEnter']=function()S:set(false)end,[aj'InputBegan']=function(al)if al.UserInputType==Enum.UserInputType.
+MouseButton1 then T:set(true)local Z Z=al.Changed:Connect(function()if al.UserInputState==Enum.UserInputState.End then T
+:set(false)Z:Disconnect()end end)end end,[ak]={ag'UIGradient'{Color=c(function()return ColorSequence.new{
+ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(1,Color3.fromHSV(e(L),1,1))}end)},ag
+'ImageLabel'{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0),Size=UDim2.fromScale(1,2),
+BackgroundTransparency=1,Image='rbxassetid://13611892279'},ag'Frame'{ZIndex=2,Name='dot',AnchorPoint=Vector2.new(0.5,0.5
+),BackgroundColor3=c(function()local al if e(L)>0.95 or e(L)<=0.05 then al=0.5 elseif e(L)<0.56 and e(L)>0.45 then al=1
+else if e(L)+1>1 then al=1-e(L)else al=1+e(L)end end return Color3.fromHSV(al,1,1)end),Size=UDim2.fromOffset(4,4),
+Position=c(function()return UDim2.fromScale(e(M),1-e(N))end)}}},ag'TextButton'{ZIndex=2,Name='HPicker',Size=UDim2.
+fromOffset(55,110),[aj'MouseLeave']=function()U:set(true)end,[aj'MouseEnter']=function()U:set(false)end,[aj'InputBegan']
+=function(al)if al.UserInputType==Enum.UserInputType.MouseButton1 then V:set(true)local Z Z=al.Changed:Connect(function(
+)if al.UserInputState==Enum.UserInputState.End then V:set(false)Z:Disconnect()end end)end end,[ak]={ag'UIGradient'{
+Rotation=90,Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromHSV(1,1,1)),ColorSequenceKeypoint.new(0.1,
+Color3.fromHSV(0.9,1,1)),ColorSequenceKeypoint.new(0.2,Color3.fromHSV(0.8,1,1)),ColorSequenceKeypoint.new(0.3,Color3.
+fromHSV(0.7,1,1)),ColorSequenceKeypoint.new(0.4,Color3.fromHSV(0.6,1,1)),ColorSequenceKeypoint.new(0.5,Color3.fromHSV(
+0.5,1,1)),ColorSequenceKeypoint.new(0.6,Color3.fromHSV(0.4,1,1)),ColorSequenceKeypoint.new(0.7,Color3.fromHSV(0.3,1,1)),
+ColorSequenceKeypoint.new(0.8,Color3.fromHSV(0.2,1,1)),ColorSequenceKeypoint.new(0.9,Color3.fromHSV(0.1,1,1)),
+ColorSequenceKeypoint.new(1,Color3.fromHSV(0,1,1))}},ag'Frame'{Name='slide',AnchorPoint=Vector2.new(0,0.5),Size=UDim2.
+new(1,0,0,2),Position=c(function()return UDim2.fromScale(0,1-e(L))end)}}}}}}}d(T):onChange(function()if e(T)then W=l.
+Heartbeat:Connect(function()local al=k:GetMouseLocation()local Z=(al-Y:FindFirstChild('SVPicker',true).AbsolutePosition)
+if e(S)then if Z.X>110 then Z=Vector2.new(110,Z.Y)elseif Z.X<0 then Z=Vector2.new(0,Z.Y)end if Z.Y>110 then Z=Vector2.
+new(Z.X,110)elseif Z.Y<0 then Z=Vector2.new(Z.X,0)end end M:set(Z.X/110)N:set((110-Z.Y)/110)end)else if W then W:
+Disconnect()end end end)d(V):onChange(function()if e(V)then X=l.Heartbeat:Connect(function()local al=k:GetMouseLocation(
+)local Z=(al-Y:FindFirstChild('HPicker',true).AbsolutePosition)if e(U)then if Z.Y>110 then Z=Vector2.new(Z.X,110)elseif
+Z.Y<0 then Z=Vector2.new(Z.X,0)end end L:set((110-Z.Y)/110)end)else if X then X:Disconnect()end end end)d(L):onChange(
+function()task.spawn(e(v),O())end)d(M):onChange(function()task.spawn(e(v),O())end)d(N):onChange(function()task.spawn(e(v
+),O())end)local al={}function al.Lock(Z,_)E:set(true)R:set(false)F:set(_ or'Locked')end function al.Unlock(Z)E:set(false
+)end function al.Remove(Z)Y:Destroy()end function al.SetColor(Z,_)P(_)end return al end end)()end,[78]=function()local
+aa,ab,ac=a(78)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,al,b,c
+,d,e,f=af.New,af.Children,af.Value,af.Computed,ac(ae.utilities.get),ac(ae.utilities.animate),ac(ae.Bundles.themeSystem),
+ac(ae.utilities.lerpColor),ac(ae.utilities.matchColors)return function(h)assert(h.Text,'Label needs literally a string')
+local i,j,k=ak(h.Parent),ak(h.Text),ak(h.tabColor)if f(b(k),d.get'defaultTab')then k:set(d.get'defaultTab')end local l,m
+={},ag'Frame'{Size=UDim2.new(1,0,0,30),Parent=b(i),BackgroundColor3=c(function()return d.get'secondaryBackground'end,40,
+1),[aj]={ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'TextLabel'{ZIndex=2,Font=Enum.Font.GothamMedium,TextSize=14,
+RichText=true,TextScaled=true,BackgroundTransparency=1,Size=UDim2.new(1,-20,0,14),Position=UDim2.new(0,10,0.5,0),
+AnchorPoint=Vector2.new(0,0.5),TextXAlignment=Enum.TextXAlignment.Left,TextColor3=c(function()return e(b(k),'white',0.5)
+end,40,1),Text=al(function()return b(j)end),[aj]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}}function l.
+Remove(p)m:Destroy()end function l.SetText(p,q)if typeof(q)=='string'then j:set(q)else error('you didnt give '..b(j)..
+' a string for SetText!')end end return l end end)()end,[85]=function()local aa,ab,ac=a(85)local ad return(function(...)
+local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,al,b,c,d,e,f,h,i=af.New,af.OnEvent,af.Children,af
+.Value,af.Computed,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.
+matchColors),ac(ae.Bundles.icons)return function(j)assert(j.Name,'Toggle needs a Name')assert(j.Callback,
+'Toggle needs a Callback')local k,l=al(j.Parent),al(j.tabColor)if h(d(l),e.get'defaultTab')then l:set(e.get'defaultTab')
+end local m,p,q,t,u,v=al(j.Name),al(j.Callback),al(j.Default or false),al(false),al(false),al''c(t):onChange(function()
+if not d(u)then task.spawn(d(p),d(t))end end)t:set(d(q))local E,F=ag'TextButton'{Interactable=b(function()return not d(u
+)end),Size=UDim2.new(1,0,0,40),AutoButtonColor=false,BackgroundColor3=f(function()return e.get'secondaryBackground'end,
+40,1),Parent=d(k),[aj'MouseButton1Click']=function()t:set(not d(t))end,[ak]={{ag'Frame'{ZIndex=3,Visible=b(function()
+return d(u)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=f(function()return e.get
+'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=
+UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=f(function()return e.get'image'end,40,1),Image=i.lock},ag
+'TextLabel'{Text=b(function()return d(v)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.
+new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=f(function()return e.get'text'end,40,1),
+TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{MinTextSize=1,
+MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=
+2,Size=UDim2.new(1,0,1,0),AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.new(0.5,0,0.5,0),BackgroundTransparency=0.85,
+BackgroundColor3=f(function()return d(l)end,40,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{
+BackgroundTransparency=1,Size=UDim2.new(1,-45,0,14),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=
+Enum.Font.Gotham,TextScaled=true,TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,TextColor3=f(
+function()return e.get'text'end,40,1),Text=d(m),[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}},ag
+'ImageLabel'{AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-5,0,6),Size=UDim2.fromOffset(28,28),
+BackgroundTransparency=1,Image=i.emptyBox,ImageColor3=f(function()return e.get'image'end,40,1),[ak]={ag'UICorner'{
+CornerRadius=UDim.new(1,0)},ag'ImageLabel'{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2
+.new(1,0,1,0),BackgroundTransparency=1,Image=i.filledBox,ImageColor3=f(function()return e.get'image'end,40,1),
+ImageTransparency=f(function()if d(t)then return 0 end return 1 end,30,1),[ak]={ag'UICorner'{CornerRadius=UDim.new(1,0)}
+}}}}}},{}function F.Remove(G)E:Destroy()end function F.SetValue(G,H)if typeof(H)=='boolean'then t:set(H)else error(
+"You didn't give "..d(m)..' a boolean for SetValue')end end function F.Lock(G,H)u:set(true)v:set(H or'Locked')end
+function F.Unlock(G)u:set(false)end return F end end)()end,[88]=function()local aa,ab,ac=a(88)local ad return(function(
+...)local ae=ab.Parent.Parent local af,ag=ac(ae.Bundles['ui-utilities']),ac(ae.Bundles.Fusion)local aj,ak,al,b,c,d,e,f,h
+,i,j,k,l,m=ag.New,ag.OnEvent,ag.Children,ag.Value,ag.Ref,ag.Observer,ag.Computed,ac(ae.utilities.get),ac(ae.utilities.
+animate),ac(ae.utilities.matchColors),ac(ae.Bundles.themeSystem),ac(ae.Bundles.icons),game:GetService'UserInputService',
+game:GetService'RunService'return function(p)local q,t,u,v,E,F,G,H,I,K=b(j.get'text'),p.KeyCode,b(),b(false),b(true),b(
+false),b(p.Size.X),(b(p.Size.Y))d(F):onChange(function()if not f(F)and K~=nil then K:Disconnect()K=nil end end)local L={
+}L.sideBarRef=b()L.windowsRef=b()L.uipagelayoutRef=b()L.notificationListRef=b()local M,N=b(),l.InputBegan:Connect(
+function(M,N)if not N and M.KeyCode and M.KeyCode==t then E:set(not f(E))end end)I=aj'ScreenGui'{Name=p.saltedTable[p.
+Title],Parent=p.Parent,IgnoreGuiInset=true,ResetOnSpawn=false,Enabled=e(function()return f(E)end),[ak'Destroying']=
+function()N:Disconnect()K:Disconnect()end,[al]={aj'Frame'{Name='container',BackgroundTransparency=1,AnchorPoint=Vector2.
+new(0,0),Position=UDim2.new(0.5,-f(G)/2,0.5,-f(H)/2),Size=e(function()return UDim2.fromOffset(f(G),45)end),[c]=u,[al]={
+aj'Frame'{AnchorPoint=Vector2.new(0,0),Position=UDim2.fromScale(0,0),ClipsDescendants=true,BackgroundColor3=h(function()
+return j.get'background'end,40,1),Size=h(function()if f(v)then return UDim2.fromOffset(f(G),45)end return UDim2.
+fromOffset(f(G),f(H))end,20,1),[al]={aj'UICorner'{CornerRadius=UDim.new(0,6)},aj'Frame'{ZIndex=5,AnchorPoint=Vector2.
+new(0,0),Position=UDim2.fromOffset(10,50),Size=UDim2.new(1,0,0,466),ClipsDescendants=true,BackgroundTransparency=1,[al]=
+{aj'ScrollingFrame'{Name='sideBar',AnchorPoint=Vector2.new(0,0),Position=UDim2.fromScale(0,0),Size=UDim2.new(0,40,1,0),
 BackgroundTransparency=1,ScrollBarThickness=0,ClipsDescendants=false,ZIndex=0,CanvasSize=UDim2.new(0,0,0,0),
-AutomaticCanvasSize=Enum.AutomaticSize.Y,[al]=I.sideBarRef,[aj]={ah'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.
+AutomaticCanvasSize=Enum.AutomaticSize.Y,[c]=L.sideBarRef,[al]={aj'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.
 SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Left}}}}},
-ah'Frame'{Name='topBar',AnchorPoint=Vector2.new(0.5,0),Position=UDim2.new(0.5,0,0,0),Size=UDim2.new(1,0,0,45),
-BackgroundTransparency=1,BackgroundColor3=e(function()return g.get'tertiaryBackground'end,40,1),[aj]={ah'UICorner'{
-CornerRadius=UDim.new(0,6)},ah'Frame'{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,1),Size=UDim2.new(1,0,
-0,1),BackgroundColor3=e(function()return g.get'tertiaryBackground'end,40,1),BackgroundTransparency=e(function()if d(q)
-then return 1 else return 0 end end,20,1)},ah'Frame'{Name='taskManage',BackgroundTransparency=1,AnchorPoint=Vector2.new(
-1,0.5),Position=UDim2.new(1,0,0.5,0),Size=UDim2.new(0,70,1,0),[aj]={ah'UIListLayout'{FillDirection=Enum.FillDirection.
-Horizontal,HorizontalAlignment=Enum.HorizontalAlignment.Center,VerticalAlignment=Enum.VerticalAlignment.Center},ah
-'Frame'{Size=UDim2.fromOffset(30,30),BackgroundTransparency=1,[aj]={ah'TextButton'{Name='toggleMini',AnchorPoint=Vector2
-.new(0.5,0.5),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(30,30),[ai
-'MouseButton1Click']=function()q:set(not d(q))end,[aj]={ah'ImageLabel'{Name='maximizeIcon',AnchorPoint=Vector2.new(0.5,
-0.5),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(26,26),Image=h.maximize,
-ImageColor3=e(function()return g.get'image'end,40,1),ImageTransparency=e(function()if d(q)then return 0 else return 1
-end end,25,1)},ah'ImageLabel'{Name='minimizeIcon',AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Position=
-UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(26,26),Image=h.minimize,ImageColor3=e(function()return g.get'image'end,40
-,1),ImageTransparency=e(function()if d(q)then return 1 else return 0 end end,25,1)}}}}},ah'TextButton'{Size=UDim2.
-fromOffset(30,30),BackgroundTransparency=1,Text='',[ai'MouseButton1Click']=function()G:Destroy()end,[aj]={ah'ImageLabel'
+aj'Frame'{Name='topBar',AnchorPoint=Vector2.new(0.5,0),Position=UDim2.new(0.5,0,0,0),Size=UDim2.new(1,0,0,45),
+BackgroundTransparency=1,BackgroundColor3=h(function()return j.get'tertiaryBackground'end,40,1),[al]={aj'UICorner'{
+CornerRadius=UDim.new(0,6)},aj'Frame'{AnchorPoint=Vector2.new(0.5,1),Position=UDim2.fromScale(0.5,1),Size=UDim2.new(1,0,
+0,1),BackgroundColor3=h(function()return j.get'tertiaryBackground'end,40,1),BackgroundTransparency=h(function()if f(v)
+then return 1 else return 0 end end,20,1)},aj'Frame'{Name='taskManage',BackgroundTransparency=1,AnchorPoint=Vector2.new(
+1,0.5),Position=UDim2.new(1,0,0.5,0),Size=UDim2.new(0,70,1,0),[al]={aj'UIListLayout'{FillDirection=Enum.FillDirection.
+Horizontal,HorizontalAlignment=Enum.HorizontalAlignment.Center,VerticalAlignment=Enum.VerticalAlignment.Center},aj
+'Frame'{Size=UDim2.fromOffset(30,30),BackgroundTransparency=1,[al]={aj'TextButton'{Name='toggleMini',AnchorPoint=Vector2
+.new(0.5,0.5),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(30,30),[ak
+'MouseButton1Click']=function()v:set(not f(v))end,[al]={aj'ImageLabel'{Name='maximizeIcon',AnchorPoint=Vector2.new(0.5,
+0.5),BackgroundTransparency=1,Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(26,26),Image=k.maximize,
+ImageColor3=h(function()return j.get'image'end,40,1),ImageTransparency=h(function()if f(v)then return 0 else return 1
+end end,25,1)},aj'ImageLabel'{Name='minimizeIcon',AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Position=
+UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(26,26),Image=k.minimize,ImageColor3=h(function()return j.get'image'end,40
+,1),ImageTransparency=h(function()if f(v)then return 1 else return 0 end end,25,1)}}}}},aj'TextButton'{Size=UDim2.
+fromOffset(30,30),BackgroundTransparency=1,Text='',[ak'MouseButton1Click']=function()I:Destroy()end,[al]={aj'ImageLabel'
 {AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(0.95,0.95),
-BackgroundTransparency=1,Image=h.close,ImageTransparency=0,ImageColor3=e(function()return g.get'close'end,40,1)}}}}},ah
+BackgroundTransparency=1,Image=k.close,ImageTransparency=0,ImageColor3=h(function()return j.get'close'end,40,1)}}}}},aj
 'TextLabel'{AnchorPoint=Vector2.new(0,0.5),Position=UDim2.fromScale(0,0.55),Size=UDim2.fromOffset(350,25),
 BackgroundTransparency=1,Font=Enum.Font.GothamBold,TextScaled=true,TextSize=25,TextXAlignment=Enum.TextXAlignment.Left,
-Text=k.Title,TextColor3=e(function()if f(d(l),g.get'defaultTab')then return g.get'defaultTab'end return d(l)end,15,1),[
-aj]={ah'UIPadding'{PaddingLeft=UDim.new(0,15)},ah'UITextSizeConstraint'{MaxTextSize=25,MinTextSize=1}}}}},ah'Frame'{Name
-='windowsContainer',AnchorPoint=Vector2.new(0,0),Size=e(function()return UDim2.new(0,d(E)-70,0,d(F)-60)end,20,1),
-Position=UDim2.new(0,60,0,50),BackgroundTransparency=1,ClipsDescendants=true,[al]=I.windowsRef,[aj]={ah'UIPageLayout'{
+Text=p.Title,TextColor3=h(function()if i(f(q),j.get'defaultTab')then return j.get'defaultTab'end return f(q)end,15,1),[
+al]={aj'UIPadding'{PaddingLeft=UDim.new(0,15)},aj'UITextSizeConstraint'{MaxTextSize=25,MinTextSize=1}}}}},aj'Frame'{Name
+='windowsContainer',AnchorPoint=Vector2.new(0,0),Size=h(function()return UDim2.new(0,f(G)-70,0,f(H)-60)end,20,1),
+Position=UDim2.new(0,60,0,50),BackgroundTransparency=1,ClipsDescendants=true,[c]=L.windowsRef,[al]={aj'UIPageLayout'{
 EasingDirection=Enum.EasingDirection.In,EasingStyle=Enum.EasingStyle.Sine,TweenTime=0.2,FillDirection=Enum.FillDirection
-.Vertical,SortOrder=Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,20),[al]=I.uipagelayoutRef}}},ah'TextButton'{Name=
+.Vertical,SortOrder=Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,20),[c]=L.uipagelayoutRef}}},aj'TextButton'{Name=
 'Resizer',AnchorPoint=Vector2.new(1,1),Position=UDim2.fromScale(1,1),Size=UDim2.fromOffset(10,10),BackgroundTransparency
-=1,Interactable=c(function()return not d(q)end),[al]=K,[ai'InputBegan']=function(M)if not d(q)and(M.UserInputType==Enum.
-UserInputType.MouseButton1 or M.UserInputType==Enum.UserInputType.Touch)then local N,O=d(K),Vector2.new(9e9,9e9)local P,
-Q,R=N.AbsolutePosition,d(E),d(F)if H==nil then H=j.Heartbeat:Connect(function()if d(v)then local S=i:GetMouseLocation()-
-P if S~=O then O=S E:set(math.clamp(S.X+Q-10,550,9e9))F:set(math.clamp(S.Y+R-10,400,9e9))end end end)end v:set(true)M.
-Changed:Connect(function()if M.UserInputState==Enum.UserInputState.End then task.wait()v:set(false)end end)end end}}}}},
-ah'ScrollingFrame'{ZIndex=0,AnchorPoint=Vector2.new(1,1),Position=UDim2.new(1,-5,1,-10),Size=UDim2.new(0,1,1,-10),
-BackgroundTransparency=1,ScrollBarThickness=0,AutomaticCanvasSize=Enum.AutomaticSize.Y,ClipsDescendants=false,[al]=I.
-notificationListRef,[aj]={ah'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,
-HorizontalAlignment=Enum.HorizontalAlignment.Right,VerticalAlignment=Enum.VerticalAlignment.Bottom}}}}}af.drag(d(p),15)
-return I,function(M)l:set(M)end end end)()end,[89]=function()local aa,ab,ac=a(89)local ad return(function(...)local ae=
-ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,ah,ai,aj,ak,al,b,c,d,e=af.New,af.OnEvent,af.Children,af.Value,af
-.Ref,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),game:
-GetService'UserInputService'return function(f)local g,h,i,j,k,l=aj(false),aj(b.get'text'),aj(true),f.KeyCode,{}k.
-sideBarRef=aj()k.windowsRef=aj()k.uipagelayoutRef=aj()k.notificationListRef=aj()local m=e.InputBegan:Connect(function(m)
-if m.KeyCode and m.KeyCode==j then i:set(not al(i))end end)l=ag'ScreenGui'{Name=f.saltedTable[f.Title],Parent=f.Parent,
-IgnoreGuiInset=false,ResetOnSpawn=false,[ah'Destroying']=function()m:Disconnect()end,[ai]={ag'Frame'{Name='container',
-AnchorPoint=Vector2.new(0,1),Position=UDim2.new(0,5,1,-5),ClipsDescendants=true,BackgroundColor3=c(function()return b.
-get'background'end,40,1),Size=c(function()if al(g)then return UDim2.new(0.75,0,1,-10)else return UDim2.fromOffset(40,40)
-end end,45,1),[ai]={{ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'TextButton'{Name='activator',ZIndex=2,AnchorPoint=
-Vector2.new(0,1),Size=UDim2.fromOffset(40,40),Position=UDim2.fromScale(0,1),BackgroundTransparency=1,ClipsDescendants=
-true,[ah'MouseButton1Click']=function()g:set(not al(g))end,[ai]={ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'ImageLabel'
-{Name='maximizeIcon',AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Size=UDim2.fromOffset(30,30),Image=
-'rbxassetid://15556636376',ImageColor3=c(function()return b.get'image'end,40,1),ImageTransparency=c(function()if al(g)
-then return 1 else return 0 end end,45,1),Position=c(function()if al(g)then return UDim2.fromScale(0.5,1.5)else return
-UDim2.fromScale(0.5,0.5)end end,25,1)},ag'ImageLabel'{Name='minimizeIcon',AnchorPoint=Vector2.new(0.5,0.5),
-BackgroundTransparency=1,Size=UDim2.fromOffset(30,30),Image='rbxassetid://15556637715',ImageColor3=c(function()return b.
-get'image'end,40,1),ImageTransparency=c(function()if al(g)then return 0 else return 1 end end,45,1),Position=c(function(
-)if al(g)then return UDim2.fromScale(0.5,0.5)else return UDim2.fromScale(0.5,1.5)end end,25,1)}}},ag'ScrollingFrame'{
-Name='tabsList',Size=UDim2.new(0,50,1,-80),Position=UDim2.fromOffset(0,40),BackgroundTransparency=1,ScrollBarThickness=0
-,ClipsDescendants=false,CanvasSize=UDim2.new(0,0,0,0),AutomaticCanvasSize=Enum.AutomaticSize.Y,[ak]=k.sideBarRef,[ai]={
-ag'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,
-HorizontalAlignment=Enum.HorizontalAlignment.Left},ag'UIPadding'{PaddingLeft=UDim.new(0,10)}}},ag'Frame'{Name='topBar',
-Size=UDim2.new(1,0,0,40),BackgroundTransparency=1,ZIndex=0,[ai]={ag'TextLabel'{AnchorPoint=Vector2.new(0,0.5),Position=
-UDim2.fromScale(0,0.5),Size=UDim2.new(1,-40,0,24),BackgroundTransparency=1,Font=Enum.Font.GothamBold,TextScaled=true,
-TextSize=24,TextXAlignment=Enum.TextXAlignment.Left,Text=f.Title,TextColor3=c(function()if d(al(h),b.get'defaultTab')
-then return b.get'defaultTab'end return al(h)end,15,1),TextTransparency=c(function()if al(g)then return 0 else return 1
-end end,45,1),[ai]={ag'UIPadding'{PaddingLeft=UDim.new(0,10)},ag'UITextSizeConstraint'{MaxTextSize=24,MinTextSize=1}}},
-ag'TextButton'{AnchorPoint=Vector2.new(1,0.5),Position=UDim2.fromScale(1,0.5),Size=UDim2.fromOffset(40,40),
-BackgroundTransparency=1,Text='',ZIndex=0,[ah'MouseButton1Click']=function()l:Destroy()end,[ai]={ag'ImageLabel'{
-AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromScale(0.9,0.9),Rotation=45,
-BackgroundTransparency=1,Image='rbxassetid://15556635005',ImageColor3=c(function()return b.get'close'end,40,1),
-ImageTransparency=c(function()if al(g)then return 0 else return 1 end end,45,1)}}}}},ag'Frame'{Name='windowsList',ZIndex
-=0,Position=UDim2.fromOffset(50,40),Size=UDim2.new(1,-50,1,-40),BackgroundTransparency=1,ClipsDescendants=true,[ak]=k.
-windowsRef,[ai]={ag'UIPadding'{PaddingLeft=UDim.new(0,5),PaddingRight=UDim.new(0,10),PaddingTop=UDim.new(0,5),
-PaddingBottom=UDim.new(0,5)},ag'UIPageLayout'{Name='UIPageLayout',EasingDirection=Enum.EasingDirection.In,EasingStyle=
-Enum.EasingStyle.Sine,TweenTime=0.2,FillDirection=Enum.FillDirection.Vertical,SortOrder=Enum.SortOrder.LayoutOrder,
-Padding=UDim.new(0,20),[ak]=k.uipagelayoutRef}}}}}},ag'ScrollingFrame'{Name='notifications',ZIndex=0,AnchorPoint=Vector2
-.new(1,1),Position=UDim2.new(1,-5,1,-10),Size=UDim2.new(0,1,1,-10),BackgroundTransparency=1,ScrollBarThickness=0,
-AutomaticCanvasSize=Enum.AutomaticSize.Y,ClipsDescendants=false,[ak]=k.notificationListRef,[ai]={ag'UIListLayout'{
-Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,HorizontalAlignment=Enum.HorizontalAlignment.Right,
-VerticalAlignment=Enum.VerticalAlignment.Bottom}}}}}return k,function(p)h:set(p)end end end)()end,[90]=function()local
-aa,ab,ac=a(90)local ad return(function(...)return{defaultTab=Color3.fromHex'#a49ae6',background=Color3.fromRGB(40,44,50)
-,secondaryBackground=Color3.fromRGB(49,56,66),tertiaryBackground=Color3.fromRGB(57,63,75),text=Color3.fromRGB(220,221,
-225),image=Color3.fromRGB(220,221,225),placeholder=Color3.fromRGB(165,166,169),close=Color3.fromRGB(190,100,105)}end)()
-end,[91]=function()local aa,ab,ac=a(91)local ad return(function(...)end)()end,[93]=function()local aa,ab,ac=a(93)local
-ad return(function(...)local ae=ac(ab.Parent.Parent.Bundles.Fusion)local af,ag=ae.Computed,ae.Spring return function(ah,
-ai,aj)return ag(af(ah),ai,aj)end end)()end,[94]=function()local aa,ab,ac=a(94)local ad return(function(...)return
-function(ae,af)if typeof(ae)=='table'and ae.type=='State'then return ae:get(af)end return ae end end)()end,[95]=function
-()local aa,ab,ac=a(95)local ad return(function(...)return function(ae:string,af)ae=ae or''af=af or{TextSize=14,Font=Enum
-.Font.Arial,VectorSize=Vector2.new(200,50)}local ag=game:GetService'TextService'return ag:GetTextSize(ae,af.TextSize,af.
-Font,af.VectorSize)end end)()end,[96]=function()local aa,ab,ac=a(96)local ad return(function(...)local ae,af=Color3.new(
-0,0,0),Color3.new(1,1,1)return function(ag:Color3,ah:string,ai:number)local aj=string.lower(ah)if ah=='black'then return
-ag:Lerp(ae,ai)elseif ah=='white'then return ag:Lerp(af,ai)else return error'hey its not white or black'end end end)()end
-,[97]=function()local aa,ab,ac=a(97)local ad return(function(...)return function(ae,af)if ae.R==af.R and ae.G==af.G and
-ae.B==af.B then return true end return false end end)()end,[98]=function()local aa,ab,ac=a(98)local ad return(function(
-...)local ae=ac(ab.Parent.Parent.Bundles.Fusion)local af=ae.Computed return function(ag,ah)return ae.Tween(af(ag),ah)end
-end)()end},{{1,2,{'quake'},{{2,1,{'Bundles'},{{68,2,{'icons'}},{71,2,{'ui-utilities'}},{69,2,{'themeSystem'},{{70,2,{
-'themes'}}}},{57,2,{'betterMathModule'},{{61,3,{'CLASS_Convert'}},{62,3,{'CLASS_Check'}},{58,3,{'CLASS_Value'}},{64,3,{
-'CLASS_Matrix'}},{66,3,{'Class_Special'}},{59,3,{'CLASS_Sequence'}},{67,3,{'CLASS_Chance'}},{65,3,{'CLASS_Random'}},{60,
-3,{'CLASS_String'}},{63,3,{'CLASS_Notation'}}}},{3,2,{'Fusion'},{{14,1,{'Colour'},{{15,2,{'Oklab'}}}},{40,1,{'State'},{{
-44,2,{'ForValues'}},{47,2,{'unwrap'}},{41,2,{'Computed'}},{45,2,{'Observer'}},{42,2,{'ForKeys'}},{46,2,{'Value'}},{43,2,
-{'ForPairs'}}}},{48,2,{'Types'}},{39,2,{'PubTypes'}},{4,1,{'Animation'},{{12,2,{'springCoefficients'}},{9,2,{
-'getTweenRatio'}},{13,2,{'unpackType'}},{7,2,{'Tween'}},{10,2,{'lerpType'}},{6,2,{'SpringScheduler'}},{8,2,{
-'TweenScheduler'}},{11,2,{'packType'}},{5,2,{'Spring'}}}},{16,1,{'Dependencies'},{{21,2,{'useDependency'}},{19,2,{
-'sharedState'}},{17,2,{'captureDependencies'}},{18,2,{'initDependency'}},{20,2,{'updateAll'}}}},{49,1,{'Utility'},{{56,2
-,{'xtypeof'}},{55,2,{'restrictRead'}},{50,2,{'None'}},{52,2,{'doNothing'}},{51,2,{'cleanup'}},{53,2,{'isSimilar'}},{54,2
-,{'needsDestruction'}}}},{33,1,{'Logging'},{{38,2,{'parseError'}},{37,2,{'messages'}},{34,2,{'logError'}},{36,2,{
-'logWarn'}},{35,2,{'logErrorNonFatal'}}}},{22,1,{'Instances'},{{32,2,{'defaultProps'}},{31,2,{'applyInstanceProps'}},{24
-,2,{'Cleanup'}},{25,2,{'Hydrate'}},{30,2,{'Ref'}},{26,2,{'New'}},{27,2,{'OnChange'}},{23,2,{'Children'}},{28,2,{
-'OnEvent'}},{29,2,{'Out'}}}}}}}},{90,2,{'preservedConfig'}},{72,1,{'components'},{{75,2,{'newDropdown'}},{73,2,{
-'newButton'}},{76,2,{'newGroup'}},{81,2,{'newSection'}},{78,2,{'newLabel'}},{79,2,{'newNotification'}},{86,2,{
-'newWindow'}},{82,2,{'newSlider'}},{85,2,{'newToggle'}},{84,2,{'newTextBox'}},{83,2,{'newTab'}},{77,2,{'newKeybind'}},{
-80,2,{'newParagraph'}},{74,2,{'newColorPicker'}}}},{87,1,{'platforms'},{{89,2,{'mobile'}},{88,2,{'computer'}}}},{92,1,{
-'utilities'},{{93,2,{'animate'}},{94,2,{'get'}},{97,2,{'matchColors'}},{95,2,{'getStringBounds'}},{98,2,{'tween'}},{96,2
-,{'lerpColor'}}}},{91,2,{'project.story'}}}}},'0.4.1','WaxRuntime',string,task,setmetatable,error,next,table,unpack,
-coroutine,script,type,require,pcall,tostring,tonumber,_VERSION local j,k,l,m,p,q,u=aj.insert,aj.remove,aj.freeze or
-function(j)return j end,al.wrap,ae.sub,ae.match,ae.gmatch if h and p(h,1,4)=='Lune'then local v,E=e(d,'@lune/task')if v
-and E then af=E end end local v=af and af.defer local E,F,G,H,I,K,L,M,N=v or function(E,...)m(E)(...)end,{[1]='Folder',[
-2]='ModuleScript',[3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local O,P={GetFullName={{},
-function(O)local P,Q=O.Name,O.Parent while Q do P=Q.Name..'.'..P Q=Q.Parent end return P end},GetChildren={{},function(O
-)local P={}for Q in ai,N[O]do j(P,Q)end return P end},GetDescendants={{},function(O)local P={}for Q in ai,N[O]do j(P,Q)
-for R,S in ai,Q:GetDescendants()do j(P,S)end end return P end},FindFirstChild={{'string','boolean?'},function(O,P,Q)
-local R=N[O]for S in ai,R do if S.Name==P then return S end end if Q then for T in ai,R do return T:FindFirstChild(P,
-true)end end end},FindFirstAncestor={{'string'},function(O,P)local Q=O.Parent while Q do if Q.Name==P then return Q end
-Q=Q.Parent end end},WaitForChild={{'string','number?'},function(O,P)return O:FindFirstChild(P)end}},{}for Q,R in ai,O do
-local S,T,U=R[1],R[2],{}for V,W in ai,S do local Z,_=q(W,'^([^%?]+)(%??)')U[V]={Z,_}end P[Q]=function(Z,...)if not N[Z]
-then ah("Expected ':' not '.' calling member function "..Q,2)end local _={...}for am,an in ai,U do local ao=_[am]local
-ap,aq,ar=c(ao),an[1],an[2]if ao==nil and not ar then ah('Argument '..ao..' missing or nil',3)end if aq~='any'and ap~=aq
-and not(ap=='nil'and ar)then ah('Argument '..am..' expects type "'..aq..'", got "'..ap..'"',2)end end return T(Z,...)end
-end local function am(an,ao,ap)local aq,ar=(ag({},{__mode='k'}))local function S(T)ah(T..
-' is not a valid (virtual) member of '..an..' "'..ao..'"',3)end local function T(U)ah(
-'Unable to assign (virtual) property '..U..'. Property is read only',3)end local U,V={},{}V.__metatable=false V.__index=
-function(W,Z)if Z=='ClassName'then return an elseif Z=='Name'then return ao elseif Z=='Parent'then return ap elseif an==
-'StringValue'and Z=='Value'then return ar else local _=P[Z]if _ then return _ end end for _ in ai,aq do if _.Name==Z
-then return _ end end S(Z)end V.__newindex=function(W,Z,_)if Z=='ClassName'then T(Z)elseif Z=='Name'then ao=_ elseif Z==
-'Parent'then if _==U then return end if ap~=nil then N[ap][U]=nil end ap=_ if _~=nil then N[_][U]=true end elseif an==
-'StringValue'and Z=='Value'then ar=_ else S(Z)end end V.__tostring=function()return ao end ag(U,V)N[U]=aq if ap~=nil
-then N[ap][U]=true end return U end local function an(ao,ap)local aq,ar,S,T=ao[1],ao[2],ao[3],ao[4]local U=F[ar]local V=
-S and k(S,1)or U local W=am(U,V,ap)G[aq]=W if S then for Z,_ in ai,S do W[Z]=_ end end if T then for Z,_ in ai,T do an(_
-,W)end end return W end local ao=am('Folder','['..ad..']')for ap,aq in ai,ab do an(aq,ao)end for ar,S in ai,aa do local
-T=G[ar]H[T]=S I[T]=ar local U=T.ClassName if U=='LocalScript'or U=='Script'then j(L,T)end end local function T(U)local V
-,W=U.ClassName,K[U]if W and V=='ModuleScript'then return ak(W)end local Z=H[U]local function _(as)as=f(as)local at,au,av
-=U:GetFullName(),q(as,'[^:]+:(%d+): (.+)')if not au or not i then return at..':*: '..(av or as)end au=g(au)local aw=I[U]
-local ax=i[aw]local ay=au-ax+1 if ay<0 then ay='?'end return at..':'..ay..': '..av end if V=='LocalScript'or V=='Script'
-then local as,at=e(Z)if not as then ah(_(at),0)end else local as={e(Z)}local at=k(as,1)if not at then local au=k(as,1)
-ah(_(au),0)end K[U]=as return ak(as)end end function a(as)local at=G[as]local function au(av,...)local aw={e(av,...)}
-local ax=k(aw,1)if not ax then ah(aw[1],3)end return ak(aw)end local av=l(ag({},{__index=M,__newindex=function(av,aw,ax)
-M[aw]=ax end,__len=function()return#M end,__iter=function()return ai,M end}))local aw,ax=l{version=ac,envname=ad,shared=
-av,script=b,require=d},at local function ay(U,...)local V,W,Z=c(U),'Attempted to call require with a non-ModuleScript',
-'Attempted to call require with self'if V=='table'and N[U]then if U.ClassName~='ModuleScript'then ah(W,2)elseif U==at
-then ah(Z,2)end return T(U)elseif V=='string'and p(U,1,1)~='@'then if#U==0 then ah(
-'Attempted to call require with empty string',2)end local _=at if p(U,1,1)=='/'then _=ao elseif p(U,1,2)=='./'then U=p(U
-,3)end local az for aA in u(U,'([^/]*)/?')do local aB=aA if aA=='..'then aB='Parent'end if aB~=''then local aC=_:
+=1,Interactable=e(function()return not f(v)end),[c]=M,[ak'InputBegan']=function(O)if not f(v)and(O.UserInputType==Enum.
+UserInputType.MouseButton1 or O.UserInputType==Enum.UserInputType.Touch)then local P,Q=f(M),Vector2.new(9e9,9e9)local R,
+S,T=P.AbsolutePosition,f(G),f(H)if K==nil then K=m.Heartbeat:Connect(function()if f(F)then local U=l:GetMouseLocation()-
+R if U~=Q then Q=U G:set(math.clamp(U.X+S-10,550,9e9))H:set(math.clamp(U.Y+T-10,400,9e9))end end end)end F:set(true)O.
+Changed:Connect(function()if O.UserInputState==Enum.UserInputState.End then task.wait()F:set(false)end end)end end}}}}},
+aj'ScrollingFrame'{ZIndex=0,AnchorPoint=Vector2.new(1,1),Position=UDim2.new(1,-5,1,-10),Size=UDim2.new(0,1,1,-10),
+BackgroundTransparency=1,ScrollBarThickness=0,AutomaticCanvasSize=Enum.AutomaticSize.Y,ClipsDescendants=false,[c]=L.
+notificationListRef,[al]={aj'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,
+HorizontalAlignment=Enum.HorizontalAlignment.Right,VerticalAlignment=Enum.VerticalAlignment.Bottom}}}}}af.drag(f(u),15)
+return L,function(O)q:set(O)end end end)()end,[97]=function()local aa,ab,ac=a(97)local ad return(function(...)return
+function(ae,af)if ae.R==af.R and ae.G==af.G and ae.B==af.B then return true end return false end end)()end,[89]=function
+()local aa,ab,ac=a(89)local ad return(function(...)local ae=ab.Parent.Parent local af=ac(ae.Bundles.Fusion)local ag,aj,
+ak,al,b,c,d,e,f,h=af.New,af.OnEvent,af.Children,af.Value,af.Ref,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.
+utilities.animate),ac(ae.utilities.matchColors),game:GetService'UserInputService'return function(i)local j,k,l,m,p,q=al(
+false),al(d.get'text'),al(true),i.KeyCode,{}p.sideBarRef=al()p.windowsRef=al()p.uipagelayoutRef=al()p.
+notificationListRef=al()local t=h.InputBegan:Connect(function(t,u)if not u and t.KeyCode and t.KeyCode==m then l:set(not
+c(l))end end)q=ag'ScreenGui'{Name=i.saltedTable[i.Title],Parent=i.Parent,IgnoreGuiInset=false,ResetOnSpawn=false,[aj
+'Destroying']=function()t:Disconnect()end,[ak]={ag'Frame'{Name='container',AnchorPoint=Vector2.new(0,1),Position=UDim2.
+new(0,5,1,-5),ClipsDescendants=true,BackgroundColor3=e(function()return d.get'background'end,40,1),Size=e(function()if
+c(j)then return UDim2.new(0.75,0,1,-10)else return UDim2.fromOffset(40,40)end end,45,1),[ak]={{ag'UICorner'{CornerRadius
+=UDim.new(0,6)},ag'TextButton'{Name='activator',ZIndex=2,AnchorPoint=Vector2.new(0,1),Size=UDim2.fromOffset(40,40),
+Position=UDim2.fromScale(0,1),BackgroundTransparency=1,ClipsDescendants=true,[aj'MouseButton1Click']=function()j:set(not
+c(j))end,[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'ImageLabel'{Name='maximizeIcon',AnchorPoint=Vector2.new(0.5,
+0.5),BackgroundTransparency=1,Size=UDim2.fromOffset(30,30),Image='rbxassetid://15556636376',ImageColor3=e(function()
+return d.get'image'end,40,1),ImageTransparency=e(function()if c(j)then return 1 else return 0 end end,45,1),Position=e(
+function()if c(j)then return UDim2.fromScale(0.5,1.5)else return UDim2.fromScale(0.5,0.5)end end,25,1)},ag'ImageLabel'{
+Name='minimizeIcon',AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Size=UDim2.fromOffset(30,30),Image=
+'rbxassetid://15556637715',ImageColor3=e(function()return d.get'image'end,40,1),ImageTransparency=e(function()if c(j)
+then return 0 else return 1 end end,45,1),Position=e(function()if c(j)then return UDim2.fromScale(0.5,0.5)else return
+UDim2.fromScale(0.5,1.5)end end,25,1)}}},ag'ScrollingFrame'{Name='tabsList',Size=UDim2.new(0,50,1,-80),Position=UDim2.
+fromOffset(0,40),BackgroundTransparency=1,ScrollBarThickness=0,ClipsDescendants=false,CanvasSize=UDim2.new(0,0,0,0),
+AutomaticCanvasSize=Enum.AutomaticSize.Y,[b]=p.sideBarRef,[ak]={ag'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.
+SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Left},ag
+'UIPadding'{PaddingLeft=UDim.new(0,10)}}},ag'Frame'{Name='topBar',Size=UDim2.new(1,0,0,40),BackgroundTransparency=1,
+ZIndex=0,[ak]={ag'TextLabel'{AnchorPoint=Vector2.new(0,0.5),Position=UDim2.fromScale(0,0.5),Size=UDim2.new(1,-40,0,24),
+BackgroundTransparency=1,Font=Enum.Font.GothamBold,TextScaled=true,TextSize=24,TextXAlignment=Enum.TextXAlignment.Left,
+Text=i.Title,TextColor3=e(function()if f(c(k),d.get'defaultTab')then return d.get'defaultTab'end return c(k)end,15,1),
+TextTransparency=e(function()if c(j)then return 0 else return 1 end end,45,1),[ak]={ag'UIPadding'{PaddingLeft=UDim.new(0
+,10)},ag'UITextSizeConstraint'{MaxTextSize=24,MinTextSize=1}}},ag'TextButton'{AnchorPoint=Vector2.new(1,0.5),Position=
+UDim2.fromScale(1,0.5),Size=UDim2.fromOffset(40,40),BackgroundTransparency=1,Text='',ZIndex=0,[aj'MouseButton1Click']=
+function()q:Destroy()end,[ak]={ag'ImageLabel'{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=
+UDim2.fromScale(0.9,0.9),Rotation=45,BackgroundTransparency=1,Image='rbxassetid://15556635005',ImageColor3=e(function()
+return d.get'close'end,40,1),ImageTransparency=e(function()if c(j)then return 0 else return 1 end end,45,1)}}}}},ag
+'Frame'{Name='windowsList',ZIndex=0,Position=UDim2.fromOffset(50,40),Size=UDim2.new(1,-50,1,-40),BackgroundTransparency=
+1,ClipsDescendants=true,[b]=p.windowsRef,[ak]={ag'UIPadding'{PaddingLeft=UDim.new(0,5),PaddingRight=UDim.new(0,10),
+PaddingTop=UDim.new(0,5),PaddingBottom=UDim.new(0,5)},ag'UIPageLayout'{Name='UIPageLayout',EasingDirection=Enum.
+EasingDirection.In,EasingStyle=Enum.EasingStyle.Sine,TweenTime=0.2,FillDirection=Enum.FillDirection.Vertical,SortOrder=
+Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,20),[b]=p.uipagelayoutRef}}}}}},ag'ScrollingFrame'{Name='notifications',
+ZIndex=0,AnchorPoint=Vector2.new(1,1),Position=UDim2.new(1,-5,1,-10),Size=UDim2.new(0,1,1,-10),BackgroundTransparency=1,
+ScrollBarThickness=0,AutomaticCanvasSize=Enum.AutomaticSize.Y,ClipsDescendants=false,[b]=p.notificationListRef,[ak]={ag
+'UIListLayout'{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder,HorizontalAlignment=Enum.HorizontalAlignment.
+Right,VerticalAlignment=Enum.VerticalAlignment.Bottom}}}}}return p,function(u)k:set(u)end end end)()end,[95]=function()
+local aa,ab,ac=a(95)local ad return(function(...)return function(ae:string,af)ae=ae or''af=af or{TextSize=14,Font=Enum.
+Font.Arial,VectorSize=Vector2.new(200,50)}local ag=game:GetService'TextService'return ag:GetTextSize(ae,af.TextSize,af.
+Font,af.VectorSize)end end)()end,[76]=function()local aa,ab,ac=a(76)local ad return(function(...)local ae=ab.Parent.
+Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,al,b,c,d,e,f,h=af.New,af.OnEvent,af.Children,af.Value,af.Computed,
+ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.matchColors),ac(ae.Bundles.
+icons)return function(i)assert(i.Name,'Group needs a Name')local j,k=al(i.Parent),al(i.tabColor)if f(c(k),d.get
+'defaultTab')then k:set(d.get'defaultTab')end local l,m,p,q,t,u,v,E=al(i.Name),al(i.Icon or''),al(40),al(false),al(false
+),al(false),al'',al(false)local F=ag'TextButton'{ZIndex=2,Parent=c(j),ClipsDescendants=true,Size=b(function()if c(q)then
+return UDim2.new(1,0,0,40)end return UDim2.new(1,0,0,c(p))end),BackgroundTransparency=e(function()if c(q)then return 0
+end return 1 end,30,1),BackgroundColor3=e(function()if c(q)then return d.get'secondaryBackground'end return d.get
+'background'end,30,1),[aj'MouseButton1Click']=function()q:set(not c(q))end,[ak]={{ag'Frame'{ZIndex=3,Name='Lock',Visible
+=b(function()return c(t)end),Size=UDim2.fromScale(1,1),BackgroundTransparency=0.1,BackgroundColor3=e(function()return d.
+get'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),
+Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,ImageColor3=e(function()return d.get'image'end,40,1),Image=h.lock}
+,ag'TextLabel'{Text=b(function()return c(v)end),AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2
+.new(1,-54,0,16),Font=Enum.Font.GothamBold,BackgroundTransparency=1,TextColor3=e(function()return d.get'text'end,40,1),
+TextSize=16,TextScaled=true,TextXAlignment=Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{MinTextSize=1,
+MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,4)},ag'TextLabel'{
+Text=b(function()return c(l)end),TextColor3=e(function()if c(q)then return d.get'text'end return c(k)end,40,1),
+BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Size=b(function()if c(E)then return UDim2.new(1,-54,0,16)end return
+UDim2.new(1,-20,0,16)end),TextSize=16,Position=b(function()if c(E)then return UDim2.fromOffset(44,12)end return UDim2.
+fromOffset(10,12)end),AnchorPoint=Vector2.new(0,0),TextXAlignment=Enum.TextXAlignment.Left},ag'ImageLabel'{Visible=b(
+function()if c(E)then return true end return false end),BackgroundTransparency=1,ImageColor3=e(function()return d.get
+'image'end,40,1),Image=b(function()if c(E)then return c(m)end return''end),Size=UDim2.fromOffset(24,24),Position=UDim2.
+fromOffset(10,8)},ag'Frame'{BackgroundTransparency=1,Size=UDim2.fromOffset(24,24),Position=UDim2.new(1,-34,0,8),[ak]={ag
+'ImageLabel'{AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Size=UDim2.fromScale(1,1),Position=UDim2.
+fromScale(0.5,0.5),ImageColor3=e(function()if c(q)then return d.get'image'end return c(k)end,40,1),Image=h.chevron,
+Rotation=e(function()if c(q)then return 0 end return 180 end,30,1)}}},ag'Frame'{Name='componentHolder',Size=b(function()
+return UDim2.new(1,0,0,c(p)-40)end),Position=UDim2.fromOffset(0,40),BackgroundTransparency=1,[aj'ChildAdded']=function(F
+)if typeof(F)=='Instance'and not F:IsA'UIListLayout'then local G=F.AbsoluteSize.Y p:set(c(p)+F.AbsoluteSize.Y+5)F.
+Changed:Connect(function(H)if H:lower()=='absolutesize'then if G~=math.round(F.AbsoluteSize.Y)then p:set(c(p)-G+math.
+round(F.AbsoluteSize.Y))G=math.round(F.AbsoluteSize.Y)end end end)end end,[ak]={ag'UIListLayout'{Padding=UDim.new(0,5),
+SortOrder=Enum.SortOrder.LayoutOrder,FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.
+HorizontalAlignment.Center,VerticalAlignment=Enum.VerticalAlignment.Top},ag'UIPadding'{PaddingLeft=UDim.new(0,5),
+PaddingRight=UDim.new(0,5)}}}}}if c(m)~=''then E:set(true)end local G={}function G.SetName(H,I)if typeof(I)=='string'
+then l:set(I)else error('You entered a '..typeof(I)..' instead of a string')end end function G.SetIcon(H,I)if typeof(I)
+=='string'then m:set(I)else error('You entered a '..typeof(I)..' instead of a string')end end function G.Lock(H,I)t:set(
+true)u:set(c(q))q:set(true)v:set(I or'Locked')end function G.Unlock(H)t:set(false)q:set(c(u))end return F.
+componentHolder,G end end)()end,[82]=function()local aa,ab,ac=a(82)local ad return(function(...)local ae=ab.Parent.
+Parent local af=ac(ae.Bundles.Fusion)local ag,aj,ak,al,b,c,d,e,f,h,i,j,k,l=af.New,af.OnEvent,af.Children,af.Value,af.
+Computed,af.Ref,af.Observer,ac(ae.utilities.get),ac(ae.Bundles.themeSystem),ac(ae.utilities.animate),ac(ae.utilities.
+matchColors),ac(ae.Bundles.icons),game:GetService'UserInputService',game:GetService'RunService'return function(m)assert(
+m.Name,'Slider needs a Name')assert(m.Max,'Slider needs a Max')assert(m.Min,'Slider needs a Min')assert(m.Callback,
+'Slider needs a Callback')local p,q=al(m.Parent),al(m.tabColor)if i(e(q),f.get'defaultTab')then q:set(f.get'defaultTab')
+end local t,u,v,E,F=al(m.Name),al(m.Callback),al(m.Max),al(m.Min),al(m.Placement or 0)local G,H,I,K,L,M,N=al(m.
+InitialValue or e(E)),al(),al(),al(false),al(false),al(false),al''local function O(P)if e(F)==0 then return math.floor(P
+)end return tonumber(string.format('%.'..e(F)..'f',P))end local function P(Q,R,S,T,U)return(1-((Q-R)/(S-R)))*T+((Q-R)/(S
+-R))*U end local function Q(R)return O(P(R,0,180,e(E),e(v)))end local R,S=al(0),al(e(E))d(S):onChange(function()R:set(P(
+e(S),e(E),e(v),0,1))if not e(M)then task.spawn(e(u),e(S))end end)S:set(e(G))if e(G)<e(E)or e(G)>e(v)then warn(
+'InitialValue for '..e(t)..' is either too big or too small! InitialValue = '..tostring(e(E)))G:set(e(E))end k.
+InputEnded:Connect(function(T)if T.UserInputType==Enum.UserInputType.MouseButton1 and e(L)then L:set(false)end end)local
+T,U=ag'Frame'{Size=UDim2.new(1,0,0,40),ClipsDescendants=true,BackgroundColor3=h(function()return f.get
+'secondaryBackground'end,40,1),Parent=e(p),[aj'MouseEnter']=function()K:set(true)end,[aj'MouseLeave']=function()K:set(
+false)end,[ak]={{{ag'Frame'{ZIndex=4,Visible=b(function()return e(M)end),Size=UDim2.fromScale(1,1),
+BackgroundTransparency=0.1,BackgroundColor3=h(function()return f.get'tertiaryBackground'end,40,1),[ak]={ag'ImageLabel'{
+AnchorPoint=Vector2.new(0,0.5),Size=UDim2.fromOffset(24,24),Position=UDim2.new(0,10,0.5),BackgroundTransparency=1,
+ImageColor3=h(function()return f.get'image'end,40,1),Image=j.lock},ag'TextLabel'{Text=b(function()return e(N)end),
+AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,44,0.5,0),Size=UDim2.new(1,-54,0,16),Font=Enum.Font.GothamBold,
+BackgroundTransparency=1,TextColor3=h(function()return f.get'text'end,40,1),TextSize=16,TextScaled=true,TextXAlignment=
+Enum.TextXAlignment.Left,[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=16}}},ag'UICorner'{CornerRadius=UDim.
+new(0,6)}}}},ag'UICorner'{CornerRadius=UDim.new(0,6)},ag'Frame'{ZIndex=2,Size=UDim2.fromScale(1,1),AnchorPoint=Vector2.
+new(0.5,0),Position=UDim2.fromScale(0.5,0),BackgroundTransparency=0.85,BackgroundColor3=h(function()return e(q)end,40,1)
+,[ak]={ag'UICorner'{CornerRadius=UDim.new(0,6)}}},ag'TextLabel'{BackgroundTransparency=1,Size=UDim2.new(1,-220,0,14),
+AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,10,0.5,0),Font=Enum.Font.Gotham,TextScaled=true,TextSize=14,
+TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=0,TextColor3=h(function()return f.get'text'end,40,1),Text=e(t),
+[ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}},ag'CanvasGroup'{AnchorPoint=Vector2.new(1,0.5),Position=
+UDim2.new(1,-10,0.5,0),BackgroundColor3=h(function()return f.get'image'end,40,1),Size=h(function()if e(K)and not e(M)
+then return UDim2.fromOffset(180,16)end return UDim2.fromOffset(180,4)end,40,1),[ak]={ag'UICorner'{CornerRadius=h(
+function()if e(K)then return UDim.new(0,4)end return UDim.new(0,6)end,40,1)},ag'TextButton'{Interactable=b(function()
+return not e(M)end),AnchorPoint=Vector2.new(0.5,0.5),Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0.5,0.5),
+BackgroundTransparency=1,[aj'MouseButton1Down']=function()L:set(true)end,[aj'InputBegan']=function(T)if T.UserInputType
+==Enum.UserInputType.MouseButton1 then local U,V=k:GetMouseLocation().X,e(H).Size.X.Offset local W=U-(e(H).
+AbsolutePosition.X+V)while e(L)and not e(M)and task.wait()do local X=k:GetMouseLocation().X local Y=math.clamp(V+(X-U)+W
+,0,180)S:set(Q(Y))l.RenderStepped:Wait()end end end,[c]=I,[ak]={ag'Frame'{Name='ChangeThing',AnchorPoint=Vector2.new(0,
+0.5),Position=UDim2.fromScale(0,0.5),BackgroundColor3=h(function()return e(q)end,40,1),Size=h(function()return UDim2.
+fromScale(e(R),1)end,60,1),[c]=H}}}}},ag'TextLabel'{AnchorPoint=Vector2.new(1,0.5),Size=UDim2.fromOffset(20,14),Position
+=UDim2.new(1,-195,0.5,0),BackgroundTransparency=1,Text=b(function()return tostring(e(S))end),TextColor3=h(function()
+return f.get'text'end,40,1),Font=Enum.Font.Gotham,TextSize=14,TextXAlignment=Enum.TextXAlignment.Right,TextScaled=true,[
+ak]={ag'UITextSizeConstraint'{MinTextSize=1,MaxTextSize=14}}}}},{}function U.Remove(V)T:Destroy()end function U.SetValue
+(V,W)if typeof(W)=='number'and(W<=e(v))and(W>=e(E))then S:set(W)elseif typeof(W)~='number'then error("You didn't give "
+..e(t)..' a number for SetValue')else error('Your SetValue for '..e(t)..
+' is great or smaller than the maximum or minimum')end end function U.SetMin(V,W)if typeof(W)=='number'and(W<e(v))then E
+:set(W)local X=e(I)X.ChangeThing.ZIndex=2 X.ChangeThing.ZIndex=1 elseif typeof(W)~='number'then error("You didn't give "
+..e(t)..' a number for SetMin')else error('Your SetMin for '..e(t)..' is great than the maximum')end end function U.
+SetMax(V,W)if typeof(W)=='number'and(W<e(E))then v:set(W)local X=e(I)X.ChangeThing.ZIndex=2 X.ChangeThing.ZIndex=1
+elseif typeof(W)~='number'then error("You didn't give "..e(t)..' a number for SetMax')else error('Your SetMax for '..e(t
+)..' is smaller than the minimum')end end function U.Lock(V,W)M:set(true)N:set(W or'Locked')end function U.Unlock(V)M:
+set(false)end return U end end)()end},{{1,2,{'quake'},{{92,1,{'utilities'},{{98,2,{'tween'}},{94,2,{'get'}},{96,2,{
+'lerpColor'}},{97,2,{'matchColors'}},{95,2,{'getStringBounds'}},{93,2,{'animate'}}}},{72,1,{'components'},{{85,2,{
+'newToggle'}},{83,2,{'newTab'}},{79,2,{'newNotification'}},{84,2,{'newTextBox'}},{78,2,{'newLabel'}},{74,2,{
+'newColorPicker'}},{80,2,{'newParagraph'}},{77,2,{'newKeybind'}},{82,2,{'newSlider'}},{76,2,{'newGroup'}},{81,2,{
+'newSection'}},{75,2,{'newDropdown'}},{86,2,{'newWindow'}},{73,2,{'newButton'}}}},{87,1,{'platforms'},{{89,2,{'mobile'}}
+,{88,2,{'computer'}}}},{91,2,{'project.story'}},{2,1,{'Bundles'},{{69,2,{'themeSystem'},{{70,2,{'themes'}}}},{3,2,{
+'Fusion'},{{4,1,{'Animation'},{{9,2,{'getTweenRatio'}},{7,2,{'Tween'}},{5,2,{'Spring'}},{6,2,{'SpringScheduler'}},{13,2,
+{'unpackType'}},{10,2,{'lerpType'}},{12,2,{'springCoefficients'}},{11,2,{'packType'}},{8,2,{'TweenScheduler'}}}},{33,1,{
+'Logging'},{{35,2,{'logErrorNonFatal'}},{36,2,{'logWarn'}},{37,2,{'messages'}},{38,2,{'parseError'}},{34,2,{'logError'}}
+}},{49,1,{'Utility'},{{51,2,{'cleanup'}},{50,2,{'None'}},{55,2,{'restrictRead'}},{52,2,{'doNothing'}},{53,2,{'isSimilar'
+}},{54,2,{'needsDestruction'}},{56,2,{'xtypeof'}}}},{48,2,{'Types'}},{40,1,{'State'},{{44,2,{'ForValues'}},{42,2,{
+'ForKeys'}},{45,2,{'Observer'}},{46,2,{'Value'}},{47,2,{'unwrap'}},{43,2,{'ForPairs'}},{41,2,{'Computed'}}}},{14,1,{
+'Colour'},{{15,2,{'Oklab'}}}},{16,1,{'Dependencies'},{{19,2,{'sharedState'}},{17,2,{'captureDependencies'}},{21,2,{
+'useDependency'}},{18,2,{'initDependency'}},{20,2,{'updateAll'}}}},{22,1,{'Instances'},{{30,2,{'Ref'}},{25,2,{'Hydrate'}
+},{28,2,{'OnEvent'}},{23,2,{'Children'}},{24,2,{'Cleanup'}},{31,2,{'applyInstanceProps'}},{32,2,{'defaultProps'}},{26,2,
+{'New'}},{27,2,{'OnChange'}},{29,2,{'Out'}}}},{39,2,{'PubTypes'}}}},{57,2,{'betterMathModule'},{{62,3,{'CLASS_Check'}},{
+63,3,{'CLASS_Notation'}},{58,3,{'CLASS_Value'}},{59,3,{'CLASS_Sequence'}},{67,3,{'CLASS_Chance'}},{64,3,{'CLASS_Matrix'}
+},{61,3,{'CLASS_Convert'}},{66,3,{'Class_Special'}},{65,3,{'CLASS_Random'}},{60,3,{'CLASS_String'}}}},{71,2,{
+'ui-utilities'}},{68,2,{'icons'}}}},{90,2,{'preservedConfig'}}}}},'0.4.1','WaxRuntime',string,task,setmetatable,error,
+next,table,unpack,coroutine,script,type,require,pcall,tostring,tonumber,_VERSION local m,p,q,t,u,v,E=al.insert,al.remove
+,al.freeze or function(m)return m end,c.wrap,ae.sub,ae.match,ae.gmatch if k and u(k,1,4)=='Lune'then local F,G=h(f,
+'@lune/task')if F and G then af=G end end local F=af and af.defer local G,H,I,K,L,M,N,O,P=F or function(G,...)t(G)(...)
+end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local Q,R={
+GetFullName={{},function(Q)local R,S=Q.Name,Q.Parent while S do R=S.Name..'.'..R S=S.Parent end return R end},
+GetChildren={{},function(Q)local R={}for S in ak,P[Q]do m(R,S)end return R end},GetDescendants={{},function(Q)local R={}
+for S in ak,P[Q]do m(R,S)for T,U in ak,S:GetDescendants()do m(R,U)end end return R end},FindFirstChild={{'string',
+'boolean?'},function(Q,R,S)local T=P[Q]for U in ak,T do if U.Name==R then return U end end if S then for V in ak,T do
+return V:FindFirstChild(R,true)end end end},FindFirstAncestor={{'string'},function(Q,R)local S=Q.Parent while S do if S.
+Name==R then return S end S=S.Parent end end},WaitForChild={{'string','number?'},function(Q,R)return Q:FindFirstChild(R)
+end}},{}for S,T in ak,Q do local U,V,W=T[1],T[2],{}for X,Y in ak,U do local Z,_=v(Y,'^([^%?]+)(%??)')W[X]={Z,_}end R[S]=
+function(Z,...)if not P[Z]then aj("Expected ':' not '.' calling member function "..S,2)end local _={...}for am,an in ak,
+W do local ao=_[am]local ap,aq,ar=e(ao),an[1],an[2]if ao==nil and not ar then aj('Argument '..ao..' missing or nil',3)
+end if aq~='any'and ap~=aq and not(ap=='nil'and ar)then aj('Argument '..am..' expects type "'..aq..'", got "'..ap..'"',2
+)end end return V(Z,...)end end local function am(an,ao,ap)local aq,ar=(ag({},{__mode='k'}))local function U(V)aj(V..
+' is not a valid (virtual) member of '..an..' "'..ao..'"',3)end local function V(W)aj(
+'Unable to assign (virtual) property '..W..'. Property is read only',3)end local W,X={},{}X.__metatable=false X.__index=
+function(Y,Z)if Z=='ClassName'then return an elseif Z=='Name'then return ao elseif Z=='Parent'then return ap elseif an==
+'StringValue'and Z=='Value'then return ar else local _=R[Z]if _ then return _ end end for _ in ak,aq do if _.Name==Z
+then return _ end end U(Z)end X.__newindex=function(Y,Z,_)if Z=='ClassName'then V(Z)elseif Z=='Name'then ao=_ elseif Z==
+'Parent'then if _==W then return end if ap~=nil then P[ap][W]=nil end ap=_ if _~=nil then P[_][W]=true end elseif an==
+'StringValue'and Z=='Value'then ar=_ else U(Z)end end X.__tostring=function()return ao end ag(W,X)P[W]=aq if ap~=nil
+then P[ap][W]=true end return W end local function an(ao,ap)local aq,ar,U,V=ao[1],ao[2],ao[3],ao[4]local W=H[ar]local X=
+U and p(U,1)or W local Y=am(W,X,ap)I[aq]=Y if U then for Z,_ in ak,U do Y[Z]=_ end end if V then for Z,_ in ak,V do an(_
+,Y)end end return Y end local ao=am('Folder','['..ad..']')for ap,aq in ak,ab do an(aq,ao)end for ar,U in ak,aa do local
+V=I[ar]K[V]=U L[V]=ar local W=V.ClassName if W=='LocalScript'or W=='Script'then m(N,V)end end local function V(W)local X
+,Y=W.ClassName,M[W]if Y and X=='ModuleScript'then return b(Y)end local Z=K[W]local function _(as)as=i(as)local at,au,av=
+W:GetFullName(),v(as,'[^:]+:(%d+): (.+)')if not au or not l then return at..':*: '..(av or as)end au=j(au)local aw=L[W]
+local ax=l[aw]local ay=au-ax+1 if ay<0 then ay='?'end return at..':'..ay..': '..av end if X=='LocalScript'or X=='Script'
+then local as,at=h(Z)if not as then aj(_(at),0)end else local as={h(Z)}local at=p(as,1)if not at then local au=p(as,1)
+aj(_(au),0)end M[W]=as return b(as)end end function a(as)local at=I[as]local function au(av,...)local aw={h(av,...)}
+local ax=p(aw,1)if not ax then aj(aw[1],3)end return b(aw)end local av=q(ag({},{__index=O,__newindex=function(av,aw,ax)O
+[aw]=ax end,__len=function()return#O end,__iter=function()return ak,O end}))local aw,ax=q{version=ac,envname=ad,shared=
+av,script=d,require=f},at local function ay(W,...)local X,Y,Z=e(W),'Attempted to call require with a non-ModuleScript',
+'Attempted to call require with self'if X=='table'and P[W]then if W.ClassName~='ModuleScript'then aj(Y,2)elseif W==at
+then aj(Z,2)end return V(W)elseif X=='string'and u(W,1,1)~='@'then if#W==0 then aj(
+'Attempted to call require with empty string',2)end local _=at if u(W,1,1)=='/'then _=ao elseif u(W,1,2)=='./'then W=u(W
+,3)end local az for aA in E(W,'([^/]*)/?')do local aB=aA if aA=='..'then aB='Parent'end if aB~=''then local aC=_:
 FindFirstChild(aB)if not aC then local aD=_.Parent if aD then aC=aD:FindFirstChild(aB)end end if aC then _=aC elseif aA
-~=az and aA~='init'and aA~='init.server'and aA~='init.client'then ah('Virtual script path "'..U..'" not found',2)end end
-az=aA end if _.ClassName~='ModuleScript'then ah(W,2)elseif _==at then ah(Z,2)end return T(_)end return au(d,U,...)end
-return aw,ax,ay end for as,at in ai,L do E(T,at)end return T(ao:GetChildren()[1])
+~=az and aA~='init'and aA~='init.server'and aA~='init.client'then aj('Virtual script path "'..W..'" not found',2)end end
+az=aA end if _.ClassName~='ModuleScript'then aj(Y,2)elseif _==at then aj(Z,2)end return V(_)end return au(f,W,...)end
+return aw,ax,ay end for as,at in ak,N do G(V,at)end return V(ao:GetChildren()[1])
