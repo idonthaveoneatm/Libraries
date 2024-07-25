@@ -161,7 +161,8 @@ group:SetIcon("rbxassetid://10734950309")
 -- Group has all of the other components listed above except for another Group
 ```
 ## Miscellaneous
-These are on all components that are added to tabs or groups EXCLUDING PARAGRAPH, SECTION, LABEL
+These are on all components that are added to tabs or groups 
+Lock features exlcude: PARAGRAPH, SECTION, LABEL
 ```lua
 <object>:Remove()
 <object>:Lock("Hey you cant do that")
