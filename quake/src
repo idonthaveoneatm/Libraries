@@ -1,5 +1,3 @@
-local setthreadidentity = setidentity or setthreadcontext or setthreadidentity
-setthreadidentity(6)
 local a local aa,ab,ac,ad,ae,af,ag,ah,ai,aj,ak,al,b,c,d,e,f,g,h,i={function()local b,c,d=a(1)local e return(function(...
 )local f=d(c.Bundles.Fusion)local g,h,i,j,k,l=f.Value,f.Observer,d(c.utilities.get),d(c.preservedConfig),d(c.Bundles.
 themeSystem),{}function l.Window(m,n)assert(n.Title,':Window needs a Title')local o,p=d(c.platforms.mobile),d(c.
