@@ -138,7 +138,7 @@ local keybind = tab:Keybind({
     -- Required
     Name = "Binded Action",
     Bind = Enum.KeyCode.F,
-    Callback = function(value) -- parameter only is passed if IsToggle
+    Callback = function(value): nil | boolean -- parameter only is passed if IsToggle
         
     end,
 
@@ -165,7 +165,7 @@ local slider = tab:Slider({
     Name = "Slide Me!",
     Min = 0,
     Max = 100,
-    Callback = function(value)
+    Callback = function(value): number
         
     end,
 
@@ -192,7 +192,7 @@ slider:SetValue(10) -- fires callback
 local textbox = tab:TextBox({
     -- Required
     Name = "Enter Text",
-    Callback = function(value)
+    Callback = function(value): string
 
     end,
 
