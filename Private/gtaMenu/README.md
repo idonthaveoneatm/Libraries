@@ -187,6 +187,34 @@ local slider = tab:Slider({
 ```lua
 slider:SetValue(10) -- fires callback
 ```
+## Create a TextBox
+```lua
+local textbox = tab:TextBox({
+    -- Required
+    Name = "Enter Text",
+    Callback = function(value)
+
+    end,
+
+    -- Optional
+    Default = "Hey",
+    OnlyNumbers = false,
+    OnLeave = true,
+    PlaceHolderText = "Input is here",
+
+    IsEnabled = false,
+    DisabledText = "Hey you cant use this!",
+
+    HasPreview = true,
+    PreviewAssetId = "rbxassetid://",
+    ImageSize = UDim2.fromOffset(48,48)
+
+})
+```
+### Returned Functions
+```lua
+textbox:SetInput("New Hey")
+```
 ## Create a Label
 ```lua
 local label = tab:Label("heyo")
