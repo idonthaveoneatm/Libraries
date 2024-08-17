@@ -22,6 +22,9 @@ local window = gtaMenu:Window({
     BackBind = Enum.KeyCode.Backspace,
     UpBind = Enum.KeyCode.Up,
     DownBind = Enum.KeyCode.Down,
+    LeftBind = Enum.KeyCode.Left,
+    RightBind = Enum.KeyCode.Right,
+    EnterBind = Enum.KeyCode.Return,
 
     -- Optional
     SizeXInOffset = 300, -- defaults to 300
