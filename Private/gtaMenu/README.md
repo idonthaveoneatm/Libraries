@@ -237,7 +237,7 @@ gtaMenu:Notify({
 })
 ```
 ## Universal Returned Functions
-**EXCLUDES** :Tab :Window :Label
+**EXCLUDES** :Tab :Window :Label :Divider
 ```lua
 Component:SetPreviewAssetId("rbxassetid://")
 
