@@ -91,6 +91,10 @@ local dropdown = tab:Dropdown({
     -- Optional
     Multiselect = false,
     Description = "",
+    Regex = function(itemToClean)
+        local cleanedItem = itemToClean
+        return cleanedItem or itemToClean
+    end
 
     IsEnabled = false, -- defaults true
     DisabledText = "Hey you cant use this!",
@@ -237,7 +241,7 @@ gtaMenu:Notify({
 })
 ```
 ## Universal Returned Functions
-**EXCLUDES** :Tab :Window :Label :Divider
+**EXCLUDES** :Tab :Window :Label
 ```lua
 Component:SetPreviewAssetId("rbxassetid://")
 
