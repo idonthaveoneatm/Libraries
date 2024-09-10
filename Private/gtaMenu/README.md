@@ -75,10 +75,10 @@ local dropdown = tab:Dropdown({
     Name = "Single Item Selection",
     Items = {
         { -- Special Item Customization
-            Image = "rbxassetid://", 
             Value = "Apple",
 
             -- Optional
+            Image = "rbxassetid://",
             HasPreview = true,
             PreviewAssetId = "rbxassetid://",
             ImageSize = UDim2.fromOffset(48,48)
