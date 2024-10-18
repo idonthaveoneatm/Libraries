@@ -24,6 +24,7 @@ local window = gtaMenu:Window({
     DownBind = Enum.KeyCode.Down,
 
     -- Optional
+    Clickable = true -- defaults false
     SizeXInOffset = 300, -- defaults to 300
     Parent = gethui(), -- defaults to game.CoreGui
 })
@@ -75,10 +76,10 @@ local dropdown = tab:Dropdown({
     Name = "Single Item Selection",
     Items = {
         { -- Special Item Customization
+            Image = "rbxassetid://", 
             Value = "Apple",
 
             -- Optional
-            Image = "rbxassetid://",
             HasPreview = true,
             PreviewAssetId = "rbxassetid://",
             ImageSize = UDim2.fromOffset(48,48)
