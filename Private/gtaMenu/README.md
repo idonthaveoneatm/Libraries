@@ -67,6 +67,7 @@ button:SetCallback(function()
 
 end)
 
+
 button:Fire() -- fires the callback
 ```
 ## Create a Dropdown
@@ -242,9 +243,14 @@ gtaMenu:Notify({
 })
 ```
 ## Universal Returned Functions
+**EXCLUDES** :Window :Label :Divider
+```lua
+<Component>:Disable()
+<Component>:Enable()
+```
 **EXCLUDES** :Tab :Window :Label :Divider
 ```lua
-Component:SetPreviewAssetId("rbxassetid://")
+<Component>:SetPreviewAssetId("rbxassetid://")
 
-Component:SetImageSize(UDim2.new())
+<Component>:SetImageSize(UDim2.new())
 ```
