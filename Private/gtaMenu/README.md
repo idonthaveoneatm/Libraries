@@ -239,7 +239,20 @@ gtaMenu:Notify({
     Title = "the title",
     Body = "the body",
     Duration = 10,
-    Image = "rbxassetid://"
+    Image = "",
+    BarColor = Color3,
+    Width = 260,
+    ImageHeight = 50,
+    Buttons = {
+        {
+            Name = "",
+            Callback = function()
+
+            end,
+            Color = Color3,
+            Transparency = 0.7
+        }
+    }
 })
 ```
 ## Universal Returned Functions
