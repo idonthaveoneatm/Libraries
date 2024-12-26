@@ -147,13 +147,13 @@ toggle:DisableKeyBind()
 local keybind = tab:Keybind({
     -- Required
     Name = "Binded Action",
-    Bind = Enum.KeyCode.F,
     Callback = function(value): nil | boolean -- parameter only is passed if IsToggle
         
     end,
 
     -- Optional
     Description = "",
+    Bind = Enum.KeyCode.F,
     IsToggle = false,
 
     IsEnabled = false, -- defaults true
