@@ -129,6 +129,8 @@ local toggle = tab:Toggle({
     IsEnabled = false, -- defaults true
     DisabledText = "Hey you cant use this!",
 
+    LinkToKeybind = true, -- defaults false
+
     HasPreview = true, -- defaults false
     PreviewAssetId = "rbxassetid://", -- Required if HasPreview
     ImageSize = UDim2.fromOffset(48,48) -- Required if HasPreview
@@ -137,6 +139,8 @@ local toggle = tab:Toggle({
 ### Returned Functions
 ```lua
 toggle:SetValue(true) -- fires callback with desired value
+toggle:EnableKeyBind()
+toggle:DisableKeyBind()
 ```
 ## Create a Keybind
 ```lua
