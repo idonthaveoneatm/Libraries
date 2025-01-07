@@ -261,7 +261,7 @@ gtaMenu:Notify({
 ```
 ## Status Posting
 ```lua
-project:Post({
+gtaMenu:Post({
     Status = "Status with a priority 2 being made",
     Image = randomIcon(),
     Duration = 10,
@@ -271,7 +271,7 @@ project:Post({
     end
 })
 -- OR
-project:Post({
+gtaMenu:Post({
     Status = "Status with a priority 2 being made",
     IsViewport = true,
     ViewportChild = Instance.new("Part"),
