@@ -259,6 +259,31 @@ gtaMenu:Notify({
     }
 })
 ```
+## Status Posting
+```lua
+project:Post({
+    Status = "Status with a priority 2 being made",
+    Image = randomIcon(),
+    Duration = 10,
+    Priority = 2,
+    Callback = function()
+        
+    end
+})
+-- OR
+project:Post({
+    Status = "Status with a priority 2 being made",
+    IsViewport = true,
+    ViewportChild = Instance.new("Part"),
+    CameraCFrame = CFrame.new(),
+    Duration = 10,
+    Priority = 2,
+    Callback = function()
+        print("skibidi rizz sigma gyatt")
+    end
+})
+
+```
 ## Universal Returned Functions
 **EXCLUDES** :Window :Label :Divider
 ```lua
