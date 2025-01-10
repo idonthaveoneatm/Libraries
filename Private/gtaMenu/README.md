@@ -37,6 +37,14 @@ local tab = window:Tab({
 
     -- Optional
     Image = "rbxassetid://"
+
+    -- OR
+
+    -- Required
+    IsAccount = true,
+    Username = "griffindoescooking",
+    Profile = profile,
+    ProfileDescription = "yo yo yo its your boy griffin for real!"
 })
 ```
 ## Create a Button
@@ -261,7 +269,7 @@ gtaMenu:Notify({
 ```
 ## Status Posting
 ```lua
-gtaMenu:Post({
+project:Post({
     Status = "Status with a priority 2 being made",
     Image = randomIcon(),
     Duration = 10,
@@ -271,7 +279,7 @@ gtaMenu:Post({
     end
 })
 -- OR
-gtaMenu:Post({
+project:Post({
     Status = "Status with a priority 2 being made",
     IsViewport = true,
     ViewportChild = Instance.new("Part"),
