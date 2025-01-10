@@ -269,7 +269,7 @@ gtaMenu:Notify({
 ```
 ## Status Posting
 ```lua
-project:Post({
+gtaMenu:Post({
     Status = "Status with a priority 2 being made",
     Image = randomIcon(),
     Duration = 10,
@@ -279,7 +279,7 @@ project:Post({
     end
 })
 -- OR
-project:Post({
+gtaMenu:Post({
     Status = "Status with a priority 2 being made",
     IsViewport = true,
     ViewportChild = Instance.new("Part"),
@@ -290,7 +290,15 @@ project:Post({
         print("skibidi rizz sigma gyatt")
     end
 })
-
+```
+## Clearing Status'
+```lua
+gtaMenu:ClearStatus()
+```
+### Returned Functions
+```lua
+post:Rotate(90)
+post:SetCFrame(CFrame.new(1,1,1))
 ```
 ## Universal Returned Functions
 **EXCLUDES** :Window :Label :Divider
