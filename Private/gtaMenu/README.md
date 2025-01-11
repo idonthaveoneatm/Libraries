@@ -303,6 +303,17 @@ gtaMenu:ClearStatus()
 post:Rotate(90)
 post:SetCFrame(CFrame.new(1,1,1))
 ```
+## Destruction
+To destroy the interface
+```lua
+gtaMenu:Destroy()
+```
+You can also connect to `gtaMenu.OnDestruction` which will fire when the interface is destroyed
+```lua
+gtaMenu.OnDestruction:Connect(function()
+    print("Goodbye!")
+end)
+```
 ## Universal Returned Functions
 **EXCLUDES** :Window :Label :Divider
 ```lua
