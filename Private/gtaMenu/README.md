@@ -39,6 +39,7 @@ local tab = window:Tab({
     Image = "rbxassetid://"
     IsBig = true
     TabDescription = "heyy"
+    DoesOpen = true,
 
     -- OR
 
