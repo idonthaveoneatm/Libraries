@@ -6,7 +6,6 @@ Developed by - griffin(@idonthaveoneatm)
 Contact me via Discord **@griffindoescooking** for any problems or questions
 
 ### Credits:
-- [biggaboy212](https://github.com/biggaboy212) - Basically the entire design
 - [violin-suzutsuki/LinoriaLib](https://github.com/violin-suzutsuki/LinoriaLib) - Code for slider math
 - [dawid-scripts/Fluent](https://github.com/dawid-scripts/Fluent/) - Lucide icons
 - [lucide.dev](https://lucide.dev/) - More Lucide icons
