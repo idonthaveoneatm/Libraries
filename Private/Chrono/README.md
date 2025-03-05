@@ -13,16 +13,17 @@ Contact me via Discord **@griffindoescooking** for any problems or questions
 - [latte-soft/wax](https://github.com/latte-soft/wax) - Bundler
 # Launching Chrono
 ```lua
+-- private
 ```
 ## Create a Window
 ```lua
 local window = chrono:Window({
     Title = "chrono",
     Description = "chrono user interface",
+    HideBind = Enum.KeyCode.T,
 
     -- Optional
     Icon = "",
-    HideBind = Enum.KeyCode.T,
     UseConfig = true,
     BlacklistedKeys = {}, -- Has default values of W,A,S,D,Space,Unknown
     Config = "test",
@@ -92,6 +93,22 @@ chrono:Notify({
     }
 })
 ```
+### Resetting Launch Time
+```lua
+chrono:ResetLaunchTime()
+```
+### Posting Log
+```lua
+chrono:Log({
+    image = "",
+    decimal = 0, -- no decimal place
+    log = ""
+})
+```
+### Status Tab
+```lua
+chrono.Stats:<Component>
+```
 ### Loading config
 Place this at the **END** of your implementation of the user interface.
 ```lua
@@ -106,7 +123,7 @@ chrono.flags.FLAGNAME.OnChange:Connect(function(value): any -- Is fired every ti
 end)
 -- Types are the same as the ones found for each component
 ```
-### Chrono Folder and File
+### Chrono Folder, File, Version
 If `UseConfig = true` then `chrono.Folder` and `chrono.File` will give you strings to the folder and the config file created.
 ```lua
 ...
@@ -114,7 +131,8 @@ If `UseConfig = true` then `chrono.Folder` and `chrono.File` will give you strin
     Config = "profile",
 ...
 print(chrono.Folder) --> chrono/profile
-print(crhono.File) --> chrono/profile/config.json
+print(chrono.File) --> chrono/profile/config.json
+print(chrono.Version) --> 1.0.0 etc etc
 ```
 ### Destroying Chrono
 You can also connect functions to run when Chrono is destroyed by connectiong to `chrono.OnDestruction`. You can also check if Chrono has been destroyed with `chrono.Destroyed`.
