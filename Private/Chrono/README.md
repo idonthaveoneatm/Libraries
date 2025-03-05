@@ -347,7 +347,7 @@ tab:Divider()
 tab:KeybindList()
 ```
 ## Universal Returned Functions
-**EXCLUDES** :Tab :Window :Label :Divider :KeybindList
+**EXCLUDES** :Tab :Window :Label :Divider :KeybindList :Group
 ```lua
 <Component>:Enable()
 <Component>:Disable()
