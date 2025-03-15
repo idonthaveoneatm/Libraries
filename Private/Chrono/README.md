@@ -184,7 +184,7 @@ local dropdown = tab:Dropdown({
     Items = {
         { -- Special Item Customization
             Value = "Apple",
-            Boolean = true, -- Doesnt do anything though so idk why i added it
+            Color = Color3.fromRGB(255,0,0),
             Description = "",
             ImageDescription = ""
         }, 
