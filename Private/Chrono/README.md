@@ -99,9 +99,11 @@ chrono:ResetLaunchTime()
 ### Posting Log
 ```lua
 chrono:Log({
+    log = "",
+
+    -- Optional
     image = "",
-    decimal = 0, -- no decimal place
-    log = ""
+    decimal = 0 -- defaults to 0
 })
 ```
 ### Status Tab
@@ -268,6 +270,11 @@ local slider = tab:Slider({
     Callback = function(value): number
         
     end,
+    Points = { -- This displays text if the slider is at that value. indexs MUST be strings
+        ["100"] = "Max",
+        ["50"] = "Half",
+        ["0"] = "Min"
+    },
     Enabled = false, -- Defaults to true
     DisabledText = "Hey you cant use this!",
     FLAG = "slider",
@@ -332,7 +339,7 @@ colorpicker:SetTransparency(0)
 ```
 ## Create a Label
 ```lua
-local label = tab:Label("heyo")
+local label = tab:Label("heyo |hidden text|", true) -- true makes it bigger put text in |here| if you want it hidden
 ```
 ### Returned Functions
 ```lua
