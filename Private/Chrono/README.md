@@ -337,6 +337,10 @@ local colorpicker = tab:ColorPicker({
 colorpicker:SetColor(Color3.new(1,0,0))
 colorpicker:SetTransparency(0)
 ```
+## Create a Group
+```lua
+chrono:Group("Title") -- Title isn't required
+```
 ## Create a Label
 ```lua
 local label = tab:Label("heyo |hidden text|", true) -- true makes it bigger put text in |here| if you want it hidden
