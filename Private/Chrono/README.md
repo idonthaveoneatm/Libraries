@@ -251,6 +251,9 @@ local keybind = tab:Keybind({
     DisabledText = "Hey you cant use this!",
     FLAG = "keybind",
     Bind = Enum.KeyCode.F,
+    OnHold = function(isDown): boolean
+        
+    end,
     Description = "",
     ImageDescription = ""
 })
