@@ -356,6 +356,15 @@ label:SetText("say heyo")
 ```lua
 tab:Divider()
 ```
+## Create a List
+```lua
+local list = tab:List("New List")
+```
+### Returned Functions
+```lua
+list:Visible()
+list:Invisible()
+```
 ## Create a Keybind List
 ```lua
 tab:KeybindList()
