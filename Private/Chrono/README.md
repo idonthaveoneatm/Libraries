@@ -364,6 +364,7 @@ local list = tab:List("New List")
 ```lua
 list:Visible()
 list:Invisible()
+list:SetTitle("New List Name")
 ```
 ## Create a Keybind List
 ```lua
