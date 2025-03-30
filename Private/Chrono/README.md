@@ -368,7 +368,12 @@ list:SetTitle("New List Name")
 ```
 ## Create a Keybind List
 ```lua
-tab:KeybindList()
+local keybindList = tab:KeybindList()
+```
+### Returned Functions
+```lua
+keybindList:Visible()
+keybindList:Invisible()
 ```
 ## Universal Returned Functions
 **EXCLUDES** :Tab :Window :Label :Divider :KeybindList :Group
