@@ -92,6 +92,18 @@ chrono:Notify({
     }
 })
 ```
+### Announcement System
+```lua
+local announcement = chrono:Announce({
+    Title = "Title",
+    Content = "The Content",
+    CanClose = true
+})
+```
+#### Returned Function
+```lua
+announcement:Destroy()
+```
 ### Resetting Launch Time
 ```lua
 chrono:ResetLaunchTime()
