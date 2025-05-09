@@ -23,54 +23,157 @@ local window = chrono:Window({
 
     -- Optional
     Icon = "",
-    UseConfig = true,
     BlacklistedKeys = {}, -- Has default values of W,A,S,D,Space,Unknown
-    Config = "test",
-    Theme = {},
+    UseConfig = false, -- Determines if Workspace is required+enables filesystem for configurationss
+    Workspace = "mainWorkspace", -- the name of the chrono workspace for configs and themes
+    Theme = { -- Custom theme on launch
+        Name = "custom theme",
+        Colors = {
+            background = Color3.fromHex("#1C1726"),
+            background2 = Color3.fromHex("#0F0C15"),
+
+            text = Color3.fromHex("#EDEBF2"),
+            text2 = Color3.fromHex("#B7A6D4"),
+
+            selectedTab = Color3.fromHex("#1D1827"),
+
+            colorpickerBar = Color3.fromHex("#DCE1E5"),
+
+            notificationButton = Color3.fromHex("#222427"),
+
+            mobileButtonBackground = Color3.fromHex("#DCE1E5"),
+            mobileButtonText = Color3.fromHex("#2C2F33"),
+            mobileButtonImage = Color3.fromHex("#2C2F33"),
+
+            disabledBackground = Color3.fromHex("#2A2C31"),
+            disabledText = Color3.fromHex("#D6DCE0"),
+
+            toggled = Color3.fromHex("#B7A6D4"),
+
+            red = Color3.fromHex("#B7A6D4"),
+            orange = Color3.fromHex("#B7A6D4")
+    },
     componentY = 54,
     Parent = game.Players.LocalPlayer.PlayerGui
 })
+
 ```
-### Setting the theme
-You can set the colors you want and leave the else to default.
+## Theming 
+You are able to use a multitude of different functions to modify the looks of chrono.
+### Importing Theme
+You can create a theme with no name that is given the name "Import_abc12" with a random ending. Otherwise give it a name! This function also returns the unique identifier that is given to each theme so that you can set it as the theme.
 ```lua
-chrono:SetTheme({
-    text = Color3.fromRGB(255,255,255)
-})
---[[
-List of all color variables:
+-- No Name
+chrono:ImportTheme({
+    toggled = Color3.fromRGB(255,255,255)
+}) --> "C3bb2"
+-- Name
+chrono:ImportTheme("New Theme!", {
+    toggled = Color3.fromRGB(255,0,0)
+}) --> "p4W01"
+```
+#### List of all color variables:
+- text
+- text2
+- background
+- background2
+- primary
+- secondary
+- accent
+- border
+- image
+- orb1
+- orb2
+- orb3
+- orb4
+- orb5
+- toggle1
+- toggle2
+- red
+- notificationButton
+- item
+- placeholder
+- slider
+- textbox
+- divider
+### Set Theme
+Using that unique identifier you can now set the theme with `:SetTheme`.
+```lua
+chrono:SetTheme("p4w01")
+```
+### Get Theme Unique Identifier
+Returns the unique identifier of the current theme.
+```lua
+chrono:GetThemeUID() --> "p4w01"
+```
+### Exporting Theme
+If you want to export the current theme you can use this.
+```lua
+chrono:ExportTheme() --> "{}" is a JSON table of the current theme
+```
+## Flags
+This is how you can access the callback'd values with flags. You can place these anywhere in your script after the chrono loadstring and if they are placed before the component with that flag they are considered 'preregistered' in that the OnChange won't be fired when the flag is registered normally but they will for default/configurations. `chrono.flags.FLAGNAME.Value`, however, does change from nil to the default/config.
+```lua
+chrono.flags.FLAGNAME.Value --> Will be the last set value of the flag
+chrono.flags.FLAGNAME.OnChange:Connect(function(value): any -- Is fired every time the value of a flag is changed
+    print(value)
+end)
+-- Types are the same as the ones found for each component
+```
 
-text
-text2
-background
-background2
-primary
-secondary
-accent
-border
-image
+## Configurations
+How to import, export, and set configurations in chrono. This uses flags.
+### Importing Configuration
+These return the unique identifier like themes.
+```lua
+-- No Name
+chrono:ImportConfiguration({
+    Lebron = {boolean = false, keycode = "H"}
+}) --> "aZ10F"
+-- Name
+chrono:ImportConfiguration("New Configuration", {
+    TheGoat = {boolean = true, keycode = "A"}
+})--> "Bp5bD"
+```
+#### List of flag value formats
+This is what you can use when creating the `Configuration` in the `:Window` function.
+- `:Toggle` = `{boolean = <boolean>, keycode = <string>, coordinate = {X = <number>, Y = <number>}}`
+    - The `keycode` is the .Name of a Enum.KeyCode
+- `:TextBox` = `<string>`
+- `:Slider` = `<number>`
+- `:Dropdown` = If `Multiselect` then `{<string>,<string>}` else it is `<string>`
+- `:Keybind` = `{keycode = <string>, coordinate = {X = <number>, Y = <number>}}`
+    - The `keycode` is the .Name of a Enum.KeyCode
+- `:ColorPicker` = `{color = <string>, transparency = <number>}`
+    - The color is the Hex code
+### Setting Configuration
+Using a unique identifier you can set the configuration.
+```lua
+chrono:SetConfiguration("Bp5bD")
+```
+### Getting Configuration Unique Identifier
+Returns current configuration's unique identifier.
+```lua
+chrono:GetConfigurationUID() --> "Bp5bD"
+```
+### Exporting Configuration
+If you want to export the current configuration you can use this.
+```lua
+chrono:ExportConfiguration() --> "{}" is a JSON table of the current configuration
+```
+### chrono Folder
+Gives you strings to the folder created for the `Workspace` provided.
+```lua
+...
+    Workspace = "chrono rocks",
+...
+print(chrono.Folder) --> chrono/chrono rocks
+```
 
-orb1
-orb2
-orb3
-orb4
-orb5
-
-toggle1
-toggle2
-red
-
-notificationButton
-
-item
-placeholder
-
-slider
-
-textbox
-
-divider
-]]
+## Settings Page
+Adding this function **after** you create your tabs adds a "⚙️ Settings" tab with a theme and configuration manager.
+```lua
+chrono:CreateSettings()
 ```
 ### Notify a User
 ```lua
@@ -188,6 +291,11 @@ button:SetCallback(function()
     print("Goodbye World!")
 end)
 button:Fire()
+```
+## Create Button Group
+This was made specifically for the configuration manager and allows you to add buttons in a horizontal list. It only has the `:Button` component
+```lua
+tab:ButtonGroup()
 ```
 ## Create a Dropdown
 ```lua
@@ -392,5 +500,7 @@ keybindList:Invisible()
 ```lua
 <Component>:Enable()
 <Component>:Disable()
+<Component>:Visible()
+<Component>:Invisible()
 <Component>:SetName("New Name")
 ```
