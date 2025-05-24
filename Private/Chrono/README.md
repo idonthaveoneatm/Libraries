@@ -177,7 +177,7 @@ chrono:CreateSettings()
 ```
 ### Notify a User
 ```lua
-chrono:Notify({
+local notification = chrono:Notify({
     Title = "the title",
     Body = "the body",
     Duration = 10,
@@ -194,6 +194,7 @@ chrono:Notify({
         }
     }
 })
+notification:Destroy() --> Destroys the notification early
 ```
 ### Announcement System
 ```lua
@@ -261,7 +262,15 @@ chrono:Destroy()
 print(chrono.Destroyed) --> true
 -- In console it would print "Destroying Chrono"
 ```
+### Chrono Viewport and Current tab
+```lua
+chrono:GetViewportData() --> {Character: Instance, Viewport: Instance}
+chrono:ESPPreviewVisible()
+chrono:ESPPreviewInvisible()
+chrono:CurrentTab() --> "string of uid of selected tab"
+```
 ## Create a Tab
+Returns `.uid` which is used to for identifying which tab is selected.
 ```lua
 local tab = window:Tab({
     Name = "Tab Name",
@@ -478,7 +487,7 @@ tab:Divider()
 ```
 ## Create a List
 ```lua
-local list = tab:List("New List")
+local list = tab:List("New List", true) --> name, destroyable
 ```
 ### Returned Functions
 ```lua
