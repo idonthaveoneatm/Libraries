@@ -291,7 +291,10 @@ local button = tab:Button({
     Enabled = false, -- Defaults true
     DisabledText = "Hey you cant use this!",
     Description = "",
-    ImageDescription = ""
+    ImageDescription = "",
+    Image = "",
+    ImageColor = Color3.new(),
+    HasMenu = true
 })
 ```
 ### Returned Functions
@@ -301,6 +304,7 @@ button:SetCallback(function()
 end)
 button:Fire()
 ```
+
 ## Create Button Group
 This was made specifically for the configuration manager and allows you to add buttons in a horizontal list. It only has the `:Button` component
 ```lua
@@ -334,7 +338,10 @@ local dropdown = tab:Dropdown({
         return cleanedItem or itemToClean
     end,
     Description = "",
-    ImageDescription = ""
+    ImageDescription = "",
+    Image = "",
+    ImageColor = Color3.new(),
+    HasMenu = true
 })
 ```
 ### Returned Functions
@@ -359,7 +366,10 @@ local toggle = tab:Toggle({
     LinkKeybind = true,
     Bind = Enum.KeyCode.E,
     Description = "",
-    ImageDescription = ""
+    ImageDescription = "",
+    Image = "",
+    ImageColor = Color3.new(),
+    HasMenu = true
 })
 ```
 ### Returned Functions
@@ -384,7 +394,8 @@ local keybind = tab:Keybind({
         
     end,
     Description = "",
-    ImageDescription = ""
+    ImageDescription = "",
+    HasMenu = true
 })
 ```
 ### Returned Functions
@@ -503,6 +514,11 @@ local keybindList = tab:KeybindList()
 ```lua
 keybindList:Visible()
 keybindList:Invisible()
+```
+## Accessing Menus
+For :Button, :Toggle, :Keybind, and :Dropdown. Returns all other components
+```lua
+<Component>.Menu
 ```
 ## Universal Returned Functions
 **EXCLUDES** :Tab :Window :Label :Divider :KeybindList :Group
