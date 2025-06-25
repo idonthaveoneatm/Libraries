@@ -262,12 +262,22 @@ chrono:Destroy()
 print(chrono.Destroyed) --> true
 -- In console it would print "Destroying Chrono"
 ```
-### Chrono Viewport and Current tab
+## Chrono Viewport and Current tab
 ```lua
 chrono:GetViewportData() --> {Character: Instance, Viewport: Instance}
 chrono:ESPPreviewVisible()
 chrono:ESPPreviewInvisible()
 chrono:CurrentTab() --> "string of uid of selected tab"
+chrono.Preview:SetObject(object: Instance, cframe: CFrame?, cameraVector: Vector3?)
+chrono.Preview:SetTitle(string: string)
+chrono.Preview:SetDescription(string: string)
+chrono.Preview:DisplayMessage(string: string)
+chrono.Preview.Settings --> All components in settings cog
+```
+## Orb Management
+```lua
+chrono:EnableOrbs()
+chrono:DisableOrbs()
 ```
 ## Create a Tab
 Returns `.uid` which is used to for identifying which tab is selected.
